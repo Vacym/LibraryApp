@@ -1,11 +1,18 @@
-/* version 0.0.0 */
+/* version 0.0.0.1 */
 
 body {
     background-color: #101010;
     color: wheat;
 }
 
-.input {}
+header {
+    font-size: 30px;
+    padding-left: 10%;
+}
+
+.input {
+    padding-left: 10%;
+}
 
 .div_line {
     padding: 10px 5px;
@@ -17,9 +24,26 @@ body {
 }
 
 .new_student_form label {
-    padding-left: 20px;
+    padding: 0px 20px 0px 10px;
 }
 
 .new_student_form input {
     width: 30%;
+}
+
+
+/*персональные настройки поей ввода*/
+
+#class_number {
+    width: 20%;
+    max-width: 90px;
+}
+
+#class_latter {
+    width: 20%;
+    max-width: 50px;
+}
+
+#submit {
+    background-color: #efefef;
 }
