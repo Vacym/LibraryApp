@@ -1,0 +1,25 @@
+/* version 0.0.0 */
+
+body {
+    background-color: #101010;
+    color: wheat;
+}
+
+.input {}
+
+.div_line {
+    padding: 10px 5px;
+}
+
+.new_student_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.new_student_form label {
+    padding-left: 20px;
+}
+
+.new_student_form input {
+    width: 30%;
+}
