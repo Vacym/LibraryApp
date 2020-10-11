@@ -1,4 +1,4 @@
-<!-- version 0.0.0.1-->
+<!-- version 0.1-->
 <!DOCTYPE html>
 <html>
 
@@ -10,33 +10,57 @@
 </head>
 
 <body>
-    <header class="main_title">
-        <h1>Добавить ученика</h1>
-    </header>
-    <div class="input">
-        <form action="#" class="new_student_form">
-            <div class="div_line">
-                <input type="text" name="new_student" id="name"><label for="name">Имя</label>
-            </div>
+    <div class="ceneter_box">
+        <div class="main_title">
+            <h1>Добавить ученика</h1>
+        </div>
+        <div class="input_box">
+            <div class="input">
 
-            <div class="div_line">
-                <input type="text" name="new_student" id="surname"><label for="surname">Фамилия</label>
-            </div>
+                <form action="check.php" class="new_student_form" method="POST">
+                    <div class="div_line">
+                        <input type="text" name="surname" id="surname" class="necessary_input" maxlength="30" autocomplete="off">
+                        <div class="fix_label">
+                            <label for="surname">Фамилия</label>
+                        </div>
+                    </div>
 
-            <div class="div_line">
-                <input type="text" name="new_student" id="lastname"><label for="lastname">Отчество</label>
-            </div>
+                    <div class="div_line">
+                        <input type="text" name="firstname" id="name" class="necessary_input" maxlength="30" autocomplete="off">
+                        <div class="fix_label">
+                            <label for="name">Имя</label>
+                        </div>
+                    </div>
 
-            <div class="div_line">
-                <input type="number" name="new_student" id="class_number"><label for="class_number">Класс</label>
-                <input type="text" name="new_student" id="class_latter"><label for="class_letter">Буква</label>
-            </div>
+                    <div class="div_line">
+                        <input type="text" name="lastname" id="lastname" maxlength="30" autocomplete="off">
+                        <div class="fix_label">
+                            <label for="lastname">Отчество</label>
+                        </div>
+                    </div>
 
-            <div class="div_line">
-                <input type="button" name="new_student" id="submit" onclick="get_new_student()" value="Создать">
-            </div>
+                    <div class="div_line">
+                        <div class="div_line">
+                            <input type="number" name="class" id="class_number" class="necessary_input" min="1" max="11" autocomplete="off">
+                            <div class="fix_label">
+                                <label for="class_number">Класс</label>
+                            </div>
+                        </div>
+                        <div class="div_line">
+                            <input type="text" name="letter" id="class_letter" class="necessary_input" maxlength="1" autocomplete="off">
+                            <div class="fix_label">
+                                <label for="class_letter">Буква</label>
+                            </div>
+                        </div>
+                    </div>
 
-        </form>
+                    <div class="div_line">
+                        <input type="submit" name="new_student" id="submit" value="Создать" disabled>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 
