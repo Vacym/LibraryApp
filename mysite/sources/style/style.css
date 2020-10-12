@@ -1,6 +1,6 @@
-/* version 1.0 */
+/* version 1.1 */
 
-* {
+html {
     background: url(../files/book.jpg);
     -webkit-background-size: cover;
     background-size: cover;
@@ -41,6 +41,7 @@
     outline: none;
     border: 1px solid #fff;
     box-sizing: border-box;
+    transition: .3;
 }
 
 .form input.bad_input {
