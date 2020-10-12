@@ -1,4 +1,4 @@
-<!-- version 1.0 -->
+<!-- version 1.1 -->
 
 <!DOCTYPE html>
 <html>
@@ -14,19 +14,19 @@
     <form action="sources/php/check.php" method="POST" class="form">
         <h1>Добавить Ученика</h1>
         <div class="line">
-            <input type="text" name="surname" id="surname" placeholder="Фамилия" class="necessary_input">
+            <input type="text" name="surname" id="surname" placeholder="Фамилия" class="necessary_input" autocomplete="off">
         </div>
         <div class="line">
-            <input type="text" name="firsname" id="firsname" placeholder="Имя" class="necessary_input">
+            <input type="text" name="firsname" id="firsname" placeholder="Имя" class="necessary_input" autocomplete="off">
         </div>
         <div class="line">
-            <input type="text" name="lastname" id="lastname" placeholder="Отчество">
+            <input type="text" name="lastname" id="lastname" placeholder="Отчество" autocomplete="off">
         </div>
         <div class="line">
-            <input type="number" name="class_number" id="class_number" min="1" max="11" placeholder="Класс" class="necessary_input">
+            <input type="number" name="class_number" id="class_number" min="1" max="11" placeholder="Класс" class="necessary_input" autocomplete="off">
         </div>
         <div class="line">
-            <input type="text" name="class_letter" id="class_letter" maxlength="1" placeholder="Буква" class="necessary_input">
+            <input type="text" name="class_letter" id="class_letter" maxlength="1" placeholder="Буква" class="necessary_input" autocomplete="off">
         </div>
         <div>
             <input type="submit" id="submit" value="Создать" disabled>
