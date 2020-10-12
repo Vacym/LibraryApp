@@ -41,7 +41,7 @@ html {
     outline: none;
     border: 1px solid #fff;
     box-sizing: border-box;
-    transition: .3;
+    transition: .3s;
 }
 
 .form input.bad_input {
