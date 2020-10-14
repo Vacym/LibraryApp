@@ -1,0 +1,31 @@
+<!-- version 1.1 -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Добавление Книги</title>
+    <link rel="stylesheet" href="sources/style/style.css">
+    <script src="sources/js/add_student.js"></script>
+</head>
+
+<body>
+    <form action="sources/php/check_bk.php" method="POST" class="form">
+        <h1>Добавить Книгу</h1>
+        <div class="line">
+            <input type="text" name="name" id="name" placeholder="Название" class="necessary_input" autocomplete="off">
+        </div>
+        <div class="line">
+            <input type="text" name="author" id="author" placeholder="Автор" class="necessary_input" autocomplete="off">
+        </div>
+        <div class="line">
+            <input type="number" name="year" id="year" min="1" max="2040" placeholder="Год Выпуска" class="necessary_input" autocomplete="off">
+        </div>
+        <div>
+            <input type="submit" id="submit" value="Создать" disabled>
+        </div>
+    </form>
+</body>
+
+</html>

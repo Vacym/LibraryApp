@@ -1,0 +1,37 @@
+<!-- version 1.1 -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Добавление Ученика</title>
+    <link rel="stylesheet" href="sources/style/style.css">
+    <script src="sources/js/add_student.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <form action="sources/php/check_st.php" method="POST" class="form">
+        <h1>Добавить Ученика</h1>
+        <div class="line">
+            <input type="text" name="surname" id="surname" placeholder="Фамилия" class="necessary_input" autocomplete="off">
+        </div>
+        <div class="line">
+            <input type="text" name="firstname" id="firstname" placeholder="Имя" class="necessary_input" autocomplete="off">
+        </div>
+        <div class="line">
+            <input type="text" name="lastname" id="lastname" placeholder="Отчество" autocomplete="off">
+        </div>
+        <div class="line">
+            <input type="number" name="class" id="class_number" min="1" max="11" placeholder="Класс" class="necessary_input" autocomplete="off">
+        </div>
+        <div class="line">
+            <input type="text" name="letter" id="class_letter" maxlength="1" placeholder="Буква" class="necessary_input" autocomplete="off">
+        </div>
+        <div>
+            <input type="submit" id="submit" value="Создать" disabled>
+        </div>
+    </form>
+</body>
+
+</html>
