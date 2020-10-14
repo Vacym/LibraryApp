@@ -3,13 +3,13 @@
 function validation_text(element) {
     var element = element.currentTarget
     var regex = /^[а-яё-]+$/i
+    var id = element.id
 
-    if (element.id == "class_letter") {
+    if (id == "class_letter") {
         element.value = element.value.toUpperCase();
         regex = /^[А-Я-]$/
-    } else if (element.id == "class_number") {
-        regex = /^([1-9]|1[01])$/
-    }
+    } else if (id == "class_number") { regex = /^([1-9]|1[01])$/
+    } else if (id == "year")         { regex = /^[0-9]+$/       }
 
     var is_valid = element.value.match(regex)
     var static = "bad";
@@ -61,8 +61,7 @@ function button_control() {
 
 function full_validation() {
     var bads = document.querySelectorAll('.form input[type="text"].bad_input, .form input[type="number"].bad_input')
-    console.log(bads)
-
+    
     if (bads.length > 0) {
         change_border(document.querySelector("#submit"), "bad", false)
         return false
