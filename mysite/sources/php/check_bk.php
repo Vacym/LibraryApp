@@ -20,7 +20,7 @@
 
     // Нам пока что это не нужно
     //$mysql = new mysqli('localhost', 'root', '', 'test');
-    //$mysql->query("INSERT INTO `users` (`Name`, `Surname`, `Lastname`, `Class`, `Letter`) VALUES ('$firstname', '$surname', '$lastname', '$class', '$letter')");
+    //$mysql->query("INSERT INTO `books` (`Name`, `Author`, `Year`) VALUES ('$name', '$author', '$year')");
     //$mysql->close();
 
     echo 'Успешно отправлено (все норм)';
