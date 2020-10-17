@@ -1,4 +1,4 @@
-/* version 1.0 */
+/* version 1.2 */
 
 html {
     background: url("../files/book.jpg");
@@ -14,10 +14,8 @@ body {
 }
 
 .find_input {
-    position: absolute;
     right: 50%;
-    transform: translateX(50%);
-    margin: 30px 0px 10px 0px;
+    margin: 30px auto 10px auto;
     width: 70%;
     background-color: rgba(0, 0, 0, .8);
     text-align: center;
@@ -30,7 +28,7 @@ form {
 }
 
 #input {
-    margin: 5px;
+    margin: 5px 0px 5px 5px;
 }
 
 #input[name="user_input"] {
@@ -40,6 +38,7 @@ form {
     background: none;
     outline: none;
     border: 1px solid #fff;
+    border-right: 0px;
     box-sizing: border-box;
     width: 100%;
     transition: border .3s;
@@ -73,16 +72,14 @@ form {
 }
 
 #submit {
-    position: absolute;
-    right: 0px;
-    top: 5px;
     height: calc(23px + 20px + 2px);
     width: calc(23px + 20px + 2px);
+    margin-top: 5px;
     padding: 0;
     border: 0;
     cursor: pointer;
     outline: none;
-    transition: .3s;
+    transition: background-color .3s;
 }
 
 #submit:before {
@@ -93,7 +90,15 @@ form {
 }
 
 #submit:hover {
-    background-color: #dddddd;
+    background-color: #d0d0d0;
+}
+
+.search_result {
+    width: 70%;
+    margin: 20px auto 0px auto;
+    border: 1px solid #fff;
+    background-color: rgba(0, 0, 0, .8);
+    transition: height .3s;
 }
 
 
