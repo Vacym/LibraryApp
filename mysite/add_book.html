@@ -1,4 +1,4 @@
-<!-- version 1.1 -->
+<!-- version 1.0 -->
 
 <!DOCTYPE html>
 <html>
@@ -6,8 +6,8 @@
 <head>
     <meta charset="utf-8">
     <title>Добавление Книги</title>
-    <link rel="stylesheet" href="sources/style/add_student.css">
-    <script src="sources/js/add_student.js"></script>
+    <link rel="stylesheet" href="sources/style/add_book.css">
+    <script src="sources/js/add_books.js"></script>
 </head>
 
 <body>
@@ -20,7 +20,10 @@
             <input type="text" name="author" id="author" placeholder="Автор" class="necessary_input" autocomplete="off">
         </div>
         <div class="line">
-            <input type="number" name="year" id="year" min="1" max="2040" placeholder="Год Выпуска" class="necessary_input" autocomplete="off">
+            <input type="text" name="genre" id="genre" placeholder="Жанр" autocomplete="off">
+        </div>
+        <div class="line">
+            <textarea type="text" name="comment" id="comment" placeholder="Комментарий" autocomplete="off"></textarea>
         </div>
         <div>
             <input type="submit" id="submit" value="Создать" disabled>
