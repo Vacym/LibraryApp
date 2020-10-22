@@ -31,7 +31,7 @@ form {
     margin: 5px 0px 5px 5px;
 }
 
-#input[name="user_input"] {
+#input[name="q"] {
     padding: 10px;
     color: #fff;
     font-size: 20px;

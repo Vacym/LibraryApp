@@ -2,9 +2,7 @@
 
 function validation_text(element) {
     var element = element.currentTarget
-    var regex = /^[\wа-яА-ЯёЁ]+$/
-
-
+    var regex = /^[а-яё-]+$/i
 
     var is_valid = element.value.match(regex)
     var static = "bad"
@@ -56,7 +54,6 @@ function button_control() {
 
 function full_validation() {
     var bads = document.querySelectorAll('.form input[type="text"].bad_input, .form input[type="number"].bad_input')
-    console.log(bads)
 
     if (bads.length > 0) {
         change_border(document.querySelector("#submit"), "bad", false)
@@ -76,7 +73,6 @@ function full_validation() {
 
 function ready() {
     var text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
-    console.log(text_inputs)
         // запуск прослушивания событий для текстовых полей
     for (var x = 0; x < text_inputs.length; x++) {
         //console.log(text_inputs[x])

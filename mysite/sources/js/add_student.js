@@ -7,7 +7,7 @@ function validation_text(element) {
 
     if (id == "class_letter") {
         element.value = element.value.toUpperCase();
-        regex = /^[А-Я-]$/
+        regex = /^[А-Я]$/
     } else if (id == "class_number") { regex = /^([1-9]|1[01])$/
     } else if (id == "year")         { regex = /^[0-9]+$/       }
 
