@@ -25,9 +25,9 @@
     }
 
     // Нам пока что это не нужно
-    //$mysql = new mysqli('localhost', 'root', '', 'test');
-    //$mysql->query("INSERT INTO `users` (`Name`, `Surname`, `Lastname`, `Class`, `Letter`) VALUES ('$firstname', '$surname', '$lastname', '$class', '$letter')");
-    //$mysql->close();
+    $mysql = new mysqli('localhost', 'root', '', 'test');
+    $mysql->query("INSERT INTO `users` (`Name`, `Surname`, `Lastname`, `Class`, `Letter`) VALUES ('$firstname', '$surname', '$lastname', '$class', '$letter')");
+    $mysql->close();
 
     echo 'Успешно отправлено (все норм)';
 ?>

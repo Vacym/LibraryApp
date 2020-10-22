@@ -21,9 +21,9 @@
     }
 
     // Нам пока что это не нужно
-    //$mysql = new mysqli('localhost', 'root', '', 'test');
-    //$mysql->query("INSERT INTO `books` (`Name`, `Author`, `Year`) VALUES ('$name', '$author', '$year')");
-    //$mysql->close();
+    $mysql = new mysqli('localhost', 'root', '', 'test');
+    $mysql->query("INSERT INTO `books` (`Name`, `Author`, `Year`) VALUES ('$name', '$author', '$year')");
+    $mysql->close();
 
     echo 'Успешно отправлено (все норм)';
 ?>

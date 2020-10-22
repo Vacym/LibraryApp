@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Найти ученика</title>
+    <title>Поиск книги</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="sources/style/find_user.css">
@@ -34,16 +34,15 @@
             $q = $_GET['q'];
         }
         
-        $query = "SELECT * FROM `users` WHERE `surname` LIKE '%$q%'";        
+        $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%'";        
         $result = mysqli_query($mysql, $query);
 
         while ($st = mysqli_fetch_assoc($result))
         {
-            echo '<div class="search_result">', $st['Name'], ' ', $st['Surname'], ' ', $st['Lastname'], '</div>';
+            echo '<div class="search_result">', $st['Name'], '</div>';
         }
         
     ?>
 
 </body>
-
 </html>
