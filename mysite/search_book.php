@@ -7,14 +7,13 @@
     <title>Поиск книги</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="sources/style/find_user.css">
-    <script src="sources/js/find_user.js"></script>
+    <link rel="stylesheet" href="sources/style/search_student.css">
 </head>
 
 <body>
     <div class="find_input">
         <form action="" method="get">
-            <input type="search" name="q" id="input" autocomplete="off">
+            <input type="search" name="q" id="input" class="">
             <button type="submit" id="submit" onclick="search_click()"></button>
         </form>
     </div>
@@ -37,9 +36,27 @@
         $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%'";        
         $result = mysqli_query($mysql, $query);
 
-        while ($st = mysqli_fetch_assoc($result))
+        while ($bk = mysqli_fetch_assoc($result))
         {
-            echo '<div class="search_result">', $st['Name'], '</div>';
+            $id = $bk['User_id'];
+            $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
+            $user = mysqli_fetch_assoc($res);
+            
+            echo '<div class="search_result">';
+            echo '<div class="result">';
+            echo '<div class="name">';
+            echo '<span class="name_book">', $bk['Name'], '</span>';
+            echo '<span class="autor_book">', $bk['Author'], '</span>';
+            echo '</div>';
+            echo '<div class="status" status="empl">';
+
+            if (is_null($user)) {
+                echo 'Свободна';
+            }
+            else {
+                echo $user['Surname'], ' ', $user['Name'], ' ', $user['Lastname'];
+            }
+            echo '</div></div></div>';
         }
         
     ?>

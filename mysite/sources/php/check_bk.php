@@ -12,15 +12,14 @@
 
     $valid_name    = preg_match("/^[а-я-]+$/ui", $name);
     $valid_author  = preg_match("/^[а-я-]+$/ui", $author);
-    //$valid_genre   = preg_match("/^[а-я-]+$/ui", $genre);
-    // $valid_comment = preg_match("/^[а-я-]+$/ui", $comment);
+    $valid_genre   = preg_match("/^[а-я-]+$/ui", $genre);
+    $valid_comment = preg_match("/^[а-я-]+$/ui", $comment);
 
-    if (!$valid_name || !$valid_author) {
+    if (!$valid_name || !$valid_author || !$valid_genre || !$valid_comment) {
         echo 'Неправильно введенные данные!';
         exit();
     }
 
-    // Нам пока что это не нужно
     $mysql = new mysqli('localhost', 'root', '', 'test');
     $mysql->query("INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`) VALUES ('$name', '$author', '$genre', '$comment')");
     $mysql->close();

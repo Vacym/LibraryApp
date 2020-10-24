@@ -1,4 +1,4 @@
-/* version 2.0 */
+/* version 2.1 */
 
 html {
     background: url("../files/book.jpg");
@@ -159,8 +159,21 @@ form {
     font-style: italic;
 }
 
+.name {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid white;
+    height: max-content;
+    margin: 8px;
+    padding: 6px;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, .8);
+}
 
-/*
-height: calc(23px + 20px + 2px);
-width: calc(23px + 20px + 2px);
-*/
+.status {
+    width: 25%;
+    margin: auto;
+    padding: 3px;
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, .75);
+}

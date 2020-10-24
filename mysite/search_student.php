@@ -13,7 +13,7 @@
 <body>
     <div class="find_input">
         <form action="" method="get">
-            <input type="search" name="q" id="input" autocomplete="off">
+            <input type="search" name="q" id="input" class="">
             <button type="submit" id="submit" onclick="search_click()"></button>
         </form>
     </div>
@@ -64,5 +64,4 @@
     ?>
 
 </body>
-
 </html>
