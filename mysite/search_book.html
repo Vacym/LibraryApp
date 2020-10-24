@@ -1,11 +1,53 @@
+<!-- version 1.0 -->
+<!-- Пример использования -->
+
 <!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поиск книги</title>
+    <title>Найти книгу</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="sources/style/search.css">
+    <script src="sources/js/find_user.js"></script>
 </head>
+
 <body>
-    
+    <div class="find_input">
+        <form action="#" method="get">
+            <input type="search" name="q" id="input" autocomplete="off">
+            <button type="submit" id="submit" onclick="search_click()"></button>
+        </form>
+    </div>
+
+    <div class="search_result">
+        <div class="inline result" status="free">
+            <div class="name">
+                <span class="name_book">Что делать?</span>
+                <span class="autor_book">Чернышевский</span>
+            </div>
+            <div class="status">
+                Cвободна
+            </div>
+            <div class="toolbar">
+                <a class="add_b" href="#"></a>
+                <a class="setting_b" href="#"></a>
+            </div>
+        </div>
+        <div class="inline result" status="empl">
+            <div class="name">
+                <span class="name_book">Чего не делать?</span>
+                <span class="autor_book">Путин</span>
+            </div>
+            <div class="status">
+                Компьютерный Мастер Андрей
+            </div>
+            <div class="toolbar">
+                <a class="add_b" href="#"></a>
+                <a class="setting_b" href="#"></a>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
