@@ -48,7 +48,8 @@
         	echo '</div>';
         	echo '<div class="books">';
 
-        	$res = mysqli_query($mysql, "SELECT * FROM `books`");
+        	$id = $st['ID'];
+        	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
 
         	while ($bk = mysqli_fetch_assoc($res)) {
         		echo '<div class="one_book">';
