@@ -1,17 +1,18 @@
-<!-- version 1.0 -->
+<!-- version 2.0 -->
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Добавление Книги</title>
-    <link rel="stylesheet" href="sources/style/add_book.css">
-    <script src="sources/js/add_books.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="sources/style/add_book.css">
+    <script src="sources/js/add.js" type="text/javascript"></script>
 </head>
 
 <body>
-    <form action="sources/php/check_bk.php" method="POST" class="form">
+    <form action="sources/php/check_bk.php" method="post" class="form">
         <h1>Добавить Книгу</h1>
         <div class="line">
             <input type="text" name="name" id="name" placeholder="Название" class="necessary_input" autocomplete="off">
@@ -20,7 +21,7 @@
             <input type="text" name="author" id="author" placeholder="Автор" class="necessary_input" autocomplete="off">
         </div>
         <div class="line">
-            <input type="text" name="genre" id="genre" placeholder="Жанр" autocomplete="off">
+            <input type="text" name="genre" id="genre" placeholder="Жанр" class="necessary_input" autocomplete="off">
         </div>
         <div class="line">
             <textarea type="text" name="comment" id="comment" placeholder="Комментарий" autocomplete="off"></textarea>

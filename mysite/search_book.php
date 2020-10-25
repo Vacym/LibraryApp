@@ -1,6 +1,7 @@
-<!-- version 1.2 -->
+<!-- version 2.0 -->
 
 <!DOCTYPE html>
+<html>
 
 <head>
     <meta charset="UTF-8">
