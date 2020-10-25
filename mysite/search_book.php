@@ -6,14 +6,14 @@
     <meta charset="UTF-8">
     <title>Поиск книги</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="sources/style/search_student.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="sources/style/search.css">
 </head>
 
 <body>
     <div class="find_input">
         <form action="" method="get">
-            <input type="search" name="q" id="input" class="">
+            <input type="search" name="q" id="input">
             <button type="submit" id="submit" onclick="search_click()"></button>
         </form>
     </div>

@@ -13,7 +13,7 @@
 <body>
     <div class="find_input">
         <form action="" method="get">
-            <input type="search" name="q" id="input" class="">
+            <input type="search" name="q" id="input">
             <button type="submit" id="submit" onclick="search_click()"></button>
         </form>
     </div>
@@ -44,8 +44,7 @@
         	echo '<div class="FCS">';
         	echo '<div class="class">', $st['Class'], $st['Letter'], '</div>';
         	echo $st['Surname'], ' ', $st['Name'], ' ', $st['Lastname'];
-        	echo '</div>';
-        	echo '</div>';
+        	echo '</div></div>';
         	echo '<div class="books">';
 
         	$id = $st['ID'];
