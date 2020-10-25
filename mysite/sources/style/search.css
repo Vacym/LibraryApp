@@ -1,4 +1,4 @@
-/* version 2.2 */
+/* version 2.2.1 */
 
 html {
     background: url("../files/book.jpg");
@@ -165,6 +165,7 @@ form {
 
 .inline {
     background-color: rgba(0, 0, 0, .7);
+    display: flex;
 }
 
 .name,
@@ -183,10 +184,6 @@ form {
     display: table-cell;
     vertical-align: middle;
     font-weight: 900;
-}
-
-.result {
-    display: flex;
 }
 
 
