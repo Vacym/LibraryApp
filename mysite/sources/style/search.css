@@ -14,11 +14,17 @@ body {
 }
 
 .find_input {
+    min-width: 400px;
     right: 50%;
-    margin: 30px auto 10px auto;
-    width: 70%;
+    margin: 30px auto 40px auto;
+    width: 55%;
     background-color: rgba(0, 0, 0, .8);
     text-align: center;
+    transition: .4s;
+}
+
+.find_input:hover {
+    width: 65%;
 }
 
 form {
@@ -55,22 +61,6 @@ form {
     background-color: #0fc3f5;
 }
 
-#input.bad_input {
-    border: 1px solid #d00000;
-}
-
-#input.bad_input~#submit {
-    background-color: #d00000;
-}
-
-#input.good_input {
-    border: 1px solid #00d000;
-}
-
-#input.good_input~#submit {
-    background-color: #00d000;
-}
-
 #submit {
     height: calc(23px + 20px + 2px);
     width: calc(23px + 20px + 2px);
@@ -96,22 +86,20 @@ form {
 
 /* результаты поиска */
 
-.search_result {
-    width: 70%;
+.result {
+    min-width: 350px;
+    width: 50%;
     margin: 20px auto 0px auto;
-    /*border: 1px solid #fff;*/
-    background-color: rgba(0, 0, 0, .0);
-    transition: height .3s;
+    background-color: rgba(0, 0, 0, .7);
+    transition: .4s;
+    height: max-content;
+    padding: 10px;
+    border: 2px solid #e3e3e3;
 }
 
-.result {
-    width: 94%;
-    height: max-content;
-    margin: 10px auto;
-    padding: 10px;
-    border: 4px solid #e3e3e3;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, .3);
+.result:hover {
+    width: 60%;
+    background-color: rgb(255 255 255 / 39%);
 }
 
 .personal_information {

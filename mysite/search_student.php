@@ -8,7 +8,7 @@
     <title>Найти ученика</title>
 
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="sources/style/search.css">
+    <link rel="stylesheet" type="text/css" href="/sources/style/search.css">
 </head>
 
 <body>
@@ -36,11 +36,17 @@
         
         $query = "SELECT * FROM `users` WHERE `surname` LIKE '%$q%'";        
         $result = mysqli_query($mysql, $query);
+        $st = mysqli_fetch_assoc($result);
 
-        while ($st = mysqli_fetch_assoc($result))
-        {
+        if ( is_null($st) ) {
+            echo "Ничего не найдено";
+            exit();
+        }
+
+        do {
         	echo '<div class="search_result">';
-        	echo '<div class="result">';
+            echo '<div class="result">';
+            echo '<a href="/account.php/', $st['ID'], '">';
         	echo '<div class="personal_information">';
         	echo '<div class="FCS">';
         	echo '<div class="class">', $st['Class'], $st['Letter'], '</div>';
@@ -58,8 +64,8 @@
         		echo '</div>';
         	}
         	
-        	echo '</div></div></div>';
-        }
+        	echo '</div></div></a></div>';
+        } while ($st = mysqli_fetch_assoc($result))
         
     ?>
 
