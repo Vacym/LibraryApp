@@ -1,7 +1,9 @@
-//version 1.0
+//version 1.1
 
 function validation_text(element) {
-    var element = element.currentTarget
+    if (element.currentTarget) {
+        var element = element.currentTarget
+    }
     var regex = /^[а-яё-]+$/i
     var id = element.id
 
@@ -60,8 +62,7 @@ function button_control() {
 }
 
 function full_validation() {
-    var bads = document.querySelectorAll('.form input[type="text"].bad_input, .form input[type="number"].bad_input')
-    
+    var bads = document.querySelectorAll('input[type="text"].bad_input, input[type="number"].bad_input')
     if (bads.length > 0) {
         change_border(document.querySelector("#submit"), "bad", false)
         return false
@@ -83,6 +84,7 @@ function ready() {
         // запуск прослушивания событий для текстовых полей
     for (var x = 0; x < text_inputs.length; x++) {
         text_inputs[x].addEventListener("change", validation_text)
+        validation_text(text_inputs[x])
     }
 }
 
