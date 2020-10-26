@@ -1,4 +1,4 @@
-/* version 1.0 */
+/* version 1.0.1 */
 
 html {
     background: url(../files/book.jpg);
@@ -76,7 +76,8 @@ textarea:focus {
     transition: .3s;
 }
 
-.form input[type="submit"]:enabled:hover {
+.form input[type="submit"]:enabled:hover,
+input[type="submit"]:enabled:focus {
     background: #4442db;
     cursor: pointer;
 }
