@@ -14,17 +14,11 @@ body {
 }
 
 .find_input {
-    min-width: 400px;
     right: 50%;
-    margin: 30px auto 40px auto;
-    width: 55%;
+    margin: 30px auto 10px auto;
+    width: 70%;
     background-color: rgba(0, 0, 0, .8);
     text-align: center;
-    transition: .4s;
-}
-
-.find_input:hover {
-    width: 65%;
 }
 
 form {
@@ -61,6 +55,22 @@ form {
     background-color: #0fc3f5;
 }
 
+#input.bad_input {
+    border: 1px solid #d00000;
+}
+
+#input.bad_input~#submit {
+    background-color: #d00000;
+}
+
+#input.good_input {
+    border: 1px solid #00d000;
+}
+
+#input.good_input~#submit {
+    background-color: #00d000;
+}
+
 #submit {
     height: calc(23px + 20px + 2px);
     width: calc(23px + 20px + 2px);
@@ -86,20 +96,22 @@ form {
 
 /* результаты поиска */
 
-.result {
-    min-width: 350px;
-    width: 50%;
+.search_result {
+    width: 70%;
     margin: 20px auto 0px auto;
-    background-color: rgba(0, 0, 0, .7);
-    transition: .4s;
-    height: max-content;
-    padding: 10px;
-    border: 2px solid #e3e3e3;
+    /*border: 1px solid #fff;*/
+    background-color: rgba(0, 0, 0, .0);
+    transition: height .3s;
 }
 
-.result:hover {
-    width: 60%;
-    background-color: rgb(255 255 255 / 39%);
+.result {
+    width: 94%;
+    height: max-content;
+    margin: 10px auto;
+    padding: 10px;
+    border: 4px solid #e3e3e3;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, .3);
 }
 
 .personal_information {
@@ -187,7 +199,10 @@ a {
     color: white;
 }
 
-.add_b {
+
+/* общие свойства кнопок ▼ */
+
+.but {
     display: flex;
     width: 45px;
     height: 45px;
@@ -199,40 +214,42 @@ a {
     transition: opacity .15s linear;
 }
 
-.add_b::before {
+.but::before {
     display: flex;
-    content: "\f067";
     font-family: FontAwesome;
     color: white;
     font-size: 20px;
 }
 
-.setting_b {
-    display: flex;
-    width: 45px;
-    height: 45px;
-    border: 1px ridge white;
-    margin-top: 4px;
-    justify-content: center;
-    align-items: center;
-    opacity: .5;
-    transition: opacity .15s linear;
+
+/*________________________▲ */
+
+.add_b::before {
+    content: "\f067";
 }
 
 .setting_b::before {
-    display: flex;
     content: "\f013";
-    font-family: FontAwesome;
-    color: white;
-    font-size: 20px;
 }
 
-.result[status="free"] .toolbar .add_b:hover,
-.setting_b:hover {
+.but:hover {
     opacity: 1;
     background-color: rgba(0, 0, 0, 1);
 }
 
-.result[status="empl"] .toolbar .add_b:hover {
+.result .toolbar a.disabled {
+    pointer-events: none;
     cursor: default;
+}
+
+.toolbar {
+    z-index: 1000;
+    cursor: default;
+}
+
+
+/* кнопка домой */
+
+#home::before {
+    content: "\f015";
 }

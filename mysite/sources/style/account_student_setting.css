@@ -1,4 +1,4 @@
-/* version 1.0 */
+/* version 1.1 */
 
 html {
     background: url(../files/book.jpg);
@@ -109,7 +109,15 @@ nav {
     transition: background-color 0.2s;
 }
 
-.but:not([clickable="false"]):hover {
+.but::before {
+    text-align: center;
+    font-family: FontAwesome;
+    color: white;
+    line-height: 40px;
+    font-size: 30px;
+}
+
+.but:hover {
     background-color: rgba(120, 120, 120, .7);
 }
 
@@ -120,9 +128,13 @@ nav {
 #del::before {
     content: "\f014";
     /*content: "\f1f8";*/
-    text-align: center;
-    font-family: FontAwesome;
-    color: white;
-    line-height: 40px;
-    font-size: 30px;
+}
+
+#home {
+    position: absolute;
+    border-width: 1px;
+}
+
+#home::before {
+    content: "\f015";
 }

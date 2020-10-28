@@ -10,28 +10,59 @@ html {
     color: white;
 }
 
+
+/* Общие настройки */
+
+.but {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    border: 1px solid #888;
+    border-width: 0px 0px 1px 1px;
+    text-align: center;
+    transition: background-color .15s linear;
+}
+
+.but::before {
+    text-align: center;
+    font-family: FontAwesome;
+    color: white;
+    line-height: 40px;
+    font-size: 30px;
+}
+
+.but:hover {
+    opacity: .8;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 a {
     text-decoration: none;
     color: white;
 }
+
+.but.disabled,
+.but.but.disabled::before {
+    pointer-events: none;
+    cursor: default;
+    color: #888;
+    border-color: #888;
+}
+
+
+/**/
 
 .box {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 75%;
     background-color: rgba(0, 0, 0, .8);
 }
 
-h1 {
-    background: rgba(0, 0, 0, 0);
-    margin: 30px 100px;
-    padding: 0;
-    text-align: center;
-    color: #fff;
-    font-size: 30px;
-    text-transform: uppercase;
-}
+
+/* ФИО */
 
 .head {
     border: 1px solid #888;
@@ -43,12 +74,11 @@ h1 {
 
 table {
     padding: 5px;
-    margin: auto;
-    width: 90%;
+    width: calc(100% - 41px);
 }
 
 table td,
-th {
+table th {
     padding: 5px 2%;
 }
 
@@ -57,12 +87,7 @@ table td {
 }
 
 #edit::before {
-    text-align: center;
     content: "\f040";
-    font-family: FontAwesome;
-    color: white;
-    line-height: 40px;
-    font-size: 30px;
 }
 
 
@@ -71,7 +96,7 @@ table td {
 .information {
     border: 1px solid #888;
     margin: auto;
-    height: 20%;
+    min-height: 93px;
     color: white;
     font-size: 30px;
     border-spacing: 10px;
@@ -82,113 +107,27 @@ nav {
     width: 41px;
 }
 
-.but {
-    display: inline-block;
-    height: 40px;
-    width: 40px;
-    border: 1px solid #888;
-    border-width: 0px 0px 1px 1px;
-    display: inline-block;
-    text-align: center;
-    transition: background-color 0.2s;
-}
-
-.but:not([clickable="false"]):hover {
-    background-color: rgba(120, 120, 120, .7);
-}
-
 #add_book::before {
     content: "\f067";
 }
 
-#delete_book {
+#delate_book {
     margin-top: 10px;
     border-top: 1px solid #888;
 }
 
-#delete_book::before {
+#delate_book::before {
     content: "\f068";
 }
 
-#edit::before,
-#add_book::before,
-#delete_book::before {
-    text-align: center;
-    font-family: FontAwesome;
-    color: white;
-    line-height: 40px;
-    font-size: 30px;
+
+/* кнопка домой */
+
+#home {
+    position: absolute;
+    border-width: 1px;
 }
 
-#del {
-    border-top: 1px solid #888;
-}
-
-#del::before {
-    content: "\f014";
-    /*content: "\f1f8";*/
-    text-align: center;
-    font-family: FontAwesome;
-    color: white;
-    line-height: 40px;
-    font-size: 30px;
-}
-
-.line {
-    margin: 15px 40px;
-    text-align: center;
-}
-
-input {
-    padding: 10px;
-    width: calc(100% - 152px);
-    min-width: 200px;
-    color: #fff;
-    font-size: 20px;
-    background: none;
-    outline: none;
-    border: 1px solid #fff;
-    box-sizing: border-box;
-    background: rgba(0, 0, 0, .7);
-    transition: .3s;
-}
-
-input.bad_input {
-    border: 1px solid #f00;
-}
-
-input.good_input {
-    border: 1px solid #0f0;
-}
-
-input:focus {
-    border: 1px solid #0fc3f5;
-}
-
-input[type="submit"] {
-    width: 100%;
-    margin-top: 20px;
-    color: #fff;
-    font-weight: bold;
-    background: #0fc3f5;
-    border: none;
-    transition: .3s;
-}
-
-input[type="submit"]:enabled:hover,
-input[type="submit"]:enabled:focus {
-    background: #4442db;
-    cursor: pointer;
-}
-
-input[type="submit"]:disabled {
-    background: #888;
-}
-
-label {
-    display: inline-block;
-    width: 100px;
-    font-style: oblique;
-    font-size: 20px;
-    margin-left: 5%;
+#home::before {
+    content: "\f015";
 }
