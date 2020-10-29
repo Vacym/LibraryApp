@@ -231,6 +231,10 @@ a {
 
 /* кнопка домой */
 
+#home {
+    position: fixed;
+}
+
 #home::before {
     content: "\f015";
 }

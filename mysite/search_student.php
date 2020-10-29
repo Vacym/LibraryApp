@@ -45,29 +45,30 @@
             exit();
         }
 
-        do {
-        	echo '<div class="search_result">';
-            echo '<div class="result">';
-            echo '<a href="/account.php/', $st['ID'], '">';
-        	echo '<div class="personal_information">';
-        	echo '<div class="FCS">';
-        	echo '<div class="class">', $st['Class'], $st['Letter'], '</div>';
-        	echo $st['Surname'], ' ', $st['Name'], ' ', $st['Lastname'];
-        	echo '</div></div>';
-        	echo '<div class="books">';
-
-        	$id = $st['ID'];
+        do {   	
+            $id = $st['ID'];
         	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
 
-        	while ($bk = mysqli_fetch_assoc($res)) {
-        		echo '<div class="one_book">';
+        	echo '<div class="search_result">';
+            echo '<a class="result" href="/account.php/', $id, '">';
+            echo '<div class="books">';
+
+			while ($bk = mysqli_fetch_assoc($res)) {
+        		echo '<div class="book">';
         		echo '<span class="name_book">', $bk['Name'], '</span>';
         		echo '<span class="autor_book">', $bk['Author'] , '</span>';
         		echo '</div>';
-        	}
+    		}
         	
-        	echo '</div></div></a></div>';
-        } while ($st = mysqli_fetch_assoc($result))
+        	echo '</div>';
+        	echo '<div class="student">';
+        	echo '<div class="class">', $st['Class'], ' ', $st['Letter'], '</div>';
+        	echo '<div class="FCS">';
+        	echo $st['Surname'], ' ', $st['Name'], ' ', $st['Lastname'];
+        	echo '</div></div>';
+        	echo '</a></div>';
+
+        } while ($st = mysqli_fetch_assoc($result));
         
     ?>
 
