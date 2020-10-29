@@ -1,4 +1,4 @@
-<!-- version 2.1 -->
+<!-- version 2.3 -->
 <!-- Пример использования -->
 
 <!DOCTYPE html>
@@ -17,34 +17,31 @@
 
     <div class="find_input">
         <form action="#" method="get">
-            <input type="search" name="q" id="input" autocomplete="off">
+            <input type="search" name="q" id="input" autocomplete="off" value="">
             <button type="submit" id="submit" onclick="search_click()"></button>
         </form>
     </div>
     <div class="search_result">
-        <div class="result">
-            <div class="personal_information">
-                <div class="FCS">
-                    <div class="class">10 A</div>
-                    Горбатюк Павел Викторович
-                </div>
-            </div>
+        <a class="result" href="account.html">
             <div class="books">
-                <div class="one_book">
+                <div class="book">
                     <span class="name_book">Что делать?</span>
-                    <span class="autor_book">Чернышевский</span>
+                    <span class="autor_book">Чернышевский Николай Гаврилович</span>
                 </div>
-                <div class="one_book">
+                <div class="book">
                     <span class="name_book">книгга 2</span>
                     <span class="autor_book">автор 2</span>
                 </div>
-                <div class="one_book">
+                <div class="book">
                     <span class="name_book">K nigga three</span>
                     <span class="autor_book">Author three</span>
                 </div>
             </div>
-
-        </div>
+            <div class="student">
+                <div class="class">10 A</div>
+                <div class="FCS"> Горбатюк Павел Викторович</div>
+            </div>
+        </a>
     </div>
 </body>
 
