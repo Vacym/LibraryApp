@@ -1,4 +1,4 @@
-/* version 2.2.1 */
+/* version 2.2.2 */
 
 html {
     background: url("../files/book.jpg");
@@ -55,22 +55,6 @@ form {
     background-color: #0fc3f5;
 }
 
-#input.bad_input {
-    border: 1px solid #d00000;
-}
-
-#input.bad_input~#submit {
-    background-color: #d00000;
-}
-
-#input.good_input {
-    border: 1px solid #00d000;
-}
-
-#input.good_input~#submit {
-    background-color: #00d000;
-}
-
 #submit {
     height: calc(23px + 20px + 2px);
     width: calc(23px + 20px + 2px);
@@ -97,7 +81,7 @@ form {
 /* результаты поиска */
 
 .search_result {
-    width: 70%;
+    width: 40%;
     margin: 20px auto 0px auto;
     /*border: 1px solid #fff;*/
     background-color: rgba(0, 0, 0, .0);
@@ -105,13 +89,20 @@ form {
 }
 
 .result {
+    display: block;
     width: 94%;
+    min-width: min-content;
     height: max-content;
     margin: 10px auto;
     padding: 10px;
     border: 4px solid #e3e3e3;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, .3);
+    transition: background-color .15s linear;
+}
+
+.result:hover {
+    background-color: rgba(255, 255, 255, .3);
 }
 
 .personal_information {
@@ -120,24 +111,18 @@ form {
 }
 
 .class {
-    display: table-cell;
-    box-sizing: border-box;
-    vertical-align: middle;
-    float: right;
+    align-self: flex-start;
+    width: 80px;
     border: 2px solid white;
     border-width: 0px 0px 2px 2px;
-    margin: 0px 0px 0px 5px;
+    border-radius: 0px 10px;
+    margin-top: 0px;
     padding: 1px;
-    transform: translateY(-10px);
 }
 
 .FCS {
-    width: calc(100% - 4px);
-    border: 2px solid white;
-    margin: 4px;
-    padding: 10px 0px;
+    height: 10%;
     font-size: 25px;
-    background-color: rgba(0, 0, 0, .9);
 }
 
 .one_book {
@@ -160,6 +145,10 @@ form {
     font-style: italic;
 }
 
+.book {
+    margin: 20px;
+}
+
 
 /* Для книг */
 
@@ -169,19 +158,21 @@ form {
 }
 
 .name,
-.status {
-    width: calc(50% - 45px/2);
+.status,
+.books,
+.FCS {
+    width: 50%;
     margin: auto;
 }
 
-.name .name_book::after {
+.name_book::after {
     content: "";
     display: block;
     height: 15px;
 }
 
-.status {
-    display: table-cell;
+.status,
+.FCS {
     vertical-align: middle;
     font-weight: 900;
 }
@@ -221,31 +212,13 @@ a {
     font-size: 20px;
 }
 
-
-/*________________________▲ */
-
-.add_b::before {
-    content: "\f067";
-}
-
-.setting_b::before {
-    content: "\f013";
-}
-
 .but:hover {
     opacity: 1;
     background-color: rgba(0, 0, 0, 1);
 }
 
-.result .toolbar a.disabled {
-    pointer-events: none;
-    cursor: default;
-}
 
-.toolbar {
-    z-index: 1000;
-    cursor: default;
-}
+/*________________________▲ */
 
 
 /* кнопка домой */
