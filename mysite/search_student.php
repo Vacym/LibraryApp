@@ -12,6 +12,8 @@
 </head>
 
 <body>
+    <a class="but" id="home" href="/"></a>
+    
     <div class="find_input">
         <form action="" method="get">
             <input type="search" name="q" id="input">

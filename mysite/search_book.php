@@ -12,6 +12,8 @@
 </head>
 
 <body>
+	<a class="but" id="home" href="/"></a>
+
     <div class="find_input">
         <form action="" method="get">
             <input type="search" name="q" id="input">
@@ -44,12 +46,12 @@
             $user = mysqli_fetch_assoc($res);
             
             echo '<div class="search_result">';
-            echo '<div class="result">';
+            echo '<a class="inline result" href="books.php/', $bk['ID'], '">';
             echo '<div class="name">';
             echo '<span class="name_book">', $bk['Name'], '</span>';
             echo '<span class="autor_book">', $bk['Author'], '</span>';
             echo '</div>';
-            echo '<div class="status" status="empl">';
+            echo '<div class="status">';
 
             if (is_null($user)) {
                 echo 'Свободна';
@@ -57,7 +59,7 @@
             else {
                 echo $user['Surname'], ' ', $user['Name'], ' ', $user['Lastname'];
             }
-            echo '</div></div></div>';
+            echo '</div></a></div>';
         }
         
     ?>

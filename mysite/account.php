@@ -13,6 +13,8 @@
 </head>
 
 <body>
+	<a class="but" id="home" href="/"></a>
+
     <?php
 
         $url_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -42,21 +44,21 @@
                 }
 
                 if (!$valid_name || !$valid_surn || !$valid_last || !$valid_clss || !$valid_lttr || !ctype_digit($id)) {
-                    echo 'Неправильно введенные данные!';
+                    echo '<h1>Неправильно введенные данные!</h1>';
                 }
                 else {
                     $mysql = new mysqli('localhost', 'root', '', 'test');
                     $mysql->query("UPDATE `users` SET `Name` = '$firstname', `Surname` = '$surname', `Lastname` = '$lastname', `Class` = '$class', `Letter` = '$letter' WHERE `ID` = '$id'");
                     $mysql->close();
 
-                    echo 'Успешно отправлено';
+                    echo '<h1>Успешно отправлено!</h1>';
 
                     header("refresh:2;url=account.php/$id");
                     exit();
                 }
             }
 
-            echo 'Неправильный ввод';
+            echo '<h1>Такой страницы не существует!</h1>';
             exit();
         }
 
@@ -65,7 +67,7 @@
         $user = mysqli_fetch_assoc($q);
 
         if (is_null($user)){
-            echo 'Такого пользователя нет';
+            echo '<h1>Такого пользователя нет</h1>';
             exit();
         } 
         else {
@@ -115,7 +117,7 @@
                 echo '<div class="information">';
                 echo '<nav>';
                 echo '<a href="#" class="but" id="add_book"></a>';
-                echo '<a href="#" class="but" id="delete_book"></a>';
+                echo '<a href="#" class="but" id="delate_book"></a>';
                 echo '</nav>';
                 echo '<table class="books">';
                 echo '<tr>';
