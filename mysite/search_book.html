@@ -1,7 +1,7 @@
-<!-- version 1.2 -->
+<!-- version 2.0 -->
+<!-- Пример использования -->
 
 <!DOCTYPE html>
-
 
 <head>
     <meta charset="UTF-8">
@@ -11,18 +11,22 @@
     <link rel="stylesheet" href="sources/style/search.css">
     <script src="sources/js/find_user.js"></script>
 </head>
+
 <body>
-    <a class="but" id="home" href="/"></a>
+    <a class="but" id="home" href="index.html"></a>
 
     <div class="find_input">
         <form action="#" method="get">
-            <input type="search" name="q" id="input" autocomplete="off">
+            <!--Даниель, заполняй value="" через php,
+            что бы при надатии на кнопку поиска
+            текст возвращался, а не пропадал-->
+            <input type="search" name="q" id="input" autocomplete="off" value="">
             <button type="submit" id="submit" onclick="search_click()"></button>
         </form>
     </div>
 
     <div class="search_result">
-        <a class="inline result" href="book_1">
+        <a class="result" href="book_1">
             <div class="name">
                 <span class="name_book">Что делать?</span>
                 <span class="autor_book">Чернышевский</span>
