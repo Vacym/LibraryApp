@@ -1,4 +1,4 @@
-/* version 1.1 */
+/* version 1.2 */
 
 html {
     background: url(../files/book.jpg);
@@ -80,7 +80,7 @@ table {
 
 table td,
 table th {
-    padding: 5px 2%;
+    padding: 12px 2%;
 }
 
 table td {
@@ -89,6 +89,11 @@ table td {
 
 #edit::before {
     content: "\f040";
+}
+
+.class {
+    font-size: 60%;
+    font-style: italic;
 }
 
 
