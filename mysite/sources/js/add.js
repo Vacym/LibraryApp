@@ -1,19 +1,18 @@
 //version 2.0
 
 function validation_text(element) {
-    if (element.currentTarget) {
-        var element = element.currentTarget
-    }
-    var id = element.id
-
+    var element = element.currentTarget
     var regex = /^[а-яё-]+$/i
+    var id = element.id
 
     if (id == "class_letter") {
         element.value = element.value.toUpperCase();
         regex = /^[А-Я]$/
-    } else if (id == "class_number") {
-        regex = /^([1-9]|1[01])$/
-    } else if (id == "name" || id == "comment" || id == "writer") {
+    } 
+    else if (id == "class_number") {
+        regex = /^([1-9]|1[01])$/ 
+    }
+    else if (id == "name" || id == "comment") {
         regex = /^([а-яё-]|[\., ])+$/i
     }
 
@@ -67,7 +66,7 @@ function button_control() {
 
 function full_validation() {
     var bads = document.querySelectorAll('.form input[type="text"].bad_input, .form input[type="number"].bad_input')
-
+    
     if (bads.length > 0) {
         change_border(document.querySelector("#submit"), "bad", false)
         return false
@@ -89,16 +88,12 @@ function ready() {
         // запуск прослушивания событий для текстовых полей
     for (var x = 0; x < text_inputs.length; x++) {
         text_inputs[x].addEventListener("change", validation_text)
-        validation_text(text_inputs[x])
     }
-    console.log(document.querySelector('textarea'))
-    if (document.querySelector('textarea') != null) {
-        document.querySelector('textarea').addEventListener('input', function(e) {
-            e.target.style.height = 'auto'
-            e.target.style.height = e.target.scrollHeight + 2 + "px"
-        })
-    }
-}
 
+    document.querySelector('textarea').addEventListener('input', function(e) {
+        e.target.style.height = 'auto'
+        e.target.style.height = e.target.scrollHeight + 2 + "px"
+    })
+}
 
 document.addEventListener("DOMContentLoaded", ready);
