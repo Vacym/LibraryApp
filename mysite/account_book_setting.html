@@ -1,0 +1,57 @@
+<!-- version 1.0 -->
+<!-- Пример использования -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="sources/style/account.css">
+    <script src="sources/js/add.js"></script>
+</head>
+
+<body>
+    <a class="but" id="home" href="index.html"></a>
+
+    <div class="box">
+
+        <h1>Редактировать книгу</h1>
+        <nav>
+            <a href="#" class="but" id="del">
+            </a>
+        </nav>
+        <form action="save_settings.php_or_what_are_you_want?" method="POST">
+            <div class="line">
+                <!-- value наверно через php будешь доставать
+                из базы данных и вставлять.
+                Точно так же можно сделать и в поиске,
+                что бы после нажатия на кнопку текст не исчезал,
+                а его можно было так же редактировать -->
+                <input type="text" name="name" id="name" value="Алиса в Стране чудес" class="necessary_input" autocomplete="off">
+                <label for="name">Название</label>
+            </div>
+            <div class="line">
+                <input type="text" name="writer" id="writer" value="Льюис Кэрролл" class="necessary_input" autocomplete="off">
+                <label for="writer">Автор</label>
+            </div>
+            <div class="line">
+                <input type="text" name="genre" id="genre" value="Фэнтези" autocomplete="off">
+                <label for="genre">Жанр</label>
+            </div>
+            <div class="line">
+                <!-- У textarea нет атрибута value,
+                поэтому нужно писать значение внутри тега -->
+                <textarea type="text" name="comment" id="comment" autocomplete="off">Вот такой был замысел у газеты — рассказать детям о путешествии по сказочному миру и показать возможности, которые дарит детям эта книга.</textarea>
+                <label for="comment">Комментарий</label>
+            </div>
+            <div>
+                <input type="submit" id="submit" value="Сохранить" disabled>
+            </div>
+    </div>
+
+
+</body>
+
+</html>
