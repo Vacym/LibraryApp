@@ -1,18 +1,19 @@
-//version 2.0
+//version 2.2
 
 function validation_text(element) {
-    var element = element.currentTarget
-    var regex = /^[а-яё-]+$/i
+    if (element.currentTarget) {
+        var element = element.currentTarget
+    }
     var id = element.id
+
+    var regex = /^[а-яё-]+$/i
 
     if (id == "class_letter") {
         element.value = element.value.toUpperCase();
         regex = /^[А-Я]$/
-    } 
-    else if (id == "class_number") {
-        regex = /^([1-9]|1[01])$/ 
-    }
-    else if (id == "name" || id == "comment") {
+    } else if (id == "class_number") {
+        regex = /^([1-9]|1[01])$/
+    } else if (id == "name" || id == "comment" || id == "writer") {
         regex = /^([а-яё-]|[\., ])+$/i
     }
 
@@ -65,8 +66,8 @@ function button_control() {
 }
 
 function full_validation() {
-    var bads = document.querySelectorAll('.form input[type="text"].bad_input, .form input[type="number"].bad_input')
-    
+    var bads = document.querySelectorAll('input[type="text"].bad_input, input[type="number"].bad_input, textarea.bad_input')
+
     if (bads.length > 0) {
         change_border(document.querySelector("#submit"), "bad", false)
         return false
@@ -84,16 +85,25 @@ function full_validation() {
 }
 
 function ready() {
-    var text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
-        // запуск прослушивания событий для текстовых полей
-    for (var x = 0; x < text_inputs.length; x++) {
-        text_inputs[x].addEventListener("change", validation_text)
+    function textarea_size(e) {
+
+        e.style.height = 'auto'
+        e.style.height = e.scrollHeight + 2 + "px"
     }
 
-    document.querySelector('textarea').addEventListener('input', function(e) {
-        e.target.style.height = 'auto'
-        e.target.style.height = e.target.scrollHeight + 2 + "px"
-    })
+    var text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
+        // запуск прослушивания событий для текстовых полей
+    for (let x = 0; x < text_inputs.length; x++) {
+        text_inputs[x].addEventListener("change", validation_text)
+        validation_text(text_inputs[x])
+    }
+    textarea_list = document.querySelectorAll('textarea')
+    for (let x = 0; x < textarea_list.length; x++) {
+        textarea_list[x].addEventListener('input', function(e) { textarea_size(e.target) })
+        textarea_size(textarea_list[x])
+
+    }
 }
+
 
 document.addEventListener("DOMContentLoaded", ready);
