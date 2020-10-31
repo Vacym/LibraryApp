@@ -13,7 +13,7 @@ function validation_text(element) {
         regex = /^[А-Я]$/
     } else if (id == "class_number") {
         regex = /^([1-9]|1[01])$/
-    } else if (id == "name" || id == "comment" || id == "writer") {
+    } else if (id == "name" || id == "comment" || id == "author") {
         regex = /^([а-яё-]|[\., ])+$/i
     }
 

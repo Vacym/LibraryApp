@@ -1,4 +1,4 @@
-<!-- version 1.1 -->
+<!-- version 1.0 -->
 <!-- Пример использования -->
 
 <!DOCTYPE html>
@@ -9,7 +9,7 @@
     <title>Личный кабинет</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="sources/style/account.css">
-    <script src="sources/js/add_student.js"></script>
+    <script src="sources/js/add.js"></script>
 </head>
 
 <body>
@@ -17,7 +17,7 @@
 
     <div class="box">
 
-        <h1>Редактировать профиль</h1>
+        <h1>Редактировать книгу</h1>
         <nav>
             <a href="#" class="but" id="del">
             </a>
@@ -29,24 +29,22 @@
                 Точно так же можно сделать и в поиске,
                 что бы после нажатия на кнопку текст не исчезал,
                 а его можно было так же редактировать -->
-                <input type="text" name="surname" id="surname" value="Горбатюк" class="necessary_input" autocomplete="off">
-                <label for="surname">Фамилия</label>
+                <input type="text" name="name" id="name" value="Алиса в Стране чудес" class="necessary_input" autocomplete="off">
+                <label for="name">Название</label>
             </div>
             <div class="line">
-                <input type="text" name="firsname" id="firsname" value="Павел" class="necessary_input" autocomplete="off">
-                <label for="firsname">Имя</label>
+                <input type="text" name="writer" id="writer" value="Льюис Кэрролл" class="necessary_input" autocomplete="off">
+                <label for="writer">Автор</label>
             </div>
             <div class="line">
-                <input type="text" name="lastname" id="lastname" value="Викторович" autocomplete="off">
-                <label for="lastname">Отчество</label>
+                <input type="text" name="genre" id="genre" value="Фэнтези" autocomplete="off">
+                <label for="genre">Жанр</label>
             </div>
             <div class="line">
-                <input type="number" name="class_number" id="class_number" value="10" min="1" max="11" class="necessary_input" autocomplete="off">
-                <label for="class_number">Класс</label>
-            </div>
-            <div class="line">
-                <input type="text" name="class_letter" id="class_letter" value="Е" maxlength="1" class="necessary_input" autocomplete="off">
-                <label for="class_letter">Буква</label>
+                <!-- У textarea нет атрибута value,
+                поэтому нужно писать значение внутри тега -->
+                <textarea type="text" name="comment" id="comment" autocomplete="off">Вот такой был замысел у газеты — рассказать детям о путешествии по сказочному миру и показать возможности, которые дарит детям эта книга.</textarea>
+                <label for="comment">Комментарий</label>
             </div>
             <div>
                 <input type="submit" id="submit" value="Сохранить" disabled>

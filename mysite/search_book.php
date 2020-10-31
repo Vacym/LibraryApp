@@ -14,13 +14,6 @@
 <body>
 	<a class="but" id="home" href="/"></a>
 
-    <div class="find_input">
-        <form action="" method="get">
-            <input type="search" name="q" id="input" autocomplete="off">
-            <button type="submit" id="submit" onclick="search_click()"></button>
-        </form>
-    </div>
-
     <?php
 
         $mysql = mysqli_connect('localhost', 'root', '', 'test');
@@ -30,23 +23,53 @@
             exit(); 
         }
 
-        if (!count($_GET)){
+        if (!array_key_exists('q', $_GET)) {
             $q = '';
-        } else { 
+        } else {
             $q = $_GET['q'];
         }
-        
-        $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%'";        
-        $result = mysqli_query($mysql, $query);
 
-        while ($bk = mysqli_fetch_assoc($result))
-        {
+        if (array_key_exists('im', $_GET) && ctype_digit($_GET['im'])) {
+            $im = $_GET['im'];
+            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' AND `User_id` IS NULL";
+        }
+        else {
+            $im = '';
+            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%'";
+        }
+
+        echo '<div class="find_input">';
+        echo '<form action="" method="get">';
+
+        if ($im) {
+            echo '<input type="hidden" name="im" value=', $im,'>';
+        }
+        echo '<input type="search" name="q" id="input" autocomplete="off">';
+        echo '<button type="submit" id="submit"></button>';
+        echo '</form></div>';   
+                
+        $result = mysqli_query($mysql, $query);
+        $bk = mysqli_fetch_assoc($result);
+
+        if (is_null($bk)) {
+            echo "Ничего не найдено";
+            exit();
+        }
+
+        do {
             $id = $bk['User_id'];
             $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
             $user = mysqli_fetch_assoc($res);
             
             echo '<div class="search_result">';
-            echo '<a class="inline result" href="books.php/', $bk['ID'], '">';
+
+            if ($im) {
+                echo '<a class="inline result" href="get.php?us=', $im, '&bk=', $bk['ID'], '">';
+            }
+            else {
+                echo '<a class="inline result" href="books.php/', $bk['ID'], '">';
+            }
+
             echo '<div class="name">';
             echo '<span class="name_book">', $bk['Name'], '</span>';
             echo '<span class="autor_book">', $bk['Author'], '</span>';
@@ -60,7 +83,7 @@
                 echo $user['Surname'], ' ', $user['Name'], ' ', $user['Lastname'];
             }
             echo '</div></a></div>';
-        }
+        } while ($bk = mysqli_fetch_assoc($result));
         
     ?>
 
