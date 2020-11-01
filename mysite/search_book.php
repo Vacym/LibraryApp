@@ -59,10 +59,10 @@
 
         if ($im && $del) {
             echo '<input type="hidden" name="del" value=1>';
-            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' AND `User_id` = '$im' ORDER BY `Date_of_issue`";
+            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' AND `User_id` = '$im' ORDER BY `User_id`";
         } else if ($im) {
             echo '<input type="hidden" name="im" value=',$im,'>';
-            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' ORDER BY `Date_of_issue`";
+            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' ORDER BY `User_id`";
         } else {
             $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%'";
         }

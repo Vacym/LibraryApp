@@ -13,6 +13,17 @@
 </head>
 
 <body>
+    <div class="dark" id="w_del">
+        <div class="alert_window">
+            <div> А вы точно уверены в своём действии? Учтите, ваше решение отменить будет уже нельзя никак. Подумайте, прежде чем что-то делать! Дайте мне шанс. Неужели это единственная возможность для нас всё исправить? Умоляю! Я вам жизнью обязан! Я уверен,
+                что всё ещё поправимо! Дайте мне шанс! А мы всегда будем рады вас видеть! Честно, всегда! А если что- нибудь ещё понадобится – милости просим, только скажите… Что, нельзя? Пожалуйста, не надо! Нет, до свидания… Ну и ну. Всё.</div>
+            <div class="sure">
+                <a class="but_window" href="">Отменить</a>
+                <a class="but_window" href="delete">Удалить</a>
+            </div>
+        </div>
+    </div>
+
 	<a class="but" id="home" href="/"></a>
 
     <?php
@@ -76,8 +87,8 @@
                 if ($user['Lastname'] == 'Без отчества'){ $lastname = ''; }
 
                 echo "<div class='box'>";
-                echo "<h1>Редактировать профиль</h1>";    
-                echo "<nav><a href='/del' class='but' id='del'></a></nav>";
+                echo '<h1>Редактировать профиль</h1>';    
+                echo '<nav><a href="#w_del" class="but" id="del"></a></nav>';
                 echo '<form action="" method="POST">';
                 echo '<div class="line">';
                 echo '<input type="text" name="surname" id="surname" value="', $user['Surname'], '" class="necessary_input" autocomplete="off">';
@@ -96,6 +107,15 @@
                 echo '<label for="class_letter">Буква</label></div>';
                 echo '<div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
 
+            } else if ($choose == 'delete') {
+                
+                mysqli_query($mysql, "UPDATE `books` SET `User_id` = NULL, `Date_of_issue` = NULL WHERE `User_id` = '$id'");
+                mysqli_query($mysql, "DELETE FROM `users` WHERE `ID` = '$id'");
+
+                echo '<h1>Успешно удален!</h1>';
+
+                header("refresh:2;url=/");
+                exit();
             }
             else {
 
