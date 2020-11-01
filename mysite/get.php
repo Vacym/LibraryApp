@@ -21,15 +21,15 @@
         if (!$mysql) { 
             echo "Ошибка Подключения";
             exit(); 
-        }	
+        }
+
+        if (!array_key_exists('bk', $_GET) || !array_key_exists('us', $_GET) || !ctype_digit($_GET['bk']) || !ctype_digit($_GET['us'])) {
+            echo '<h1>Такой страницы не существует!</h1>';
+        	exit();
+        }
 
         $bk = $_GET['bk'];
         $us = $_GET['us'];
-
-        if (!ctype_digit($bk) || !ctype_digit($us)) {
-        	echo '<h1>Такой страницы не существует!</h1>';
-        	exit();
-        }
 
         $bk   = mysqli_query($mysql, "SELECT * FROM `books` WHERE `ID` = '$bk'");
         $us   = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$us'");
