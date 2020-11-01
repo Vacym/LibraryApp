@@ -1,4 +1,4 @@
-<!-- version 1.0 -->
+<!-- version 1.2 -->
 <!-- Пример использования -->
 
 <!DOCTYPE html>
@@ -13,13 +13,23 @@
 </head>
 
 <body>
+    <div class="dark" id="w_del">
+        <div class="alert_window">
+            <div> А вы точно уверены в своём действии? Учтите, ваше решение отменить будет уже нельзя никак. Подумайте, прежде чем что-то делать! Дайте мне шанс. Неужели это единственная возможность для нас всё исправить? Умоляю! Я вам жизнью обязан! Я уверен,
+                что всё ещё поправимо! Дайте мне шанс! А мы всегда будем рады вас видеть! Честно, всегда! А если что- нибудь ещё понадобится – милости просим, только скажите… Что, нельзя? Пожалуйста, не надо! Нет, до свидания… Ну и ну. Всё.</div>
+            <div class="sure">
+                <a class="but_window" href="#">Отменить</a>
+                <a class="but_window" href="delate.php">Удалить</a>
+            </div>
+        </div>
+    </div>
     <a class="but" id="home" href="index.html"></a>
 
     <div class="box">
 
-        <h1>Редактировать книгу</h1>
+        <h1>Редактировать профиль</h1>
         <nav>
-            <a href="#" class="but" id="del">
+            <a href="#w_del" class="but" id="del">
             </a>
         </nav>
         <form action="save_settings.php_or_what_are_you_want?" method="POST">
@@ -29,22 +39,24 @@
                 Точно так же можно сделать и в поиске,
                 что бы после нажатия на кнопку текст не исчезал,
                 а его можно было так же редактировать -->
-                <input type="text" name="name" id="name" value="Алиса в Стране чудес" class="necessary_input" autocomplete="off">
-                <label for="name">Название</label>
+                <input type="text" name="surname" id="surname" value="Горбатюк" class="necessary_input" autocomplete="off">
+                <label for="surname">Фамилия</label>
             </div>
             <div class="line">
-                <input type="text" name="writer" id="writer" value="Льюис Кэрролл" class="necessary_input" autocomplete="off">
-                <label for="writer">Автор</label>
+                <input type="text" name="firsname" id="firsname" value="Павел" class="necessary_input" autocomplete="off">
+                <label for="firsname">Имя</label>
             </div>
             <div class="line">
-                <input type="text" name="genre" id="genre" value="Фэнтези" autocomplete="off">
-                <label for="genre">Жанр</label>
+                <input type="text" name="lastname" id="lastname" value="Викторович" autocomplete="off">
+                <label for="lastname">Отчество</label>
             </div>
             <div class="line">
-                <!-- У textarea нет атрибута value,
-                поэтому нужно писать значение внутри тега -->
-                <textarea type="text" name="comment" id="comment" autocomplete="off">Вот такой был замысел у газеты — рассказать детям о путешествии по сказочному миру и показать возможности, которые дарит детям эта книга.</textarea>
-                <label for="comment">Комментарий</label>
+                <input type="number" name="class_number" id="class_number" value="10" min="1" max="11" class="necessary_input" autocomplete="off">
+                <label for="class_number">Класс</label>
+            </div>
+            <div class="line">
+                <input type="text" name="class_letter" id="class_letter" value="Е" maxlength="1" class="necessary_input" autocomplete="off">
+                <label for="class_letter">Буква</label>
             </div>
             <div>
                 <input type="submit" id="submit" value="Сохранить" disabled>
