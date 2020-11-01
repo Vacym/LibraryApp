@@ -25,53 +25,30 @@
 
         function is_ok($x) { return array_key_exists($x, $_GET); }
 
+        $arr = array('name', 'lastname', 'class', 'letter');
+
         if (is_ok('q')) {
             $q = $_GET['q'];
         } else {
             $q = '';
         }
 
-        if (is_ok('order')) {
+        if (is_ok('order') && in_array($_GET['order'], $arr)) {
             $order = $_GET['order'];
         } else {
             $order = 'surname';
         }
 
-        if (is_ok('asc') && $_GET['asc'] == 'False') {
-            $asc = 'False';
-        } else {
-            $asc = 'True';
-        }
-
         echo '<div class="find_input">';
         echo '<form action="" method="get">';
 
-        echo '<input type="search" name="q" id="input" autocomplete="off">';
-
-        $arr = array('asc', 'order');
-        foreach ($arr as $i) echo '<input type="hidden" name="',$i,'" value=',$$i,'>';
+        echo '<input type="search" name="q" id="input" autocomplete="off" autofocus>';
+        echo '<input type="hidden" name="order" value="',$order,'">';
         
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
 
-        if ($asc == 'True') { 
-            $asc = ' ASC';
-        }
-        else {
-            $asc = ' DESC';
-        }
-
-        switch ($order) {
-            case 'name':     $order = 'ORDER BY BINARY(lower(`Name`))';     break;
-            case 'lastname': $order = 'ORDER BY BINARY(lower(`Lastname`))'; break;
-            case 'class':    $order = 'ORDER BY `Class`';                   break;
-            case 'letter':   $order = 'ORDER BY BINARY(lower(`Letter`)';    break; //Вот здесь есть проблемка
-            default:         $order = 'ORDER BY BINARY(lower(`Surname`))';  break;
-        }
-
-        $order .= $asc;
-        
-        $query = "SELECT * FROM `users` WHERE `surname` LIKE '%$q%' ".$order;        
+        $query = "SELECT * FROM `users` WHERE `$order` LIKE '%$q%'";
         $result = mysqli_query($mysql, $query);
         $st = mysqli_fetch_assoc($result);
 
@@ -82,7 +59,7 @@
 
         do {   	
             $id = $st['ID'];
-        	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id' ORDER BY BINARY(lower(`Name`))");
+        	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
 
         	echo '<div class="search_result">';
             echo '<a class="result" href="/account.php/', $id, '">';

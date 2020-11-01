@@ -25,22 +25,18 @@
 
         function is_ok($x) { return array_key_exists($x, $_GET); }
 
+        $arr = array('author', 'genre');
+
         if (is_ok('q')) {
             $q = $_GET['q'];
         } else {
             $q = '';
         }
 
-        if (is_ok('order')) {
-            $order = strtolower($_GET['order']);
+        if (is_ok('order') && in_array($_GET['order'], $arr)) {
+            $order = $_GET['order'];
         } else {
             $order = 'name';
-        }
-
-        if (is_ok('asc') && $_GET['asc'] == 'False') {
-            $asc = 'False';
-        } else {
-            $asc = 'True';
         }
 
         if (is_ok('im') && ctype_digit($_GET['im'])) {
@@ -52,35 +48,18 @@
         echo '<div class="find_input">';
         echo '<form action="" method="get">';
 
-        echo '<input type="search" name="q" id="input" autocomplete="off">';
+        echo '<input type="search" name="q" id="input" autocomplete="off" autofocus>';
+        echo '<input type="hidden" name="order" value=',$order,'>';
 
-        $arr = array('im', 'asc', 'order');
-        foreach ($arr as $i) echo '<input type="hidden" name="',$i,'" value=',$$i,'>';
+        if ($im) {
+            echo '<input type="hidden" name="im" value=',$im,'>';
+            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' ORDER BY `Date_of_issue`";
+        } else {
+            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%'";
+        }
         
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
-
-        if ($asc == 'True') { 
-            $asc = ' ASC';
-        }
-        else {
-            $asc = ' DESC';
-        }
-
-        switch ($order) {
-            case 'genre':  $order = 'ORDER BY BINARY(lower(`Genre`))'; break;
-            case 'author': $order = 'ORDER BY BINARY(lower(`Author`))';break;
-            case 'date':   $order = 'ORDER BY `Date_of_issue`';        break;
-            default:       $order = 'ORDER BY BINARY(lower(`Name`))';  break;
-        }
-
-        $order .= $asc;
-
-        if ($im) {
-            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' ORDER BY `Date_of_issue`";
-        } else {
-            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' ".$order;
-        }
                 
         $result = mysqli_query($mysql, $query);
         $bk = mysqli_fetch_assoc($result);
