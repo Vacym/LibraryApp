@@ -52,7 +52,7 @@
         		echo '<h1>Неправильно введенные данные!</h1>';
         	}
         	else {
-        		$query = mysqli_query($mysql, "UPDATE `books` SET `User_id` = '$id', `Date_of_issue` = '$date' WHERE `ID` = '$bk'");
+        		$query = mysqli_query($mysql, "UPDATE `books` SET `User_id` = NULL, `Date_of_issue` = '$date' WHERE `ID` = '$bk'");
 
         		echo '<h1>Успешно отправлено!</h1>';
         	}
@@ -71,25 +71,21 @@
     	echo '<div class="little">', $book['Author'], '</div>';
     	echo '</td>';
     	echo '<td class="td_edit">';
-    	echo '<a href="/get.php/edit" class="but" id="edit"></a>';
+    	echo '<a href="get_book.html" class="but" id="edit"></a>';
     	echo '</td>';
     	echo '</tr>';
     	echo '<tr>';
     	echo '<td class="td_head">Ученик: </td>';
     	echo '<td class="td_value">', $user['Surname'], ' ', $user['Name'], ' ', $user['Lastname'];
     	echo '<div class="little">', $user['Class'], ' ', $user['Letter'], '</div>';
-    	echo '</td>';
-    	echo '<td class="td_edit">';
-    	echo '<a href="get_book.html" class="but" id="edit"></a>';
-    	echo '</td>';
-    	echo '</tr>';
-    	echo '<tr>';
-    	echo '<td class="td_head">Дата: </td>';
-    	echo '<td class="td_value"><input type="date" name="date" id="date" value="', date("Y-m-d"),'"></td>';
-    	echo '</tr>';
-    	echo '</table>';
-    	echo '<input type="submit" value="Получить">';
-    	echo '</form></div></div>';
+ 		echo '</tr>';
+ 		echo '<tr>';
+ 		echo '<td class="td_head">Дата: </td>';
+ 		echo '<td class="td_value"><input type="date" name="date" id="date" value="', date("Y-m-d"),'"></td>';
+ 		echo '</tr>';
+ 		echo '</table>';
+ 		echo '<input type="submit" value="Сдать">';
+ 		echo '</form></div></div>';
 
     ?>
 

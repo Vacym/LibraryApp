@@ -116,7 +116,7 @@
                 echo '<div class="information">';
                 echo '<nav>';
                 echo '<a href="/search_book.php?im=', $id, '" class="but" id="add_book"></a>';
-                echo '<a href="/account.php/', $id, '/del" class="but" id="delate_book"></a>';
+                echo '<a href="/search_book.php?im=', $id, '&del=1" class="but" id="delate_book"></a>';
                 echo '</nav>';
                 echo '<table class="books">';
                 echo '<tr>';

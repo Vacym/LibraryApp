@@ -45,13 +45,22 @@
             $im = '';
         }
 
+        if (is_ok('del') && $_GET['del'] == '1') {
+            $del = true;
+        } else {
+            $del = false;
+        }
+
         echo '<div class="find_input">';
         echo '<form action="" method="get">';
 
         echo '<input type="search" name="q" id="input" autocomplete="off" autofocus>';
         echo '<input type="hidden" name="order" value=',$order,'>';
 
-        if ($im) {
+        if ($im && $del) {
+            echo '<input type="hidden" name="del" value=1>';
+            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' AND `User_id` = '$im' ORDER BY `Date_of_issue`";
+        } else if ($im) {
             echo '<input type="hidden" name="im" value=',$im,'>';
             $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' ORDER BY `Date_of_issue`";
         } else {
@@ -69,6 +78,14 @@
             exit();
         }
 
+        if ($im && $del) {
+            $src = '<a class="inline result" href="give.php?us='.$im.'&bk=';
+        } else if ($im) {
+            $src = '<a class="inline result" href="get.php?us='.$im.'&bk=';
+        } else {
+            $src = '<a class="inline result" href="books.php/';
+        }
+
         do {
             $id = $bk['User_id'];
             $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
@@ -76,13 +93,8 @@
             
             echo '<div class="search_result">';
 
-            if ($im) {
-                echo '<a class="inline result" href="get.php?us=', $im, '&bk=', $bk['ID'], '">';
-            }
-            else {
-                echo '<a class="inline result" href="books.php/', $bk['ID'], '">';
-            }
-
+            echo $src, $bk['ID'],'">';
+            
             echo '<div class="name">';
             echo '<span class="name_book">',  $bk['Name'],   '</span>';
             echo '<span class="autor_book">', $bk['Author'], '</span>';
