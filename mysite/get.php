@@ -86,7 +86,7 @@
     	echo '</tr>';
     	echo '<tr>';
     	echo '<td class="td_head">Дата: </td>';
-    	echo '<td class="td_value"><input type="date" name="date" id="date" value="today"></td>';
+    	echo '<td class="td_value"><input type="date" name="date" id="date" value="', date("Y-m-d"),'"></td>';
     	echo '</tr>';
     	echo '</table>';
     	echo '<input type="submit" value="Добавить">';
