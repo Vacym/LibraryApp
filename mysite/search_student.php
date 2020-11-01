@@ -36,7 +36,7 @@
             $q = $_GET['q'];
         }
         
-        $query = "SELECT * FROM `users` WHERE `surname` LIKE '%$q%'";        
+        $query = "SELECT * FROM `users` WHERE `surname` LIKE '%$q%' ORDER BY BINARY(lower(`Surname`))";        
         $result = mysqli_query($mysql, $query);
         $st = mysqli_fetch_assoc($result);
 
@@ -47,7 +47,7 @@
 
         do {   	
             $id = $st['ID'];
-        	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
+        	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id' ORDER BY BINARY(lower(`Name`))");
 
         	echo '<div class="search_result">';
             echo '<a class="result" href="/account.php/', $id, '">';

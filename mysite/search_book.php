@@ -31,11 +31,11 @@
 
         if (array_key_exists('im', $_GET) && ctype_digit($_GET['im'])) {
             $im = $_GET['im'];
-            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' AND `User_id` IS NULL";
+            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' AND `User_id` IS NULL ORDER BY BINARY(lower(`Name`))";
         }
         else {
             $im = '';
-            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%'";
+            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' ORDER BY BINARY(lower(`Name`))";
         }
 
         echo '<div class="find_input">';
