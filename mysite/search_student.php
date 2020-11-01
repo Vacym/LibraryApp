@@ -13,13 +13,6 @@
 
 <body>
     <a class="but" id="home" href="/"></a>
-    
-    <div class="find_input">
-        <form action="" method="get">
-            <input type="search" name="q" id="input" autocomplete="off">
-            <button type="submit" id="submit" onclick="search_click()"></button>
-        </form>
-    </div>
 
     <?php
 
@@ -30,17 +23,59 @@
             exit(); 
         }
 
-        if (!count($_GET)){
-            $q = '';
-        } else { 
+        function is_ok($x) { return array_key_exists($x, $_GET); }
+
+        if (is_ok('q')) {
             $q = $_GET['q'];
+        } else {
+            $q = '';
         }
+
+        if (is_ok('order')) {
+            $order = $_GET['order'];
+        } else {
+            $order = 'surname';
+        }
+
+        if (is_ok('asc') && $_GET['asc'] == 'False') {
+            $asc = 'False';
+        } else {
+            $asc = 'True';
+        }
+
+        echo '<div class="find_input">';
+        echo '<form action="" method="get">';
+
+        echo '<input type="search" name="q" id="input" autocomplete="off">';
+
+        $arr = array('asc', 'order');
+        foreach ($arr as $i) echo '<input type="hidden" name="',$i,'" value=',$$i,'>';
         
-        $query = "SELECT * FROM `users` WHERE `surname` LIKE '%$q%' ORDER BY BINARY(lower(`Surname`))";        
+        echo '<button type="submit" id="submit"></button>';
+        echo '</form></div>';
+
+        if ($asc == 'True') { 
+            $asc = ' ASC';
+        }
+        else {
+            $asc = ' DESC';
+        }
+
+        switch ($order) {
+            case 'name':     $order = 'ORDER BY BINARY(lower(`Name`))';     break;
+            case 'lastname': $order = 'ORDER BY BINARY(lower(`Lastname`))'; break;
+            case 'class':    $order = 'ORDER BY `Class`';                   break;
+            case 'letter':   $order = 'ORDER BY BINARY(lower(`Letter`)';    break; //Вот здесь есть проблемка
+            default:         $order = 'ORDER BY BINARY(lower(`Surname`))';  break;
+        }
+
+        $order .= $asc;
+        
+        $query = "SELECT * FROM `users` WHERE `surname` LIKE '%$q%' ".$order;        
         $result = mysqli_query($mysql, $query);
         $st = mysqli_fetch_assoc($result);
 
-        if ( is_null($st) ) {
+        if (is_null($st)) {
             echo "Ничего не найдено";
             exit();
         }

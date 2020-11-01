@@ -23,30 +23,64 @@
             exit(); 
         }
 
-        if (!array_key_exists('q', $_GET)) {
-            $q = '';
-        } else {
+        function is_ok($x) { return array_key_exists($x, $_GET); }
+
+        if (is_ok('q')) {
             $q = $_GET['q'];
+        } else {
+            $q = '';
         }
 
-        if (array_key_exists('im', $_GET) && ctype_digit($_GET['im'])) {
-            $im = $_GET['im'];
-            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' AND `User_id` IS NULL ORDER BY BINARY(lower(`Name`))";
+        if (is_ok('order')) {
+            $order = strtolower($_GET['order']);
+        } else {
+            $order = 'name';
         }
-        else {
+
+        if (is_ok('asc') && $_GET['asc'] == 'False') {
+            $asc = 'False';
+        } else {
+            $asc = 'True';
+        }
+
+        if (is_ok('im') && ctype_digit($_GET['im'])) {
+            $im = $_GET['im'];
+        } else {
             $im = '';
-            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' ORDER BY BINARY(lower(`Name`))";
         }
 
         echo '<div class="find_input">';
         echo '<form action="" method="get">';
 
-        if ($im) {
-            echo '<input type="hidden" name="im" value=', $im,'>';
-        }
         echo '<input type="search" name="q" id="input" autocomplete="off">';
+
+        $arr = array('im', 'asc', 'order');
+        foreach ($arr as $i) echo '<input type="hidden" name="',$i,'" value=',$$i,'>';
+        
         echo '<button type="submit" id="submit"></button>';
-        echo '</form></div>';   
+        echo '</form></div>';
+
+        if ($asc == 'True') { 
+            $asc = ' ASC';
+        }
+        else {
+            $asc = ' DESC';
+        }
+
+        switch ($order) {
+            case 'genre':  $order = 'ORDER BY BINARY(lower(`Genre`))'; break;
+            case 'author': $order = 'ORDER BY BINARY(lower(`Author`))';break;
+            case 'date':   $order = 'ORDER BY `Date_of_issue`';        break;
+            default:       $order = 'ORDER BY BINARY(lower(`Name`))';  break;
+        }
+
+        $order .= $asc;
+
+        if ($im) {
+            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' ORDER BY `Date_of_issue`";
+        } else {
+            $query = "SELECT * FROM `books` WHERE `name` LIKE '%$q%' ".$order;
+        }
                 
         $result = mysqli_query($mysql, $query);
         $bk = mysqli_fetch_assoc($result);
@@ -71,7 +105,7 @@
             }
 
             echo '<div class="name">';
-            echo '<span class="name_book">', $bk['Name'], '</span>';
+            echo '<span class="name_book">',  $bk['Name'],   '</span>';
             echo '<span class="autor_book">', $bk['Author'], '</span>';
             echo '</div>';
             echo '<div class="status">';
