@@ -95,12 +95,6 @@
                 header("refresh:2;url=/");
                 exit();
 
-            } else if ($choose == 'del_user') {
-
-            	echo '<h1>Здесь будет страница открепления ученика от книги</h1>';
-            	exit();
-            }
-
         	else {
 
 	        	$date = $book['Date_of_issue'];
