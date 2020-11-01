@@ -72,10 +72,8 @@
                         echo '<h1>Неправильно введенные данные!</h1>';
                     }
                     else {
-                        $mysql = new mysqli('localhost', 'root', '', 'test');
-                        $mysql->query("UPDATE `users` SET `Name` = '$firstname', `Surname` = '$surname', `Lastname` = '$lastname', `Class` = '$class', `Letter` = '$letter' WHERE `ID` = '$id'");
-                        $mysql->close();
-
+                        mysqli_query($mysql, "UPDATE `users` SET `Firstname` = '$firstname', `Surname` = '$surname', `Lastname` = '$lastname', `Class` = '$class', `Letter` = '$letter' WHERE `ID` = '$id'");
+                        
                         echo '<h1>Успешно отправлено!</h1>';
 
                         header("refresh:2;url=/account.php/$id");
@@ -90,21 +88,16 @@
                 echo '<h1>Редактировать профиль</h1>';    
                 echo '<nav><a href="#w_del" class="but" id="del"></a></nav>';
                 echo '<form action="" method="POST">';
-                echo '<div class="line">';
-                echo '<input type="text" name="surname" id="surname" value="', $user['Surname'], '" class="necessary_input" autocomplete="off">';
-                echo '<label for="surname">Фамилия</label></div>';
-                echo '<div class="line">';
-                echo '<input type="text" name="firstname" id="firsname" value="', $user['Name'], '" class="necessary_input" autocomplete="off">';
-                echo '<label for="firsname">Имя</label></div>';
-                echo '<div class="line">';
-                echo '<input type="text" name="lastname" id="lastname" value="', $lastname, '" autocomplete="off">';
-                echo '<label for="lastname">Отчество</label></div>';
-                echo '<div class="line">';
-                echo '<input type="number" name="class" id="class_number" value="', $user['Class'], '" min="1" max="11" class="necessary_input" autocomplete="off">';
-                echo '<label for="class_number">Класс</label></div>';
-                echo '<div class="line">';
-                echo '<input type="text" name="letter" id="class_letter" value="', $user['Letter'], '" maxlength="1" class="necessary_input" autocomplete="off">';
-                echo '<label for="class_letter">Буква</label></div>';
+
+                $arr = array('surname' => 'Фамилия', 'firstname' => 'Имя', 'lastname' => 'Отчество', 'class' => 'Класс', 'letter' => 'Буква');
+                $usr = array('surname' => $user['Surname'], 'firstname' => $user['Firstname'], 'lastname' => $lastname, 'class' => $user['Class'], 'letter' => $user['Letter']);
+
+                foreach ($arr as $i => $j) {
+                    echo '<div class="line">';
+                    echo '<input type="text" name="',$i,'" id="',$i,'" value="',$usr[$i],'" class="necessary_input" autocomplete="off">';
+                    echo '<label for="',$i,'">',$j,'</label></div>';
+                }
+
                 echo '<div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
 
             } else if ($choose == 'delete') {
@@ -121,18 +114,13 @@
 
                 echo '<div class="box" style="width: 75%;">';
                 echo '<div class="head">';
-                echo '<nav>';
-                echo '<a href="/account.php/', $id, '/edit" class="but" id="edit"></a>';
-                echo '</nav>';
-                echo '<table class="head_information">';
-                echo '<tr>';
+                echo '<nav><a href="/account.php/', $id, '/edit" class="but" id="edit"></a></nav>';
+                echo '<table class="head_information"><tr>';
                 echo '<td class="td_head">ФИО: </td>';
-                echo '<td class="td_value">', $user['Surname'], ' ', $user['Name'], ' ', $user['Lastname'], '</td></tr>';
-                echo '<tr>';
+                echo '<td class="td_value">', $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'], '</td></tr><tr>';
                 echo '<td class="td_head">Класс: </td>';
                 echo '<td class="td_value">', $user['Class'], $user['Letter'], '</td>';
-                echo '</tr></table>';
-                echo '</div>';
+                echo '</tr></table></div>';
                 echo '<div class="information">';
                 echo '<nav>';
                 echo '<a href="/search_book.php?im=', $id, '" class="but" id="add_book"></a>';

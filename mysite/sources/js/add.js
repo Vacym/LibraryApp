@@ -8,10 +8,10 @@ function validation_text(element) {
 
     var regex = /^[а-яё-]+$/i
 
-    if (id == "class_letter") {
+    if (id == "letter") {
         element.value = element.value.toUpperCase();
         regex = /^[А-Я]$/
-    } else if (id == "class_number") {
+    } else if (id == "class") {
         regex = /^([1-9]|1[01])$/
     } else if (id == "name" || id == "comment" || id == "author") {
         regex = /^([а-яё-]|[\., ])+$/i

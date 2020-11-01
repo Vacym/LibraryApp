@@ -25,7 +25,7 @@
 
         function is_ok($x) { return array_key_exists($x, $_GET); }
 
-        $arr = array('name', 'lastname', 'class', 'letter');
+        $arr = array('firstname', 'lastname', 'class', 'letter');
 
         if (is_ok('q')) {
             $q = $_GET['q'];
@@ -39,12 +39,22 @@
             $order = 'surname';
         }
 
+        if (is_ok('im') && ctype_digit($_GET['im'])) {
+            $im = $_GET['im'];
+        } else {
+            $im = '';
+        }
+
         echo '<div class="find_input">';
         echo '<form action="" method="get">';
 
         echo '<input type="search" name="q" id="input" autocomplete="off" autofocus>';
-        echo '<input type="hidden" name="order" value="',$order,'">';
+        echo '<input type="hidden" name="order" value=',$order,'>';
         
+        if ($im) {
+            echo '<input type="hidden" name="im" value=',$im,'>';
+        }
+
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
 
@@ -57,12 +67,18 @@
             exit();
         }
 
+        if ($im) {
+            $src = '<a class="inline result" href="get.php?bk='.$im.'&us=';
+        } else {
+            $src = '<a class="result" href="/account.php/';
+        }
+
         do {   	
             $id = $st['ID'];
         	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
 
         	echo '<div class="search_result">';
-            echo '<a class="result" href="/account.php/', $id, '">';
+            echo $src, $id, '">';
             echo '<div class="books">';
 
 			while ($bk = mysqli_fetch_assoc($res)) {
@@ -76,7 +92,7 @@
         	echo '<div class="student">';
         	echo '<div class="class">', $st['Class'], ' ', $st['Letter'], '</div>';
         	echo '<div class="FCS">';
-        	echo $st['Surname'], ' ', $st['Name'], ' ', $st['Lastname'];
+        	echo $st['Surname'], ' ', $st['Firstname'], ' ', $st['Lastname'];
         	echo '</div></div>';
         	echo '</a></div>';
 

@@ -25,15 +25,13 @@
 
         function is_ok($x) { return array_key_exists($x, $_GET); }
 
-        $arr = array('author', 'genre');
-
         if (is_ok('q')) {
             $q = $_GET['q'];
         } else {
             $q = '';
         }
 
-        if (is_ok('order') && in_array($_GET['order'], $arr)) {
+        if (is_ok('order') && $_GET['order'] == 'author') {
             $order = $_GET['order'];
         } else {
             $order = 'name';
@@ -105,7 +103,7 @@
                 echo 'Свободна';
             }
             else {
-                echo $user['Surname'], ' ', $user['Name'], ' ', $user['Lastname'];
+                echo $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'];
             }
             echo '</div></a></div>';
         } while ($bk = mysqli_fetch_assoc($result));

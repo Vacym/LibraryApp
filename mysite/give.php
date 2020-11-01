@@ -71,12 +71,12 @@
     	echo '<div class="little">', $book['Author'], '</div>';
     	echo '</td>';
     	echo '<td class="td_edit">';
-    	echo '<a href="get_book.html" class="but" id="edit"></a>';
+    	echo '<a href="/search_book.php?im=',$_GET['us'],'&del=1" class="but" id="edit"></a>';
     	echo '</td>';
     	echo '</tr>';
     	echo '<tr>';
     	echo '<td class="td_head">Ученик: </td>';
-    	echo '<td class="td_value">', $user['Surname'], ' ', $user['Name'], ' ', $user['Lastname'];
+    	echo '<td class="td_value">', $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'];
     	echo '<div class="little">', $user['Class'], ' ', $user['Letter'], '</div>';
  		echo '</tr>';
  		echo '<tr>';

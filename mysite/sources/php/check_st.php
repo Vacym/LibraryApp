@@ -25,7 +25,7 @@
 	    }
 	    else {
 		    $mysql = new mysqli('localhost', 'root', '', 'test');
-		    $mysql->query("INSERT INTO `users` (`Name`, `Surname`, `Lastname`, `Class`, `Letter`) VALUES ('$firstname', '$surname', '$lastname', '$class', '$letter')");
+		    $mysql->query("INSERT INTO `users` (`Firstname`, `Surname`, `Lastname`, `Class`, `Letter`) VALUES ('$firstname', '$surname', '$lastname', '$class', '$letter')");
 		    $mysql->close();
 
 		    echo 'Успешно отправлено';
