@@ -95,7 +95,7 @@
                 header("refresh:2;url=/");
                 exit();
 
-        	else {
+		} else {
 
 	        	$date = $book['Date_of_issue'];
 
