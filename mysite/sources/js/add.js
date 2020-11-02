@@ -1,4 +1,4 @@
-//version 2.2
+//version 2.3
 
 function validation_text(element) {
     if (element.currentTarget) {
@@ -13,7 +13,7 @@ function validation_text(element) {
         regex = /^[А-Я]$/
     } else if (id == "class") {
         regex = /^([1-9]|1[01])$/
-    } else if (id == "name" || id == "comment" || id == "author") {
+    } else if (id == "name" || id == "comment" || id == "writer") {
         regex = /^([а-яё-]|[\., ])+$/i
     }
 
@@ -101,9 +101,29 @@ function ready() {
     for (let x = 0; x < textarea_list.length; x++) {
         textarea_list[x].addEventListener('input', function(e) { textarea_size(e.target) })
         textarea_size(textarea_list[x])
-
     }
+
+    // Всплывающее окно
+    toggle = (a, b) => {
+        window.classList.add(a)
+        window.classList.remove(b)
+    }
+
+    function add_show() {
+        window.classList.add("fading")
+        setTimeout(() => toggle("show", "fading"), 1)
+    }
+
+    function del_show() {
+        toggle("fading", "show")
+        setTimeout(() => window.classList.remove("fading"), 250);
+    }
+
+    let window = document.querySelector("#w_del")
+
+    document.querySelector("#del").addEventListener("click", add_show)
+    document.querySelector("#cansel").addEventListener("click", del_show)
 }
 
 
-document.addEventListener("DOMContentLoaded", ready);
+document.addEventListener("DOMContentLoaded", ready)

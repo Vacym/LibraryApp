@@ -1,4 +1,4 @@
-<!-- version 1.0 -->
+<!-- version 1.1.1 -->
 <!-- Пример использования -->
 
 <!DOCTYPE html>
@@ -13,14 +13,24 @@
 </head>
 
 <body>
+    <div class="dark" id="w_del">
+        <div class="alert_window">
+            <div> А вы точно уверены в своём действии? Учтите, ваше решение отменить будет уже нельзя никак. Подумайте, прежде чем что-то делать! Дайте мне шанс. Неужели это единственная возможность для нас всё исправить? Умоляю! Я вам жизнью обязан! Я уверен,
+                что всё ещё поправимо! Дайте мне шанс! А мы всегда будем рады вас видеть! Честно, всегда! А если что- нибудь ещё понадобится – милости просим, только скажите… Что, нельзя? Пожалуйста, не надо! Нет, до свидания… Ну и ну. Всё.</div>
+            <div class="sure">
+                <div class="but_window" id="cansel">Отменить</div>
+                <a class="but_window" href="delete.php">Удалить</a>
+            </div>
+        </div>
+    </div>
     <a class="but" id="home" href="index.html"></a>
 
     <div class="box">
 
         <h1>Редактировать книгу</h1>
         <nav>
-            <a href="#" class="but" id="del">
-            </a>
+            <div href="#" class="but" id="del">
+            </div>
         </nav>
         <form action="save_settings.php_or_what_are_you_want?" method="POST">
             <div class="line">
@@ -33,8 +43,8 @@
                 <label for="name">Название</label>
             </div>
             <div class="line">
-                <input type="text" name="writer" id="writer" value="Льюис Кэрролл" class="necessary_input" autocomplete="off">
-                <label for="writer">Автор</label>
+                <input type="text" name="author" id="author" value="Льюис Кэрролл" class="necessary_input" autocomplete="off">
+                <label for="author">Автор</label>
             </div>
             <div class="line">
                 <input type="text" name="genre" id="genre" value="Фэнтези" autocomplete="off">
