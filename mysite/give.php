@@ -31,13 +31,14 @@
         $bk = $_GET['bk'];
         $us = $_GET['us'];
 
-        $bk   = mysqli_query($mysql, "SELECT * FROM `books` WHERE `ID` = '$bk'");
+        $bk   = mysqli_query($mysql, "SELECT * FROM `books` WHERE `ID` = '$bk' AND `User_id` = '$us'");
         $us   = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$us'");
         $book = mysqli_fetch_assoc($bk);
         $user = mysqli_fetch_assoc($us);
 
         if (is_null($book) || is_null($user)) {
         	echo '<h1>Такой книги или ученика не существует!</h1>';
+            echo '<h2 align="center">Возможно книга не принадлежит этому ученику</h2>';
         	exit();
         }
 
