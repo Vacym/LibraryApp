@@ -1,4 +1,4 @@
-<!-- version 1.2 -->
+<!-- version 1.3 -->
 <!-- Пример использования -->
 
 <!DOCTYPE html>
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="sources/style/account.css">
     <script src="sources/js/add.js"></script>
+    <script src="sources/js/account_student_setting.js"></script>
 </head>
 
 <body>
@@ -18,7 +19,7 @@
             <div> А вы точно уверены в своём действии? Учтите, ваше решение отменить будет уже нельзя никак. Подумайте, прежде чем что-то делать! Дайте мне шанс. Неужели это единственная возможность для нас всё исправить? Умоляю! Я вам жизнью обязан! Я уверен,
                 что всё ещё поправимо! Дайте мне шанс! А мы всегда будем рады вас видеть! Честно, всегда! А если что- нибудь ещё понадобится – милости просим, только скажите… Что, нельзя? Пожалуйста, не надо! Нет, до свидания… Ну и ну. Всё.</div>
             <div class="sure">
-                <a class="but_window" href="#">Отменить</a>
+                <div class="but_window" id="cansel">Отменить</div>
                 <a class="but_window" href="delate.php">Удалить</a>
             </div>
         </div>
@@ -29,8 +30,8 @@
 
         <h1>Редактировать профиль</h1>
         <nav>
-            <a href="#w_del" class="but" id="del">
-            </a>
+            <div class="but" id="del">
+            </div>
         </nav>
         <form action="save_settings.php_or_what_are_you_want?" method="POST">
             <div class="line">
@@ -51,12 +52,12 @@
                 <label for="lastname">Отчество</label>
             </div>
             <div class="line">
-                <input type="number" name="class_number" id="class_number" value="10" min="1" max="11" class="necessary_input" autocomplete="off">
-                <label for="class_number">Класс</label>
+                <input type="number" name="class" id="class" value="10" min="1" max="11" class="necessary_input" autocomplete="off">
+                <label for="class">Класс</label>
             </div>
             <div class="line">
-                <input type="text" name="class_letter" id="class_letter" value="Е" maxlength="1" class="necessary_input" autocomplete="off">
-                <label for="class_letter">Буква</label>
+                <input type="text" name="letter" id="letter" value="Е" maxlength="1" class="necessary_input" autocomplete="off">
+                <label for="letter">Буква</label>
             </div>
             <div>
                 <input type="submit" id="submit" value="Сохранить" disabled>
