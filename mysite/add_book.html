@@ -1,4 +1,4 @@
-<!-- version 2.1 -->
+<!-- version 2.2 -->
 
 <!DOCTYPE html>
 <html>
@@ -25,16 +25,30 @@
             <input type="text" name="author" id="author" placeholder="Автор" class="necessary_input" autocomplete="off">
         </div>
         <div class="line">
-            <input type="text" name="genre" id="genre" placeholder="Жанр" autocomplete="off" class="necessary_input">
+            <input type="text" name="genre" id="genre" placeholder="Жанр" class="necessary_input" autocomplete="off">
         </div>
         <div class="line">
             <textarea type="text" name="comment" id="comment" placeholder="Комментарий" autocomplete="off"></textarea>
         </div>
         <div>
-            <input type="button" id="submit" value="Создать" disabled>
+            <input type="button" id="submit" value="Создать" message="create" disabled>
         </div>
-        <div><h1 style="font-size: 20px;" id="result"></h1></div>
     </form>
+    <div class="dark" id="create">
+        <div class="alert_window">
+            <div>
+                Твое сообщение
+                <div class="sure">
+                    <!-- При неудачном стечении обстоятельств не показывать эту кнопку ▼ -->
+                    <a class="but_window" href="account.html/id">Перейти в личный кабинет</a>
+                    <div class="but_window" id="cansel">Ок</div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h1 style="font-size: 20px;" id="result"></h1>
+        </div>
+    </div>
 </body>
 
 </html>
