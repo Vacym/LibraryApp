@@ -18,7 +18,7 @@
             <div> А вы точно уверены в своём действии? Учтите, ваше решение отменить будет уже нельзя никак. Подумайте, прежде чем что-то делать! Дайте мне шанс. Неужели это единственная возможность для нас всё исправить? Умоляю! Я вам жизнью обязан! Я уверен,
                 что всё ещё поправимо! Дайте мне шанс! А мы всегда будем рады вас видеть! Честно, всегда! А если что- нибудь ещё понадобится – милости просим, только скажите… Что, нельзя? Пожалуйста, не надо! Нет, до свидания… Ну и ну. Всё.</div>
             <div class="sure">
-                <a class="but_window" href="">Отменить</a>
+                <div class="but_window" id="cansel">Отменить</div>
                 <a class="but_window" href="delete">Удалить</a>
             </div>
         </div>
@@ -77,7 +77,7 @@
 
                 mysqli_query($mysql, "UPDATE `users` SET `Firstname` = '$firstname', `Surname` = '$surname', `Lastname` = '$lastname', `Class` = '$class', `Letter` = '$letter' WHERE `ID` = '$id'");
                 
-                echo '<h1>Успешно отправлено!</h1>';
+                echo '<h1>Ученик успешно изменен!</h1>';
 
                 header("refresh:2;url=/account.php/$id");
                 exit();
@@ -87,7 +87,7 @@
 
             echo "<div class='box'>";
             echo '<h1>Редактировать профиль</h1>';    
-            echo '<nav><a href="#w_del" class="but" id="del"></a></nav>';
+            echo '<nav><div class="but" id="del"></div></nav>';
             echo '<form action="" method="POST">';
 
             $arr = array('surname' => 'Фамилия', 'firstname' => 'Имя', 'lastname' => 'Отчество', 'class' => 'Класс', 'letter' => 'Буква');
@@ -107,7 +107,7 @@
             mysqli_query($mysql, "UPDATE `books` SET `User_id` = NULL, `Date_of_issue` = NULL WHERE `User_id` = '$id'");
             mysqli_query($mysql, "DELETE FROM `users` WHERE `ID` = '$id'");
 
-            echo '<h1>Успешно удален!</h1>';
+            echo '<h1>Ученик успешно удален!</h1>';
 
             header("refresh:2;url=/");
             exit();
