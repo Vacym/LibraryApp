@@ -46,9 +46,9 @@
         }
 
         echo '<div class="find_input">';
-        echo '<form action="" method="get">';
+        echo '<form action="" method="GET">';
 
-        echo '<input type="search" name="q" id="input" autocomplete="off" autofocus>';
+        echo '<input type="search" name="q"     value="',$q,'" id="input" autocomplete="off" autofocus>';
         echo '<input type="hidden" name="order" value=',$order,'>';
         
         if ($im) {

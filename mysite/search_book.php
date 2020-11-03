@@ -50,19 +50,20 @@
         }
 
         echo '<div class="find_input">';
-        echo '<form action="" method="get">';
+        echo '<form action="" method="GET">';
 
-        echo '<input type="search" name="q" id="input" autocomplete="off" autofocus>';
+        echo '<input type="search" name="q"     value="',$q,'" id="input" autocomplete="off" autofocus>';
         echo '<input type="hidden" name="order" value=',$order,'>';
 
+        $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%'";
+
         if ($im && $del) {
+            echo '<input type="hidden" name="im" value=',$im,'>';
             echo '<input type="hidden" name="del" value=1>';
-            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' AND `User_id` = '$im' ORDER BY `User_id`";
+            $query .= " AND `User_id` = '$im' ORDER BY `User_id`";
         } else if ($im) {
             echo '<input type="hidden" name="im" value=',$im,'>';
-            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%' ORDER BY `User_id`";
-        } else {
-            $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%'";
+            $query .= " ORDER BY `User_id`";
         }
         
         echo '<button type="submit" id="submit"></button>';
