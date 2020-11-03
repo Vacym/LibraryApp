@@ -1,4 +1,4 @@
-/* version 1.5 */
+/* version 1.6 */
 
 html {
     background: url(../files/book.jpg);
@@ -236,72 +236,4 @@ label {
     font-style: oblique;
     font-size: 20px;
     margin-left: 5%;
-}
-
-
-/* alert window */
-
-.dark {
-    background-color: rgba(90, 90, 90, 0);
-    width: 100%;
-    height: 100%;
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 50;
-    transition: .25s;
-}
-
-.fading {
-    display: initial;
-}
-
-.alert_window {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, 0%);
-    z-index: 100;
-    width: 50%;
-    height: min-content;
-    border: 2px solid white;
-    padding: 15px;
-    font-size: 20px;
-    background-color: rgba(0, 0, 0, 0.9);
-    opacity: 0;
-    transition: .25s;
-}
-
-.show {
-    display: initial;
-    background-color: rgba(90, 90, 90, .5);
-}
-
-.show .alert_window {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-}
-
-.but_window {
-    display: inline-block;
-    border: 1px solid #777;
-    padding: 0 12px;
-    margin: 10px;
-    background: black;
-    font-size: 16pt;
-    cursor: pointer;
-    transition: background-color, border .15s;
-}
-
-.but_window:hover {
-    background: #222;
-    border: 1px solid white;
-    cursor: pointer;
-}
-
-.sure {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
 }

@@ -1,4 +1,4 @@
-<!-- version 2.2 -->
+<!-- version 2.3 -->
 
 <!DOCTYPE html>
 <html>
@@ -9,8 +9,10 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="sources/style/add_book.css">
+    <link rel="stylesheet" href="sources/style/message.css">
     <script type="text/javascript" src="sources/js/add.js"></script>
     <script type="text/javascript" src="sources/js/add_bk.js"></script>
+    <script type="text/javascript" src="sources/js/message.js"></script>
 </head>
 
 <body>
@@ -37,16 +39,17 @@
     <div class="dark" id="create">
         <div class="alert_window">
             <div>
-                <div id="result">Мое сообщение</div>
+                <div class="alert_message">Твое сообщение</div>
                 <div class="sure">
                     <!-- При неудачном стечении обстоятельств не показывать эту кнопку ▼ -->
-                    <a class="but_window" href="account.html/id">Перейти в личный кабинет</a>
-                    <div class="but_window" id="cansel">Ок</div>
+                    <div class="but_window_space">
+                        <a class="but_window" href="account.php/id">Перейти в личный кабинет</a>
+                    </div>
+                    <div class="but_window_space">
+                        <div class="but_window" id="cansel">Ок</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <h1 style="font-size: 20px;" id="result"></h1>
         </div>
     </div>
 </body>
