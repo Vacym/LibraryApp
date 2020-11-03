@@ -1,14 +1,16 @@
+//version 1.1
+
 function ready() {
     class But_message {
         constructor(button) {
             this.button = button
             this.window = document.querySelector(`#${button.getAttribute("message")}`)
-            this.cansel = document.querySelector(`#${button.getAttribute("message")} #cansel`)
+            this.cancel = document.querySelector(`#${button.getAttribute("message")} #cancel`)
             this.start_hear()
         }
         start_hear() {
             this.button.addEventListener("click", () => this.add_show())
-            this.cansel.addEventListener("click", () => this.del_show())
+            this.cancel.addEventListener("click", () => this.del_show())
         }
         toggle(a, b) {
             this.window.classList.add(a)
