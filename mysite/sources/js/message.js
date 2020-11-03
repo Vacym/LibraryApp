@@ -1,5 +1,3 @@
-//version 1.1
-
 function ready() {
     class But_message {
         constructor(button) {

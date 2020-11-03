@@ -9,20 +9,12 @@
 	
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/sources/style/account.css">
-    <script src="/sources/js/add.js"></script>
+    <link rel="stylesheet" type="text/css" href="/sources/style/message.css">
+    <script type="text/javascript" src="/sources/js/add.js"></script>
+    <script type="text/javascript" src="/sources/js/message.js"></script>
 </head>
 
 <body>
-    <div class="dark" id="w_del">
-        <div class="alert_window">
-            <div> А вы точно уверены в своём действии? Учтите, ваше решение отменить будет уже нельзя никак. Подумайте, прежде чем что-то делать! Дайте мне шанс. Неужели это единственная возможность для нас всё исправить? Умоляю! Я вам жизнью обязан! Я уверен,
-                что всё ещё поправимо! Дайте мне шанс! А мы всегда будем рады вас видеть! Честно, всегда! А если что- нибудь ещё понадобится – милости просим, только скажите… Что, нельзя? Пожалуйста, не надо! Нет, до свидания… Ну и ну. Всё.</div>
-            <div class="sure">
-                <div class="but_window" id="cansel">Отменить</div>
-                <a class="but_window" href="delete">Удалить</a>
-            </div>
-        </div>
-    </div>
 
 	<a class="but" id="home" href="/"></a>
 
@@ -82,8 +74,18 @@
 
     		echo '<div class="box">';
     		echo '<h1>Редактировать книгу</h1>';
-    		echo '<nav><div class="but" id="del"></div></nav>';
+    		echo '<nav><div href="#" class="but" id="del" message="w_del"></div></nav>';
     		echo '<form action="" method="POST">';
+
+            echo '<div class="dark" id="w_del">';
+            echo '<div class="alert_window">';
+            echo '<div class="alert_message">Вы уверены, что хотите удалить книгу?</div>';
+            echo '<div class="sure">';
+            echo '<div class="but_window_space">';
+            echo '<a class="but_window" href="/books.php/', $id, '/delete">Удалить</a></div>';
+            echo '<div class="but_window_space">';
+            echo '<div class="but_window" id="cancel">Отменить</div>';
+            echo '</div></div></div></div>';
 
     		$arr = array('name' => 'Название', 'author' => 'Автор', 'genre' => 'Жанр');
 
@@ -155,6 +157,7 @@
     	echo '</tr></table></div></div>';
     	exit();
 	?>
+
 </body>
 	
 </html>

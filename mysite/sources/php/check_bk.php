@@ -1,6 +1,12 @@
 <?php
-    if (!count($_POST)){
-        echo 'А что мы тут делаем?';
+    if (!count($_POST)) { echo 'Ошибка запроса!'; exit(); }
+
+    function send() {
+
+        $data = array('success' => false, 'id' => 0);
+        $json = json_encode($data);
+
+        echo $json;
         exit();
     }
 
@@ -8,8 +14,7 @@
 
     foreach ($arr as $i) {
         if (!array_key_exists($i, $_POST)) {
-            echo 'Ошибка запроса!';
-            exit();
+            send();
         }
     }
 
@@ -24,14 +29,18 @@
     $valid_comment = preg_match("/^([а-яё-]|[\., ])+$/ui", $comment);
 
     if (!$valid_name || !$valid_author || !$valid_genre) {
-        echo 'Неправильно введенные данные!';
-        exit();
+        send();
     }
 
-    $mysql = new mysqli('localhost', 'root', '', 'test');
-    $mysql->query("INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`) VALUES ('$name', '$author', '$genre', '$comment')");
-    $mysql->close();
+    $mysql = mysqli_connect('localhost', 'root', '', 'test');
 
-    echo 'Успешно отправлено';
+    mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`) VALUES ('$name', '$author', '$genre', '$comment')");
+
+    $id = mysqli_insert_id($mysql);
+    $data['success'] = true;
+    $data['id'] = $id;
+
+    $json = json_encode($data);
+    echo $json;
     exit();
 ?>

@@ -15,8 +15,13 @@ function ajaxGet(params) {
 
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
-			var res = request.responseText;
-			document.querySelector('#result').innerHTML = res;
+			var req = JSON.parse(request.responseText);
+			if (req['success']) {
+				document.querySelector('#result').innerHTML = 'Книга успешно добавлена!';
+				document.querySelector("#link").setAttribute('href', `books.php/${req['id']}`);
+			} else {
+				document.querySelector('#result').innerHTML = 'Неправильный ввод!';
+			}
 		}
 	}
 
