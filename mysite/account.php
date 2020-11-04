@@ -86,7 +86,7 @@
             echo '<div class="alert_message">Вы уверены, что хотите удалить профиль?</div>';
             echo '<div class="sure">';
             echo '<div class="but_window_space">';
-            echo '<a class="but_window" href="/account.php/', $id, '/delete">Удалить</a></div>';
+            echo "<a class='but_window' href='/account.php/$id/delete'>Удалить</a></div>";
             echo '<div class="but_window_space">';
             echo '<div class="but_window" id="cancel">Отменить</div>';
             echo '</div></div></div></div>';
@@ -95,9 +95,9 @@
 
             foreach ($arr as $i => $j) {
                 echo '<div class="line">';
-                if ($i == 'lastname') echo '<input type="text" name="',$i,'" id="',$i,'" value="',$user[ucfirst($i)],'" autocomplete="off">';
-                else 				  echo '<input type="text" name="',$i,'" id="',$i,'" value="',$user[ucfirst($i)],'" class="necessary_input" autocomplete="off">';
-                echo '<label for="',$i,'">',$j,'</label></div>';
+                if ($i == 'lastname') echo "<input type='text' name='$i' id='$i' value='",$user[ucfirst($i)],"' autocomplete='off'>";
+                else 				  echo "<input type='text' name='$i' id='$i' value='",$user[ucfirst($i)],"' class='necessary_input' autocomplete='off'>";
+                echo "<label for='$i'>$j</label></div>";
             }
 
             echo '<div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
@@ -119,7 +119,7 @@
 
         echo '<div class="box" style="width: 75%;">';
         echo '<div class="head">';
-        echo '<nav><a href="/account.php/', $id, '/edit" class="but" id="edit"></a></nav>';
+        echo "<nav><a href='/account.php/$id/edit' class='but' id='edit'></a></nav>";
         echo '<table class="head_information"><tr>';
         echo '<td class="td_head">ФИО: </td>';
         echo '<td class="td_value">', $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'], '</td></tr><tr>';
@@ -128,10 +128,10 @@
         echo '</tr></table></div>';
         echo '<div class="information">';
         echo '<nav>';
-        echo '<a href="/search_book.php?im=', $id, '" class="but" id="add_book"></a>';
+        echo "<a href='/search_book.php?im=$id' class='but' id='add_book'></a>";
 
         if (!is_null($book)) {
-            echo '<a href="/search_book.php?im=', $id, '&del=1" class="but" id="delate_book"></a>';
+            echo "<a href='/search_book.php?im=$id&del=1' class='but' id='delate_book'></a>";
         }
 
         echo '</nav>';
@@ -155,8 +155,8 @@
             else                                 $date = $book['Date_of_issue'];
 
             echo '<tr>';
-            echo '<td class="td_head">',  $book['Name'], '</td>';
-            echo '<td class="td_value">', $date, 	   '</td>';
+            echo '<td class="td_head">',$book['Name'],'</td>';
+            echo "<td class='td_value'>$date</td>";
             echo '</tr>';
 
         } while ($book = mysqli_fetch_assoc($q));

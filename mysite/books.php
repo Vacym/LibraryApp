@@ -82,7 +82,7 @@
             echo '<div class="alert_message">Вы уверены, что хотите удалить книгу?</div>';
             echo '<div class="sure">';
             echo '<div class="but_window_space">';
-            echo '<a class="but_window" href="/books.php/', $id, '/delete">Удалить</a></div>';
+            echo "<a class='but_window' href='/books.php/$id/delete'>Удалить</a></div>";
             echo '<div class="but_window_space">';
             echo '<div class="but_window" id="cancel">Отменить</div>';
             echo '</div></div></div></div>';
@@ -91,8 +91,8 @@
 
     		foreach ($arr as $i => $j) {
     			echo '<div class="line">';
-    			echo '<input type="text" name="',$i,'" id="',$i,'" value="',$book[ucfirst($i)],'" class="necessary_input" autocomplete="off">';
-    			echo '<label for="name">',$j,'</label></div>';
+    			echo "<input type='text' name='$i' id='$i' value='",$book[ucfirst($i)],"' class='necessary_input' autocomplete='off'>";
+    			echo "<label for='name'>$j</label></div>";
     		}
     		
     		echo '<div class="line">';
@@ -113,15 +113,15 @@
 
     	echo '<div class="box">';
     	echo '<div class="head">';
-    	echo '<nav><a href="/books.php/', $id, '/edit" class="but" id="edit"></a></nav>';
+    	echo "<nav><a href='/books.php/$id/edit' class='but' id='edit'></a></nav>";
     	echo '<table class="head_information">';
     	
     	$arr = array('Name' => 'Название', 'Author' => 'Автор', 'Genre' => 'Жанр', 'Comment' => 'Описание');
 
     	foreach ($arr as $i => $j) {
     		echo '<tr>';
-    		echo '<td class="td_head">',$j,': </td>';
-    		echo '<td class="td_value">',$book[$i], '</td></tr>';
+    		echo "<td class='td_head'>$j: </td>";
+    		echo "<td class='td_value'>$book[$i]</td></tr>";
     	}
     	echo '</table></div>';
     	
@@ -129,9 +129,9 @@
     	echo '<nav>';
 
     	if (is_null($user_id)) {
-    		echo '<a href="/search_student.php?im=', $id, '" class="but" id="add_book"></a>';
+    		echo "<a href='/search_student.php?im=$id' class='but' id='add_book'></a>";
     	} else {
-			echo '<a href="/give.php?bk=',$id,'&us=', $user_id,'" class="but" id="delate_book"></a>';
+			echo "<a href='/give.php?bk=$id&us=$user_id' class='but' id='delate_book'></a>";
     	}
     	
     	echo '</nav>';
@@ -152,7 +152,7 @@
 		echo '<span class="class">', $user['Class'], ' ', $user['Letter'], '</span>';
 		echo '</th></tr><tr>';
 		echo '<td class="td_head">Дата выдачи: </td>';
-		echo '<td class="td_value">', $date, '</td>';
+		echo "<td class='td_value'>$date</td>";
 
     	echo '</tr></table></div></div>';
     	exit();

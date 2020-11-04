@@ -52,12 +52,10 @@
         echo '</form></div>';
 
         if ($order == 'class') {
-            $sort = 'class';
+            $query = "SELECT * FROM `users` WHERE CONCAT(Class,Letter) LIKE '%$q%' ORDER BY Class";
         } else {
-            $sort = "BINARY(lower($order))";
+            $query = "SELECT * FROM `users` WHERE $order LIKE '%$q%' ORDER BY BINARY(lower($order))";
         }
-
-        $query = "SELECT * FROM `users` WHERE $order LIKE '%$q%' ORDER BY ".$sort;
         $result = mysqli_query($mysql, $query);
         $st = mysqli_fetch_assoc($result);
 
