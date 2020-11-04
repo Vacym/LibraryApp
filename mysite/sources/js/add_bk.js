@@ -1,3 +1,5 @@
+// version 1.0 release
+
 window.onload = function() {
     var name    = document.querySelector("input[name=name]");
     var author  = document.querySelector("input[name=author]");

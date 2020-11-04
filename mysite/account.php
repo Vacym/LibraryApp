@@ -1,4 +1,4 @@
-<!-- version 1.3  Вроде что-то пойдет в лучшую сторону -->
+<!-- version 1.0 release -->
 
 <!DOCTYPE html>
 <html>

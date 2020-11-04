@@ -1,3 +1,5 @@
+// version 1.0 release
+
 function ready() {
     class But_message {
         constructor(button) {

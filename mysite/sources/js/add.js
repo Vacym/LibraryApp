@@ -1,4 +1,4 @@
-//version 2.5
+// version 1.0 release
 
 function validation_text(element) {
     if (element.currentTarget) {
