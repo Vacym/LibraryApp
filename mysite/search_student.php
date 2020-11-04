@@ -27,32 +27,16 @@
 
         $arr = array('firstname', 'lastname', 'class', 'letter');
 
-        if (is_ok('q')) {
-            $q = $_GET['q'];
-        } else {
-            $q = '';
-        }
-
-        if (is_ok('order') && in_array($_GET['order'], $arr)) {
-            $order = $_GET['order'];
-        } else {
-            $order = 'surname';
-        }
-
-        if (is_ok('im') && ctype_digit($_GET['im'])) {
-            $im = $_GET['im'];
-        } else {
-            $im = '';
-        }
+        $q     = is_ok('q') ? $_GET['q'] : '';
+        $im    = is_ok('im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
+        $order = is_ok('order') && in_array($_GET['order'], $arr) ? $_GET['order'] : 'surname';
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
-
-        echo '<input type="search" name="q" value="',$q,'" id="input" autocomplete="off" autofocus>';
+        echo "<input type='search' name='q' value='$q' id='input' autocomplete='off' autofocus>";
+        echo '<select name="order">';
 
         $arr = array('surname' => 'Фамилия', 'firstname' => 'Имя', 'lastname' => 'Отчество', 'class' => 'Класс');
-        
-        echo '<select name="order">';
 
         foreach ($arr as $i => $j) {
             if ($i == $order) echo "<option value='$i' selected>$j</option>";
@@ -61,13 +45,19 @@
         echo '</select>';
         
         if ($im) {
-            echo '<input type="hidden" name="im" value=',$im,'>';
+            echo "<input type='hidden' name='im' value='$im'>";
         }
 
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
 
-        $query = "SELECT * FROM `users` WHERE `$order` LIKE '%$q%'";
+        if ($order == 'class') {
+            $sort = 'class';
+        } else {
+            $sort = "BINARY(lower($order))";
+        }
+
+        $query = "SELECT * FROM `users` WHERE $order LIKE '%$q%' ORDER BY ".$sort;
         $result = mysqli_query($mysql, $query);
         $st = mysqli_fetch_assoc($result);
 
@@ -77,9 +67,9 @@
         }
 
         if ($im) {
-            $src = '<a class="inline result" href="get.php?bk='.$im.'&us=';
+            $src = "<a class='inline result' href='get.php?bk=$im&us=";
         } else {
-            $src = '<a class="result" href="/account.php/';
+            $src = "<a class='result' href='/account.php/";
         }
 
         do {   	
@@ -87,7 +77,7 @@
         	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
 
         	echo '<div class="search_result">';
-            echo $src, $id, '">';
+            echo $src, $id, "'>";
             echo '<div class="books">';
 
 			while ($bk = mysqli_fetch_assoc($res)) {
@@ -100,10 +90,8 @@
         	echo '</div>';
         	echo '<div class="student">';
         	echo '<div class="class">', $st['Class'], ' ', $st['Letter'], '</div>';
-        	echo '<div class="FCS">';
-        	echo $st['Surname'], ' ', $st['Firstname'], ' ', $st['Lastname'];
-        	echo '</div></div>';
-        	echo '</a></div>';
+        	echo '<div class="FCS">', $st['Surname'], ' ', $st['Firstname'], ' ', $st['Lastname'], '</div>';
+        	echo '</div></a></div>';
 
         } while ($st = mysqli_fetch_assoc($result));
         

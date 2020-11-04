@@ -12,22 +12,29 @@ window.onload = function() {
 }
 
 function ajaxGet(params) {
-	var request = new XMLHttpRequest();
+    var request = new XMLHttpRequest();
 
-	request.onreadystatechange = function() {
-		if (request.readyState == 4 && request.status == 200) {
-			var req = JSON.parse(request.responseText);
-			if (req['success']) {
-				document.querySelector('#result').innerHTML = 'Ученик успешно добавлен!';
-				document.querySelector("#link").setAttribute('href', `account.php/${req['id']}`);
-			} else {
-				document.querySelector('#result').innerHTML = 'Неправильный ввод!';
-			}
-			
-		}
-	}
+    request.onreadystatechange = function() {
+        if (request.readyState == 4 && request.status == 200) {
+            var req = JSON.parse(request.responseText);
+            if (req['success']) {
+                document.querySelector('#result').innerHTML = 'Ученик успешно добавлен!';
+                document.querySelector('#link').parentElement.classList.remove("mes_dis")
+                document.querySelector("#link").setAttribute('href', `account.php/${req['id']}`);
+                document.querySelector("input[name=firstname]").value = '';
+                document.querySelector("input[name=surname]").value = '';
+                document.querySelector("input[name=lastname]").value = '';
+                document.querySelector("input[name=class]").value = '';
+                document.querySelector("input[name=letter]").value = '';
+            } else {
+                document.querySelector('#result').innerHTML = 'Неправильный ввод!';
+                document.querySelector('#link').parentElement.classList.add("mes_dis")
+            }
 
-	request.open('POST', 'sources/php/check_st.php');
-	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	request.send(params);
+        }
+    }
+
+    request.open('POST', 'sources/php/check_st.php');
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.send(params);
 }

@@ -53,11 +53,11 @@
 		        $comment = $_POST['comment'];
 
 		        $valid_genre   = preg_match("/^[а-я- ]+$/ui", $genre);
+		        $valid_comment = preg_match("/^([а-яё-]|[\., ])+$/ui", $comment);
 		        $valid_author  = preg_match("/^([а-яё-]|[\., ])+$/ui", $author);
 		        $valid_name    = preg_match("/^([а-яё-]|[\., ])+$/ui", $name);
-		        $valid_comment = preg_match("/^([а-яё-]|[\., ])+$/ui", $comment);
 
-		        if (!$valid_name || !$valid_author || !$valid_genre) {
+		        if (!$valid_name || !$valid_author || !$valid_genre || !($valid_comment || $comment == '')) {
 		            echo '<h1>Неправильно введенные данные!</h1>';
 
 		            header("refresh:2;url=/books.php/$id");

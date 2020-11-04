@@ -19,57 +19,38 @@
         $mysql = mysqli_connect('localhost', 'root', '', 'test');
 
         if (!$mysql) { 
-            echo "Ошибка Подключения";
+            echo 'Ошибка Подключения';
             exit(); 
         }
 
         function is_ok($x) { return array_key_exists($x, $_GET); }
 
-        if (is_ok('q')) {
-            $q = $_GET['q'];
-        } else {
-            $q = '';
-        }
+        $arr = array('author', 'genre');
 
-        if (is_ok('order') && $_GET['order'] == 'author') {
-            $order = $_GET['order'];
-        } else {
-            $order = 'name';
-        }
-
-        if (is_ok('im') && ctype_digit($_GET['im'])) {
-            $im = $_GET['im'];
-        } else {
-            $im = '';
-        }
-
-        if (is_ok('del') && $_GET['del'] == '1') {
-            $del = true;
-        } else {
-            $del = false;
-        }
+        $q     = is_ok('q') ? $_GET['q'] : '';
+        $im    = is_ok('im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
+        $del   = is_ok('del') && $_GET['del'] == '1';
+        $order = is_ok('order') && in_array($_GET['order'], $arr) ? $_GET['order'] : 'name';
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
-
-        echo '<input type="search" name="q"     value="',$q,'" id="input" autocomplete="off" autofocus>';
+        echo "<input type='search' name='q' value='$q' id='input' autocomplete='off' autofocus>";
         echo '<select name="order">';
 
-        if ($order == 'name') {
-            echo '<option value="name" selected>Название</option>';
-            echo '<option value="author">Автор</option>';
-        } else {
-            echo '<option value="name">Название</option>';
-            echo '<option value="author" selected>Автор</option>';
+        $arr = array('name' => 'Название', 'author' => 'Автор', 'genre' => 'Жанр');
+
+        foreach ($arr as $i => $j) {
+            if ($i == $order) echo "<option value='$i' selected>$j</option>";
+            else              echo "<option value='$i'>$j</option>"; 
         }
         echo '</select>';
 
         if ($im && $del) {
-            echo '<input type="hidden" name="im" value=',$im,'>';
-            echo '<input type="hidden" name="del" value=1>';
+            echo "<input type='hidden' name='im' value='$im'>";
+            echo "<input type='hidden' name='del' value=1>";
             $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' AND `User_id` = '$im' ORDER BY (`User_id`>0), BINARY(lower($order))";
-        } else if ($im) {
-            echo '<input type="hidden" name="im" value=',$im,'>';
+        } elseif ($im) {
+            echo "<input type='hidden' name='im' value='$im'>";
             $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' ORDER BY (`User_id`>0), BINARY(lower($order))";
         } else {
             $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' ORDER BY BINARY(lower($order))";
@@ -79,7 +60,7 @@
         echo '</form></div>';
                 
         $result = mysqli_query($mysql, $query);
-        $bk = mysqli_fetch_assoc($result);
+        $bk     = mysqli_fetch_assoc($result);
 
         if (is_null($bk)) {
             echo "Ничего не найдено";
@@ -87,11 +68,11 @@
         }
 
         if ($im && $del) {
-            $src = '<a class="inline result" href="give.php?us='.$im.'&bk=';
+            $src = "<a class='inline result' href='give.php?us=$im&bk=";
         } else if ($im) {
-            $src = '<a class="inline result" href="get.php?us='.$im.'&bk=';
+            $src = "<a class='inline result' href='get.php?us=$im&bk=";
         } else {
-            $src = '<a class="inline result" href="books.php/';
+            $src = "<a class='inline result' href='books.php/";
         }
 
         do {
@@ -101,7 +82,7 @@
             
             echo '<div class="search_result">';
 
-            echo $src, $bk['ID'],'">';
+            echo $src, $bk['ID'],"''>";
             
             echo '<div class="name">';
             echo '<span class="name_book">',  $bk['Name'],   '</span>';
