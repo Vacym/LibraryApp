@@ -53,17 +53,26 @@
         echo '<form action="" method="GET">';
 
         echo '<input type="search" name="q"     value="',$q,'" id="input" autocomplete="off" autofocus>';
-        echo '<input type="hidden" name="order" value=',$order,'>';
+        echo '<select name="order">';
 
-        $query = "SELECT * FROM `books` WHERE `$order` LIKE '%$q%'";
+        if ($order == 'name') {
+            echo '<option value="name" selected>Название</option>';
+            echo '<option value="author">Автор</option>';
+        } else {
+            echo '<option value="name">Название</option>';
+            echo '<option value="author" selected>Автор</option>';
+        }
+        echo '</select>';
 
         if ($im && $del) {
             echo '<input type="hidden" name="im" value=',$im,'>';
             echo '<input type="hidden" name="del" value=1>';
-            $query .= " AND `User_id` = '$im' ORDER BY `User_id`";
+            $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' AND `User_id` = '$im' ORDER BY (`User_id`>0), BINARY(lower($order))";
         } else if ($im) {
             echo '<input type="hidden" name="im" value=',$im,'>';
-            $query .= " ORDER BY `User_id`";
+            $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' ORDER BY (`User_id`>0), BINARY(lower($order))";
+        } else {
+            $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' ORDER BY BINARY(lower($order))";
         }
         
         echo '<button type="submit" id="submit"></button>';

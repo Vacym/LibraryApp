@@ -48,8 +48,17 @@
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
 
-        echo '<input type="search" name="q"     value="',$q,'" id="input" autocomplete="off" autofocus>';
-        echo '<input type="hidden" name="order" value=',$order,'>';
+        echo '<input type="search" name="q" value="',$q,'" id="input" autocomplete="off" autofocus>';
+
+        $arr = array('surname' => 'Фамилия', 'firstname' => 'Имя', 'lastname' => 'Отчество', 'class' => 'Класс');
+        
+        echo '<select name="order">';
+
+        foreach ($arr as $i => $j) {
+            if ($i == $order) echo "<option value='$i' selected>$j</option>";
+            else              echo "<option value='$i'>$j</option>"; 
+        }
+        echo '</select>';
         
         if ($im) {
             echo '<input type="hidden" name="im" value=',$im,'>';
