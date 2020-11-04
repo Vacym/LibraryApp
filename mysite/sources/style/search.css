@@ -57,10 +57,9 @@ form {
     transition: background-color .3s;
 }
 
-select[name="order"] {
+select {
     height: calc(23px + 20px + 2px);
     font-size: 20px;
-    font-style: italic;
     flex-basis: auto;
     flex-shrink: 0;
     order: -1;
@@ -97,7 +96,7 @@ option {
 }
 
 #submit:hover,
-select[name="order"]:hover {
+select:hover {
     background-color: #b0b0b0;
 }
 
