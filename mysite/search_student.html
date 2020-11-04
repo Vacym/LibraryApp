@@ -1,4 +1,5 @@
-<!-- version 2.3 -->
+<!-- version 2.4 -->
+<!-- Пример использования -->
 
 <!DOCTYPE html>
 
@@ -16,7 +17,13 @@
 
     <div class="find_input">
         <form action="#" method="get">
-            <input type="search" name="q" id="input" autocomplete="off" value="">
+            <input type="search" name="q" id="input" autocomplete="off" autofocus value="">
+            <select name="order">
+                <option selected>Фамилия</option>
+                <option>Имя</option>
+                <option>Отчество</option>
+                <option>Класс</option>
+            </select>
             <button type="submit" id="submit" onclick="search_click()"></button>
         </form>
     </div>
