@@ -1,11 +1,10 @@
-//version 2.4
+//version 2.5
 
 function validation_text(element) {
     if (element.currentTarget) {
         var element = element.currentTarget
     }
     var id = element.id
-
     var regex = /^[а-яё-]+$/i
 
     if (id == "letter") {
@@ -63,6 +62,15 @@ function button_control() {
     } else {
         document.querySelector("#submit").setAttribute("disabled", "disabled")
     }
+}
+
+function full_check(){
+    console.log("checking")
+    text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
+    for (let x = 0; x < text_inputs.length; x++) {
+        validation_text(text_inputs[x])
+    }
+    full_validation()
 }
 
 function full_validation() {

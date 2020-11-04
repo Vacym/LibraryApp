@@ -21,11 +21,11 @@ function ajaxGet(params) {
                 document.querySelector('#result').innerHTML = 'Ученик успешно добавлен!';
                 document.querySelector('#link').parentElement.classList.remove("mes_dis")
                 document.querySelector("#link").setAttribute('href', `account.php/${req['id']}`);
-                document.querySelector("input[name=firstname]").value = '';
-                document.querySelector("input[name=surname]").value = '';
-                document.querySelector("input[name=lastname]").value = '';
-                document.querySelector("input[name=class]").value = '';
-                document.querySelector("input[name=letter]").value = '';
+                inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
+                for (let x = 0; x < inputs.length; x++) {
+                    inputs[x].value = ''
+                }
+                full_check()
             } else {
                 document.querySelector('#result').innerHTML = 'Неправильный ввод!';
                 document.querySelector('#link').parentElement.classList.add("mes_dis")
