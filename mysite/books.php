@@ -15,7 +15,6 @@
 </head>
 
 <body>
-
 	<a class="but" id="home" href="/"></a>
 
 	<?php
@@ -27,8 +26,7 @@
         $choose = array_shift($url_parts);
 
         if (!ctype_digit($id)){
-        	echo '<h1>Такой страницы не существует!</h1>';
-            exit();
+            exit('<h1>Такой страницы не существует!</h1>');
         }
 
         $mysql = mysqli_connect('localhost', 'root', '', 'test');
@@ -36,8 +34,7 @@
         $book = mysqli_fetch_assoc($q);
 
         if (is_null($book)){
-            echo '<h1>Такой книги не существует!</h1>';
-            exit();
+            exit('<h1>Такой книги не существует!</h1>');
         }
 
     	$user_id = $book['User_id'];
@@ -91,12 +88,12 @@
 
     		foreach ($arr as $i => $j) {
     			echo '<div class="line">';
-    			echo "<input type='text' name='$i' id='$i' value='",$book[ucfirst($i)],"' class='necessary_input' autocomplete='off'>";
+    			echo "<input type='text' name='$i' id='$i' value='{$book[ucfirst($i)]}' class='necessary_input' autocomplete='off'>";
     			echo "<label for='name'>$j</label></div>";
     		}
     		
     		echo '<div class="line">';
-    		echo '<textarea type="text" name="comment" id="comment" autocomplete="off">', $book['Comment'],'</textarea>';
+    		echo "<textarea type='text' name='comment' id='comment' autocomplete='off'>{$book['Comment']}</textarea>";
 		    echo '<label for="comment">Комментарий</label>';
 		    echo '</div><div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
 		    exit(); 
@@ -148,8 +145,8 @@
         else                                 $date = $book['Date_of_issue'];
 
 		echo '<th class="td_head">Ученик</th>';
-		echo '<th class="td_value">', $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'], ' ';
-		echo '<span class="class">', $user['Class'], ' ', $user['Letter'], '</span>';
+		echo "<th class='td_value'>{$user['Surname']} {$user['Firstname']} {$user['Lastname']} ";
+		echo "<span class='class'>{$user['Class']} {$user['Letter']}</span>";
 		echo '</th></tr><tr>';
 		echo '<td class="td_head">Дата выдачи: </td>';
 		echo "<td class='td_value'>$date</td>";

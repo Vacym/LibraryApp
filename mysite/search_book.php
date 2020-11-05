@@ -18,9 +18,8 @@
 
         $mysql = mysqli_connect('localhost', 'root', '', 'test');
 
-        if (!$mysql) { 
-            echo 'Ошибка Подключения';
-            exit(); 
+        if (!$mysql) {
+            exit('Ошибка Подключения'); 
         }
 
         function is_ok($x) { return array_key_exists($x, $_GET); }
@@ -68,11 +67,11 @@
         }
 
         if ($im && $del) {
-            $src = "<a class='inline result' href='give.php?us=$im&bk=";
-        } else if ($im) {
-            $src = "<a class='inline result' href='get.php?us=$im&bk=";
+            $src = "<a class='result valid' href='give.php?us=$im&bk=";
+        } elseif ($im) {
+            $src = "<a class='result valid' href='get.php?us=$im&bk=";
         } else {
-            $src = "<a class='inline result' href='books.php/";
+            $src = "<a class='result valid' href='books.php/";
         }
 
         do {
@@ -82,11 +81,15 @@
             
             echo '<div class="search_result">';
 
-            echo $src, $bk['ID'],"''>";
-            
+            if ($im && !$del && !is_null($id)) {
+            	echo "<a class='result'>";
+            } else {
+            	echo $src, $bk['ID'],"'>";
+            }
+
             echo '<div class="name">';
-            echo '<span class="name_book">',  $bk['Name'],   '</span>';
-            echo '<span class="autor_book">', $bk['Author'], '</span>';
+            echo "<span class='name_book'>{$bk['Name']}</span>";
+            echo "<span class='autor_book'>{$bk['Author']}</span>";
             echo '</div>';
             echo '<div class="status">';
 

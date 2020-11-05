@@ -19,8 +19,7 @@
         $mysql = mysqli_connect('localhost', 'root', '', 'test');
 
         if (!$mysql) { 
-            echo "Ошибка Подключения";
-            exit(); 
+            exit("Ошибка Подключения"); 
         }
 
         function is_ok($x) { return array_key_exists($x, $_GET); }
@@ -65,9 +64,9 @@
         }
 
         if ($im) {
-            $src = "<a class='inline result' href='get.php?bk=$im&us=";
+            $src = "<a class='result valid' href='get.php?bk=$im&us=";
         } else {
-            $src = "<a class='result' href='/account.php/";
+            $src = "<a class='result valid' href='/account.php/";
         }
 
         do {   	
@@ -80,15 +79,15 @@
 
 			while ($bk = mysqli_fetch_assoc($res)) {
         		echo '<div class="book">';
-        		echo '<span class="name_book">', $bk['Name'], '</span>';
-        		echo '<span class="autor_book">', $bk['Author'] , '</span>';
+        		echo "<span class='name_book'>{$bk['Name']}</span>";
+        		echo "<span class='autor_book'>{$bk['Author']}</span>";
         		echo '</div>';
     		}
         	
         	echo '</div>';
         	echo '<div class="student">';
-        	echo '<div class="class">', $st['Class'], ' ', $st['Letter'], '</div>';
-        	echo '<div class="FCS">', $st['Surname'], ' ', $st['Firstname'], ' ', $st['Lastname'], '</div>';
+        	echo "<div class='class'>{$st['Class']} {$st['Letter']}</div>";
+        	echo "<div class='FCS'>{$st['Surname']} {$st['Firstname']} {$st['Lastname']}</div>";
         	echo '</div></a></div>';
 
         } while ($st = mysqli_fetch_assoc($result));

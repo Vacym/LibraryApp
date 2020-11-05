@@ -26,8 +26,7 @@
         $choose = array_shift($url_parts);
 
         if (!ctype_digit($id)){
-            echo '<h1>Такой страницы не существует!</h1>';
-            exit();
+            exit('<h1>Такой страницы не существует!</h1>');
         }
 
         $mysql = mysqli_connect('localhost', 'root', '', 'test');
@@ -35,8 +34,7 @@
         $user = mysqli_fetch_assoc($q);
 
         if (is_null($user)){
-            echo '<h1>Такого пользователя нет</h1>';
-            exit();
+            exit('<h1>Такого пользователя нет</h1>');
         } 
 
         if ($choose == 'edit') {
@@ -95,8 +93,8 @@
 
             foreach ($arr as $i => $j) {
                 echo '<div class="line">';
-                if ($i == 'lastname') echo "<input type='text' name='$i' id='$i' value='",$user[ucfirst($i)],"' autocomplete='off'>";
-                else 				  echo "<input type='text' name='$i' id='$i' value='",$user[ucfirst($i)],"' class='necessary_input' autocomplete='off'>";
+                if ($i == 'lastname') echo "<input type='text' name='$i' id='$i' value='{$user[ucfirst($i)]}' autocomplete='off'>";
+                else 				  echo "<input type='text' name='$i' id='$i' value='{$user[ucfirst($i)]}' class='necessary_input' autocomplete='off'>";
                 echo "<label for='$i'>$j</label></div>";
             }
 
@@ -122,9 +120,9 @@
         echo "<nav><a href='/account.php/$id/edit' class='but' id='edit'></a></nav>";
         echo '<table class="head_information"><tr>';
         echo '<td class="td_head">ФИО: </td>';
-        echo '<td class="td_value">', $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'], '</td></tr><tr>';
+        echo "<td class='td_value'>{$user['Surname']} {$user['Firstname']} {$user['Lastname']}</td></tr><tr>";
         echo '<td class="td_head">Класс: </td>';
-        echo '<td class="td_value">', $user['Class'], $user['Letter'], '</td>';
+        echo "<td class='td_value'>{$user['Class']}{$user['Letter']}</td>";
         echo '</tr></table></div>';
         echo '<div class="information">';
         echo '<nav>';
@@ -155,7 +153,7 @@
             else                                 $date = $book['Date_of_issue'];
 
             echo '<tr>';
-            echo '<td class="td_head">',$book['Name'],'</td>';
+            echo "<td class='td_head'>{$book['Name']}</td>";
             echo "<td class='td_value'>$date</td>";
             echo '</tr>';
 
