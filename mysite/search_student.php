@@ -68,12 +68,13 @@
         } else {
             $src = "<a class='result valid' href='/account.php/";
         }
+        
+        echo '<div class="search_result">';
 
         do {   	
             $id = $st['ID'];
         	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
 
-        	echo '<div class="search_result">';
             echo $src, $id, "'>";
             echo '<div class="books">';
 
@@ -88,9 +89,11 @@
         	echo '<div class="student">';
         	echo "<div class='class'>{$st['Class']} {$st['Letter']}</div>";
         	echo "<div class='FCS'>{$st['Surname']} {$st['Firstname']} {$st['Lastname']}</div>";
-        	echo '</div></a></div>';
+        	echo '</div></a>';
 
         } while ($st = mysqli_fetch_assoc($result));
+
+        echo '</div>';
         
     ?>
 

@@ -74,12 +74,12 @@
             $src = "<a class='result valid' href='books.php/";
         }
 
+        echo '<div class="search_result">';
+
         do {
             $id = $bk['User_id'];
             $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
             $user = mysqli_fetch_assoc($res);
-            
-            echo '<div class="search_result">';
 
             if ($im && !$del && !is_null($id)) {
             	echo "<a class='result'>";
@@ -99,9 +99,10 @@
             else {
                 echo $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'];
             }
-            echo '</div></a></div>';
+            echo '</div></a>';
         } while ($bk = mysqli_fetch_assoc($result));
         
+        echo '</div>'
     ?>
 
 </body>
