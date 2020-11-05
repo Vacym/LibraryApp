@@ -84,7 +84,7 @@ option {
 }
 
 #input:focus~#submit,
-#input:focus~select[name="order"] {
+#input:focus~select {
     background-color: #0fc3f5;
 }
 
@@ -117,14 +117,20 @@ select:hover {
     height: max-content;
     margin: 10px auto;
     padding: 10px;
-    border: 4px solid #e3e3e3;
+    border: 4px solid #777;
     border-radius: 10px;
+    color: #bbb;
     background-color: rgba(0, 0, 0, .7);
     transition: background-color .15s linear;
 }
 
+.valid {
+    border: 4px solid #e3e3e3;
+    color: white;
+}
+
 .valid:hover {
-    background-color: rgba(255, 255, 255, .3);
+    background-color: rgba(255, 255, 255, .2);
 }
 
 .personal_information {
