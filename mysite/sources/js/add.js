@@ -12,9 +12,8 @@ function validation_text(element) {
         regex = /^[А-Я]$/
     } else if (id == "class") {
         regex = /^([1-9]|1[01])$/
-    } else if (id == "id") {
+    } else if (id == "id" || id == "quantity") {
         regex = /^[0-9]+$/
-        console.log("id")
     } else if (id == "name" || id == "comment" || id == "author") {
         regex = /^([а-яё-]|[\., ])+$/i
     }
@@ -95,6 +94,16 @@ function full_validation() {
     return true
 }
 
+function show_group(e) {
+    let vis_box = document.querySelector(".for_group")
+    if (e.checked) {
+        vis_box.classList.remove("hidden")
+    } else {
+        vis_box.classList.add("hidden")
+    }
+
+}
+
 function ready() {
     function textarea_size(e) {
 
@@ -105,7 +114,7 @@ function ready() {
     var text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
         // запуск прослушивания событий для текстовых полей
     for (let x = 0; x < text_inputs.length; x++) {
-        text_inputs[x].addEventListener("change", validation_text)
+        text_inputs[x].addEventListener("input", validation_text)
         validation_text(text_inputs[x])
     }
     textarea_list = document.querySelectorAll('textarea')
