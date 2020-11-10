@@ -1,13 +1,13 @@
-/* version 1.0 release */
+/* version 1.0 */
 
 html {
-    background: url(../files/book.jpg);
-    -webkit-background-size: cover;
+    height: 100%;
+    font-family: sans-serif;
+    color: white;
+    background: url("../files/book.jpg");
     background-size: cover;
     background-attachment: fixed;
-    font-family: sans-serif;
-    height: 100%;
-    color: white;
+    background-position-x: center;
 }
 
 form {
@@ -19,32 +19,37 @@ form {
 }
 
 form h1 {
-    background: rgba(0, 0, 0, 0);
     margin: 30px 100px;
     padding: 0;
     text-align: center;
-    color: #fff;
     font-size: 30px;
+    color: #fff;
     text-transform: uppercase;
+    background: rgba(0, 0, 0, 0);
 }
 
 form .line {
-    background: rgba(0, 0, 0, .7);
     margin: 15px 40px;
     text-align: center;
+    background: rgba(0, 0, 0, .7);
 }
 
 form input,
 textarea {
-    padding: 10px;
     width: 100%;
-    color: #fff;
+    padding: 10px;
     font-size: 20px;
+    color: #fff;
     background: none;
     outline: none;
     border: 1px solid #fff;
     box-sizing: border-box;
     transition: .3s;
+}
+
+form input[type="checkbox"],
+#quantity {
+    width: auto;
 }
 
 form input.bad_input,
@@ -71,20 +76,28 @@ form textarea {
 
 form #submit {
     margin-top: 20px;
-    color: #fff;
     font-weight: bold;
+    color: #fff;
     background: #0fc3f5;
     border: none;
     transition: .3s;
 }
 
-form #submit:enabled:hover {
+form #submit:enabled:hover,
+form #submit:enabled:focus {
     background: #4442db;
     cursor: pointer;
 }
 
 form #submit:disabled {
     background: #888;
+}
+
+
+/* for_group */
+
+.for_group input[type="number"] {
+    min-width: 100px;
 }
 
 
@@ -100,10 +113,10 @@ a {
     display: flex;
     width: 40px;
     height: 40px;
-    border: 1px ridge white;
     margin-bottom: 4px;
     justify-content: center;
     align-items: center;
+    border: 1px ridge white;
     opacity: .5;
     transition: opacity .15s linear;
 }
@@ -112,11 +125,12 @@ a {
     content: "\f015";
     display: flex;
     font-family: FontAwesome;
-    color: white;
     font-size: 25px;
+    color: white;
 }
 
-.but:hover {
-    opacity: 1;
+.but:hover,
+.but:focus {
     background-color: rgba(0, 0, 0, 1);
+    opacity: 1;
 }

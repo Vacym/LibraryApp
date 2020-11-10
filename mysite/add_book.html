@@ -21,7 +21,7 @@
     <form>
         <h1>Добавить Книгу</h1>
         <div class="line">
-            <input type="number" name="id" id="id" placeholder="ID: 0001" min="0" autocomplete="off">
+            <input type="number" name="id" id="id" placeholder="ID: 001" min="0" autocomplete="off">
         </div>
         <div class="line">
             <input type="text" name="name" id="name" placeholder="Название" class="necessary_input" autocomplete="off">
@@ -35,6 +35,22 @@
         <div class="line">
             <textarea type="text" name="comment" id="comment" placeholder="Комментарий" autocomplete="off"></textarea>
         </div>
+        <div class="line">
+            <input type="checkbox" name="group" id="group" value="Создать группу книг">Создать Группу книг
+        </div>
+        <div class="for_group">
+            <div class="line">
+                <input type="number" name="quantity" id="quantity" placeholder="Количество копий" min="0" autocomplete="off">
+                <input type="checkbox" name="auto_id" id="auto_id" value="auto_id" checked><label for="auto_id">Автоматический ID</label>
+            </div>
+            <div class="list_id">
+                <div class="line">
+                    <input type="number" name="id" placeholder="ID книг: 001-035" min="0" autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+
         <div>
             <input type="button" id="submit" value="Создать" message="create" disabled>
         </div>
