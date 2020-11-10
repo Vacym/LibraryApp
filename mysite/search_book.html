@@ -1,4 +1,4 @@
-<!-- version 1.0 release -->
+<!-- version 1.1 release -->
 <!-- Пример использования -->
 
 <!DOCTYPE html>
@@ -24,13 +24,15 @@
             <select name="order">
                 <option selected>Название</option>
                 <option>Автор</option>
+                <option>ID</option>
+                <option>Жанр</option>
             </select>
             <button type="submit" id="submit" onclick="search_click()"></button>
         </form>
     </div>
 
     <div class="search_result">
-        <a class="result" href="account_b.html">
+        <a class="valid result" href="account_b.html">
             <div class="name">
                 <span class="name_book">Что делать?</span>
                 <span class="autor_book">Чернышевский</span>
@@ -39,7 +41,7 @@
                 Cвободна
             </div>
         </a>
-        <a class="inline result" href="account_b.html" status="empl">
+        <a class="result" status="empl">
             <div class="name">
                 <span class="name_book">Чего не делать?</span>
                 <span class="autor_book">Путин</span>

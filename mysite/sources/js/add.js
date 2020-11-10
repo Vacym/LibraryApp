@@ -1,4 +1,4 @@
-// version 1.0 release
+// version 1.1 release
 
 function validation_text(element) {
     if (element.currentTarget) {
@@ -12,6 +12,9 @@ function validation_text(element) {
         regex = /^[А-Я]$/
     } else if (id == "class") {
         regex = /^([1-9]|1[01])$/
+    } else if (id == "id") {
+        regex = /^[0-9]+$/
+        console.log("id")
     } else if (id == "name" || id == "comment" || id == "author") {
         regex = /^([а-яё-]|[\., ])+$/i
     }
@@ -64,7 +67,7 @@ function button_control() {
     }
 }
 
-function full_check(){
+function full_check() {
     console.log("checking")
     text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
     for (let x = 0; x < text_inputs.length; x++) {

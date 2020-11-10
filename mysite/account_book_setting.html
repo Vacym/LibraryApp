@@ -1,4 +1,4 @@
-<!-- version 1.0 release -->
+<!-- version 1.1 release -->
 <!-- Пример использования -->
 
 <!DOCTYPE html>
@@ -26,11 +26,10 @@
         </nav>
         <form action="save_settings.php_or_what_are_you_want?" method="POST">
             <div class="line">
-                <!-- value наверно через php будешь доставать
-                из базы данных и вставлять.
-                Точно так же можно сделать и в поиске,
-                что бы после нажатия на кнопку текст не исчезал,
-                а его можно было так же редактировать -->
+                <input type="text" name="id" id="id" value="002" class="necessary_input" autocomplete="off">
+                <label for="author">ID</label>
+            </div>
+            <div class="line">
                 <input type="text" name="name" id="name" value="Алиса в Стране чудес" class="necessary_input" autocomplete="off">
                 <label for="name">Название</label>
             </div>
