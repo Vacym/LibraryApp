@@ -16,7 +16,7 @@
 
     <?php
 
-    	$mysql = mysqli_connect('localhost', 'root', '', 'test');
+    	$mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
         if (!$mysql) { 
             echo "Ошибка Подключения";
@@ -55,40 +55,41 @@
         	else {
         		$query = mysqli_query($mysql, "UPDATE `books` SET `User_id` = NULL, `Date_of_issue` = '$date' WHERE `ID` = '$bk'");
 
-        		echo '<h1>Успешно отправлено!</h1>';
+        		echo '<h1>Книга успешно откреплена!</h1>';
         	}
 
-        	header("refresh:2;url=/account.php/$id");
+        	header("refresh:1;url=/account.php/$id");
         	exit();
         }
-
-    	echo '<div class="box">';
-    	echo '<div class="head">';
-    	echo '<form action="" method="post">';
-    	echo '<table class="head_information">';
-    	echo '<tr>';
-    	echo '<td class="td_head">Книга: </td>';
-    	echo '<td class="td_value">', $book['Name'];
-    	echo '<div class="little">', $book['Author'], '</div>';
-    	echo '</td>';
-    	echo '<td class="td_edit">';
-    	echo '<a href="/search_book.php?im=',$_GET['us'],'&del=1" class="but" id="edit"></a>';
-    	echo '</td>';
-    	echo '</tr>';
-    	echo '<tr>';
-    	echo '<td class="td_head">Ученик: </td>';
-    	echo '<td class="td_value">', $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'];
-    	echo '<div class="little">', $user['Class'], ' ', $user['Letter'], '</div>';
- 		echo '</tr>';
- 		echo '<tr>';
- 		echo '<td class="td_head">Дата: </td>';
- 		echo '<td class="td_value"><input type="date" name="date" id="date" value="', date("Y-m-d"),'"></td>';
- 		echo '</tr>';
- 		echo '</table>';
- 		echo '<input type="submit" value="Сдать">';
- 		echo '</form></div></div>';
-
     ?>
+
+    <div class="box">
+    	<div class="head">
+    	   <form action="" method="post">
+    	       <table class="head_information">
+    	           <tr>
+    	               <td class="td_head">Книга: </td>
+    	               <td class="td_value"><?php echo $book['Name'] ?>
+    	               <div class="little"><?php echo $book['Author'] ?></div></td>
+    	               <td class="td_edit">
+    	                   <a href="/search_book.php?im=<?php echo $_GET['us'] ?>&del=1" class="but" id="edit"></a>
+    	               </td>
+    	           </tr>
+    	           <tr>
+    	               <td class="td_head">Ученик: </td>
+    	               <td class="td_value"><?php echo $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'] ?>
+    	               <div class="little"><?php echo $user['Class'], ' ', $user['Letter'] ?></div>
+                       </td>
+ 		           </tr>
+ 		           <tr>
+ 		               <td class="td_head">Дата: </td>
+ 		               <td class="td_value"><input type="date" name="date" id="date" value="<?php echo date("Y-m-d") ?>"></td>
+ 		           </tr>
+ 		       </table>
+ 		       <input type="submit" value="Сдать">
+           </form>
+        </div>
+    </div>
 
 </body>
 

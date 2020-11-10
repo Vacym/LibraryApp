@@ -29,7 +29,7 @@
             exit('<h1>Такой страницы не существует!</h1>');
         }
 
-        $mysql = mysqli_connect('localhost', 'root', '', 'test');
+        $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
         $q = mysqli_query($mysql, "SELECT * FROM `books` WHERE id = '$id'");
         $book = mysqli_fetch_assoc($q);
 

@@ -16,7 +16,7 @@
 
     <?php
 
-        $mysql = mysqli_connect('localhost', 'root', '', 'test');
+        $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
         if (!$mysql) { 
             exit("Ошибка Подключения"); 

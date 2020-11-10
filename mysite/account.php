@@ -29,7 +29,7 @@
             exit('<h1>Такой страницы не существует!</h1>');
         }
 
-        $mysql = mysqli_connect('localhost', 'root', '', 'test');
+        $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
         $q = mysqli_query($mysql, "SELECT * FROM `users` WHERE id = '$id'");
         $user = mysqli_fetch_assoc($q);
 
@@ -53,7 +53,6 @@
                 $valid_lttr = preg_match("/^[А-Я]$/u", $letter);
 
                 if (trim($lastname) == "") {
-                    $lastname = "Без отчества";
                     $valid_last = True;
                 }
 
@@ -68,11 +67,9 @@
                 
                 echo '<h1>Ученик успешно изменен!</h1>';
 
-                header("refresh:2;url=/account.php/$id");
+                header("refresh:1;url=/account.php/$id");
                 exit();
             }
-
-            if ($user['Lastname'] == 'Без отчества') $user['Lastname'] = '';
 
             echo "<div class='box'>";
             echo '<h1>Редактировать профиль</h1>';    

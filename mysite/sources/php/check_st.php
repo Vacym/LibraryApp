@@ -31,7 +31,6 @@
     $valid_lttr = preg_match("/^[А-Я]$/u", $letter);
 
     if (trim($lastname) == "") {
-        $lastname = "Без отчества";
         $valid_last = True;
     }
 
@@ -39,7 +38,7 @@
         send();
     }
 
-    $mysql = mysqli_connect('localhost', 'root', '', 'test');
+    $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
     
     mysqli_query($mysql, "INSERT INTO `users` (`Firstname`, `Surname`, `Lastname`, `Class`, `Letter`) VALUES ('$firstname', '$surname', '$lastname', '$class', '$letter')");
     

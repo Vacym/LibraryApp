@@ -32,7 +32,7 @@
         send();
     }
 
-    $mysql = mysqli_connect('localhost', 'root', '', 'test');
+    $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
     mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`) VALUES ('$name', '$author', '$genre', '$comment')");
 
