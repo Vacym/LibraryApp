@@ -19,16 +19,14 @@
         $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
         if (!$mysql) { 
-            exit("Ошибка Подключения"); 
+            exit('Ошибка Подключения'); 
         }
 
-        function is_ok($x) { return array_key_exists($x, $_GET); }
+        $q     = filter_input(INPUT_GET, 'q');
+        $im    = filter_input(INPUT_GET, 'im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
+        $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['firstname', 'lastname', 'class', 'letter']) ? $_GET['order'] : 'surname';
 
-        $arr = array('firstname', 'lastname', 'class', 'letter');
-
-        $q     = is_ok('q') ? $_GET['q'] : '';
-        $im    = is_ok('im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
-        $order = is_ok('order') && in_array($_GET['order'], $arr) ? $_GET['order'] : 'surname';
+        if (preg_match('/[^а-я ]+/ui', $q)) $q = '';
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
@@ -51,9 +49,9 @@
         echo '</form></div>';
 
         if ($order == 'class') {
-            $query = "SELECT * FROM `users` WHERE CONCAT(Class,Letter) LIKE '%$q%' ORDER BY Class";
+            $query = "SELECT * FROM `users` WHERE CONCAT(Class,Letter) LIKE '$q%' ORDER BY Class";
         } else {
-            $query = "SELECT * FROM `users` WHERE $order LIKE '%$q%' ORDER BY BINARY(lower($order))";
+            $query = "SELECT * FROM `users` WHERE $order LIKE '$q%' ORDER BY BINARY(lower($order))";
         }
         $result = mysqli_query($mysql, $query);
         $st = mysqli_fetch_assoc($result);

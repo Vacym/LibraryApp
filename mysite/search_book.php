@@ -22,14 +22,12 @@
             exit('Ошибка Подключения'); 
         }
 
-        function is_ok($x) { return array_key_exists($x, $_GET); }
+        $q     = filter_input(INPUT_GET, 'q');
+        $del   = filter_input(INPUT_GET, 'del') && $_GET['del'] == '1';
+        $im    = filter_input(INPUT_GET, 'im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
+        $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre']) ? $_GET['order'] : 'name';
 
-        $arr = array('author', 'genre');
-
-        $q     = is_ok('q') ? $_GET['q'] : '';
-        $im    = is_ok('im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
-        $del   = is_ok('del') && $_GET['del'] == '1';
-        $order = is_ok('order') && in_array($_GET['order'], $arr) ? $_GET['order'] : 'name';
+        if (preg_match('/[^а-я ]+/ui', $q)) $q = '';
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
@@ -47,12 +45,12 @@
         if ($im && $del) {
             echo "<input type='hidden' name='im' value='$im'>";
             echo "<input type='hidden' name='del' value=1>";
-            $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' AND `User_id` = '$im' ORDER BY (`User_id`>0), BINARY(lower($order))";
+            $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' AND `User_id` = '$im' ORDER BY (`User_id`>0), BINARY(lower($order))";
         } elseif ($im) {
             echo "<input type='hidden' name='im' value='$im'>";
-            $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' ORDER BY (`User_id`>0), BINARY(lower($order))";
+            $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ORDER BY (`User_id`>0), BINARY(lower($order))";
         } else {
-            $query = "SELECT * FROM `books` WHERE $order LIKE '%$q%' ORDER BY BINARY(lower($order))";
+            $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ORDER BY BINARY(lower($order))";
         }
         
         echo '<button type="submit" id="submit"></button>';
