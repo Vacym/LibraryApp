@@ -14,8 +14,10 @@ form {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    display: block;
     background: rgba(0, 0, 0, .7);
+    transform: translate(-50%, -50%);
+    transition: .25s;
 }
 
 form h1 {
@@ -96,8 +98,101 @@ form #submit:disabled {
 
 /* for_group */
 
+.for_group {
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    display: none;
+    opacity: 0;
+    transform: translate(0, -100%);
+    transition: .25s;
+}
+
 .for_group input[type="number"] {
     min-width: 100px;
+}
+
+.for_group.fading {
+    display: block;
+}
+
+.for_group.show {
+    display: block;
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+.illusion {
+    position: relative;
+    height: 0px;
+    z-index: -2;
+    transition: .25s;
+}
+
+.illusion.show {
+    height: 170px;
+}
+
+
+/* стилизация checkbox */
+
+input[type="checkbox"] {
+    /*opacity: 0;*/
+    display: none;
+}
+
+.single_checkbox label::before {
+    content: "";
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    border: 1px solid;
+}
+
+.single_checkbox label::after {
+    content: '';
+    display: inline-block;
+    height: 6px;
+    width: 9px;
+    border-left: 2px solid;
+    border-bottom: 2px solid;
+    opacity: 0;
+    transform: rotate(-45deg);
+    transition: opacity .1s;
+}
+
+.single_checkbox label {
+    position: relative;
+    padding-left: 22px;
+}
+
+.single_checkbox label::before,
+.single_checkbox label::after {
+    position: absolute;
+}
+
+.single_checkbox input[type="checkbox"]:checked+label::after {
+    opacity: 1;
+}
+
+.single_checkbox input[type="checkbox"]:focus+label::before {
+    outline: rgb(59, 153, 252) auto 5px;
+}
+
+.single_checkbox label::before {
+    top: 3px;
+    left: 0px;
+}
+
+.single_checkbox label::after {
+    top: 5.5px;
+    left: 4px;
+}
+
+.group_checkbox {
+    display: block;
+    width: 100%;
+    border: 1px solid #fff;
 }
 
 

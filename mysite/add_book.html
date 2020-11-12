@@ -8,8 +8,9 @@
     <title>Добавление книги</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="sources/style/add.css">
     <link rel="stylesheet" href="sources/style/message.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/add.css">
+    <!--link rel="stylesheet" href="sources/style/message.css"-->
     <script type="text/javascript" src="sources/js/add.js"></script>
     <script type="text/javascript" src="sources/js/add_bk.js"></script>
     <script type="text/javascript" src="sources/js/message.js"></script>
@@ -36,16 +37,23 @@
             <textarea type="text" name="comment" id="comment" placeholder="Комментарий" autocomplete="off"></textarea>
         </div>
         <div class="line">
-            <input type="checkbox" name="group" id="group" value="Создать группу книг">Создать Группу книг
+            <input checked type="checkbox" name="group" id="group_checkbox" onchange="show_group(this)" value="Создать группу книг">
+            <label for="group_checkbox" class="group_checkbox">Создать Группу книг</label>
         </div>
-        <div class="for_group">
-            <div class="line">
-                <input type="number" name="quantity" id="quantity" placeholder="Количество копий" min="0" autocomplete="off">
-                <input type="checkbox" name="auto_id" id="auto_id" value="auto_id" checked><label for="auto_id">Автоматический ID</label>
-            </div>
-            <div class="list_id">
+        <div class="illusion">
+            <div class="for_group">
                 <div class="line">
-                    <input type="number" name="id" placeholder="ID книг: 001-035" min="0" autocomplete="off">
+                    <input type="number" name="quantity" id="quantity" placeholder="Количество копий" min="0" autocomplete="off">
+                    <div class="single_checkbox">
+                        <input type="checkbox" name="auto_id" id="auto_id" value="auto_id" checked>
+                        <label for="auto_id">Авто ID</label>
+                    </div>
+                </div>
+
+                <div class="list_id">
+                    <div class="line">
+                        <input type="number" name="id" placeholder="ID книг: 001-035" min="0" autocomplete="off">
+                    </div>
                 </div>
             </div>
         </div>

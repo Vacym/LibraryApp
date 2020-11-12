@@ -95,11 +95,33 @@ function full_validation() {
 }
 
 function show_group(e) {
+    function toggle(a, b) {
+        vis_box.classList.add(a)
+        vis_box.classList.remove(b)
+    }
+
+    function add_show() {
+        vis_box.classList.add("fading")
+        setTimeout(() => {
+            toggle("show", "fading");
+            illusion.classList.add("show")
+        }, 1)
+    }
+
+    function del_show() {
+        toggle("fading", "show")
+        illusion.classList.remove("show")
+        setTimeout(() => vis_box.classList.remove("fading"), 250);
+    }
+
+
+
     let vis_box = document.querySelector(".for_group")
+    let illusion = document.querySelector(".illusion")
     if (e.checked) {
-        vis_box.classList.remove("hidden")
+        add_show()
     } else {
-        vis_box.classList.add("hidden")
+        del_show()
     }
 
 }
