@@ -12,7 +12,7 @@ function validation_text(element) {
         regex = /^[А-Я]$/
     } else if (id == "class") {
         regex = /^([1-9]|1[01])$/
-    } else if (id == "id" || id == "quantity") {
+    } else if (id == "id" || id == "quantity" || id.includes("book_id_")) {
         regex = /^[0-9]+$/
     } else if (id == "name" || id == "comment" || id == "author") {
         regex = /^([а-яё-]|[\., ])+$/i
@@ -94,37 +94,7 @@ function full_validation() {
     return true
 }
 
-function show_group(e) {
-    function toggle(a, b) {
-        vis_box.classList.add(a)
-        vis_box.classList.remove(b)
-    }
 
-    function add_show() {
-        vis_box.classList.add("fading")
-        setTimeout(() => {
-            toggle("show", "fading");
-            illusion.classList.add("show")
-        }, 1)
-    }
-
-    function del_show() {
-        toggle("fading", "show")
-        illusion.classList.remove("show")
-        setTimeout(() => vis_box.classList.remove("fading"), 250);
-    }
-
-
-
-    let vis_box = document.querySelector(".for_group")
-    let illusion = document.querySelector(".illusion")
-    if (e.checked) {
-        add_show()
-    } else {
-        del_show()
-    }
-
-}
 
 function ready() {
     function textarea_size(e) {

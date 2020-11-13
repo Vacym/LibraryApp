@@ -1,4 +1,4 @@
-/* version 1.0 */
+/* version 1.1 release */
 
 html {
     height: 100%;
@@ -14,6 +14,7 @@ form {
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index: 50;
     display: block;
     background: rgba(0, 0, 0, .7);
     transform: translate(-50%, -50%);
@@ -98,10 +99,11 @@ form #submit:disabled {
 
 /* for_group */
 
-.for_group {
-    width: 100%;
+.for_group,
+.list_id {
     position: absolute;
-    z-index: -1;
+    width: 100%;
+    z-index: 40;
     display: none;
     opacity: 0;
     transform: translate(0, -100%);
@@ -109,14 +111,17 @@ form #submit:disabled {
 }
 
 .for_group input[type="number"] {
+    width: 80%;
     min-width: 100px;
 }
 
-.for_group.fading {
+.for_group.fading,
+.list_id.fading {
     display: block;
 }
 
-.for_group.show {
+.for_group.show,
+.list_id.show {
     display: block;
     opacity: 1;
     transform: translate(0, 0);
@@ -125,12 +130,20 @@ form #submit:disabled {
 .illusion {
     position: relative;
     height: 0px;
-    z-index: -2;
+    width: 100%;
+    z-index: 30;
     transition: .25s;
 }
 
-.illusion.show {
-    height: 170px;
+.list_id {
+    position: relative;
+    max-height: 200px;
+    overflow-y: scroll;
+    background: rgba(0, 0, 0, .7);
+}
+
+.list_id .line {
+    background: none;
 }
 
 
@@ -180,19 +193,25 @@ input[type="checkbox"] {
 }
 
 .single_checkbox label::before {
-    top: 3px;
+    top: 0px;
     left: 0px;
 }
 
 .single_checkbox label::after {
-    top: 5.5px;
+    top: 3px;
     left: 4px;
 }
 
 .group_checkbox {
     display: block;
     width: 100%;
+    padding: 5px 0px;
     border: 1px solid #fff;
+}
+
+#quantity {
+    margin-right: 10px;
+    width: 205px;
 }
 
 

@@ -8,11 +8,11 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 50;
+    z-index: 90;
     transition: .25s;
 }
 
-.fading {
+.dark.fading {
     display: initial;
 }
 
@@ -41,7 +41,7 @@
     font-size: 110%;
 }
 
-.show {
+.dark.show {
     display: initial;
     background-color: rgba(90, 90, 90, .5);
 }

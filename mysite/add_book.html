@@ -1,4 +1,4 @@
-<!-- version 1.1 release -->
+<!-- version 1.2 release -->
 
 <!DOCTYPE html>
 <html>
@@ -13,6 +13,7 @@
     <!--link rel="stylesheet" href="sources/style/message.css"-->
     <script type="text/javascript" src="sources/js/add.js"></script>
     <script type="text/javascript" src="sources/js/add_bk.js"></script>
+    <script type="text/javascript" src="sources/js/add_book.js"></script>
     <script type="text/javascript" src="sources/js/message.js"></script>
 </head>
 
@@ -37,22 +38,35 @@
             <textarea type="text" name="comment" id="comment" placeholder="Комментарий" autocomplete="off"></textarea>
         </div>
         <div class="line">
-            <input checked type="checkbox" name="group" id="group_checkbox" onchange="show_group(this)" value="Создать группу книг">
+            <input type="checkbox" name="group" id="group_checkbox" onchange="show_group(this, '.for_group', true, true)" value="Создать группу книг">
             <label for="group_checkbox" class="group_checkbox">Создать Группу книг</label>
         </div>
         <div class="illusion">
             <div class="for_group">
                 <div class="line">
                     <input type="number" name="quantity" id="quantity" placeholder="Количество копий" min="0" autocomplete="off">
-                    <div class="single_checkbox">
-                        <input type="checkbox" name="auto_id" id="auto_id" value="auto_id" checked>
+                    <span class="single_checkbox">
+                        <input type="checkbox" name="auto_id" id="auto_id" value="auto_id" onchange="show_group(this, '.list_id', false)" checked>
                         <label for="auto_id">Авто ID</label>
-                    </div>
+                    </span>
                 </div>
 
                 <div class="list_id">
                     <div class="line">
-                        <input type="number" name="id" placeholder="ID книг: 001-035" min="0" autocomplete="off">
+                        <span>1. </span>
+                        <input type="number" name="book_id_1" placeholder="ID 1" id="book_id_1" min="0" autocomplete="off">
+                    </div>
+                    <div class="line">
+                        <span>2. </span>
+                        <input type="number" name="book_id_2" placeholder="ID 2" id="book_id_2" min="0" autocomplete="off">
+                    </div>
+                    <div class="line">
+                        <span>3. </span>
+                        <input type="number" name="book_id_3" placeholder="ID 3" id="book_id_3" min="0" autocomplete="off">
+                    </div>
+                    <div class="line">
+                        <span>4. </span>
+                        <input type="number" name="book_id_4" placeholder="ID 4" id="book_id_4" min="0" autocomplete="off">
                     </div>
                 </div>
             </div>
