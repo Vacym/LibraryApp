@@ -25,16 +25,16 @@
         $q     = filter_input(INPUT_GET, 'q');
         $del   = filter_input(INPUT_GET, 'del') && $_GET['del'] == '1';
         $im    = filter_input(INPUT_GET, 'im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
-        $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre']) ? $_GET['order'] : 'name';
+        $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no']) ? $_GET['order'] : 'name';
 
-        if (preg_match('/[^а-я ]+/ui', $q)) $q = '';
+        if (!preg_match('/^(\d|[а-я ]|[\.-])+$/ui', $q)) $q = '';
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
         echo "<input type='search' name='q' value='$q' id='input' autocomplete='off' autofocus>";
         echo '<select name="order">';
 
-        $arr = array('name' => 'Название', 'author' => 'Автор', 'genre' => 'Жанр');
+        $arr = array('name' => 'Название', 'author' => 'Автор', 'inventory_no' => 'ID', 'genre' => 'Жанр');
 
         foreach ($arr as $i => $j) {
             if ($i == $order) echo "<option value='$i' selected>$j</option>";

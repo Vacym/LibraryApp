@@ -26,7 +26,7 @@
         $im    = filter_input(INPUT_GET, 'im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
         $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['firstname', 'lastname', 'class', 'letter']) ? $_GET['order'] : 'surname';
 
-        if (preg_match('/[^а-я ]+/ui', $q)) $q = '';
+        if (!preg_match('/^(\d|[а-я ]|[\.-])+$/ui', $q)) $q = '';
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
