@@ -2,12 +2,14 @@
 
 window.onload = function() {
     var name    = document.querySelector("input[name=name]");
-    var author  = document.querySelector("input[name=author]");
     var genre   = document.querySelector("input[name=genre]");
+    var count   = document.querySelector("input[name=quantity]");
+    var author  = document.querySelector("input[name=author]");
+    var book_id = document.querySelector("input[name=id]");
     var comment = document.querySelector("textarea[name=comment]");
 
     document.querySelector('#submit').onclick = function() {
-        var params = `name=${name.value}&author=${author.value}&genre=${genre.value}&comment=${comment.value}`;
+        var params = `name=${name.value}&author=${author.value}&genre=${genre.value}&comment=${comment.value}&id=${book_id.value}&count=${count.value}`;
         ajaxGet(params);
     }
 }

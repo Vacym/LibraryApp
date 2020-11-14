@@ -13,7 +13,7 @@ function validation_text(element) {
     } else if (id == "class") {
         regex = /^([1-9]|1[01])$/
     } else if (id == "id" || id == "quantity" || id.includes("book_id_")) {
-        regex = /^[0-9]+$/
+        regex = /^\d+$/
     } else if (id == "name" || id == "comment" || id == "author") {
         regex = /^([а-яё-]|[\., ])+$/i
     }
