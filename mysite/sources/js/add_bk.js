@@ -7,8 +7,11 @@ window.onload = function() {
     var author  = document.querySelector("input[name=author]");
     var book_id = document.querySelector("input[name=id]");
     var comment = document.querySelector("textarea[name=comment]");
+    var books   = document.querySelectorAll(".books");
 
     document.querySelector('#submit').onclick = function() {
+        console.log(books.value);
+
         var params = `name=${name.value}&author=${author.value}&genre=${genre.value}&comment=${comment.value}&id=${book_id.value}&count=${count.value}`;
         ajaxGet(params);
     }

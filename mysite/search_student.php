@@ -61,33 +61,33 @@
             exit();
         }
 
+        echo '<div class="search_result">';
+
         if ($im) {
             $src = "<a class='result valid' href='get.php?bk=$im&us=";
         } else {
             $src = "<a class='result valid' href='/account.php/";
         }
-        
-        echo '<div class="search_result">';
 
-        do {   	
+        do {    
             $id = $st['ID'];
-        	$res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
+            $res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
 
             echo $src, $id, "'>";
-            echo '<div class="books">';
+            echo '<div class="left_part">';
 
-			while ($bk = mysqli_fetch_assoc($res)) {
-        		echo '<div class="book">';
-        		echo "<span class='name_book'>{$bk['Name']}</span>";
-        		echo "<span class='autor_book'>{$bk['Author']}</span>";
-        		echo '</div>';
-    		}
-        	
-        	echo '</div>';
-        	echo '<div class="student">';
-        	echo "<div class='class'>{$st['Class']} {$st['Letter']}</div>";
-        	echo "<div class='FCS'>{$st['Surname']} {$st['Firstname']} {$st['Lastname']}</div>";
-        	echo '</div></a>';
+            while ($bk = mysqli_fetch_assoc($res)) {
+                echo '<div class="book">';
+                echo "<span class='name_book'>{$bk['Name']}</span>";
+                echo "<span class='autor_book'>{$bk['Author']}</span>";
+                echo '</div>';
+            }
+            
+            echo '</div>';
+            echo '<div class="right_part">';
+            echo "<div class='information'>{$st['Class']} {$st['Letter']}</div>";
+            echo "<div class='FCS'>{$st['Surname']} {$st['Firstname']} {$st['Lastname']}</div>";
+            echo '</div></a>';
 
         } while ($st = mysqli_fetch_assoc($result));
 

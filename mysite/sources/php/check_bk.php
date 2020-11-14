@@ -42,6 +42,7 @@
     $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
     if (ctype_digit($count) && $count > 1) {
+        print_r($_POST);
     	$group = mysqli_fetch_assoc(mysqli_query($mysql, "SELECT MAX(`Group_ID`) as `group` FROM `books`"))['group'] + 1;
 
     	for ($i=0; $i < $count; $i++) { 

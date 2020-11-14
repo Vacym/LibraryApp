@@ -14,6 +14,8 @@
 <body>
 	<a class="but" id="home" href="/"></a>
 
+    <h2>Поиск книг</h2>
+
     <?php
 
         $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
@@ -50,7 +52,7 @@
             echo "<input type='hidden' name='im' value='$im'>";
             $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ORDER BY (`User_id`>0), BINARY(lower($order))";
         } else {
-            $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ORDER BY BINARY(lower($order))";
+            $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ORDER BY (`User_id`>0), BINARY(lower($order))";
         }
         
         echo '<button type="submit" id="submit"></button>';
@@ -63,41 +65,65 @@
             echo "Ничего не найдено";
             exit();
         }
+        $src = '<a class="result valid "'; 
 
         if ($im && $del) {
-            $src = "<a class='result valid' href='give.php?us=$im&bk=";
+            $src .= "href='give.php?us=$im&bk=";
         } elseif ($im) {
-            $src = "<a class='result valid' href='get.php?us=$im&bk=";
+            $src .= "href='get.php?us=$im&bk=";
         } else {
-            $src = "<a class='result valid' href='books.php/";
+            $src .= "href='books.php/";
         }
+
+        $groups = [];
 
         echo '<div class="search_result">';
 
         do {
-            $id = $bk['User_id'];
-            $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
-            $user = mysqli_fetch_assoc($res);
+            $gid = $bk['Group_ID'];
 
-            if ($im && !$del && !is_null($id)) {
-            	echo "<a class='result'>";
-            } else {
-            	echo $src, $bk['ID'],"'>";
-            }
+            if ($gid && !in_array($gid, $groups) ) {
+                $res1 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid'");
+                $res2 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid' AND `User_id`");
+                $all  = mysqli_fetch_assoc($res1)['g'];
+                $busy = mysqli_fetch_assoc($res2)['g'];
 
-            echo '<div class="name">';
-            echo "<span class='name_book'>{$bk['Name']}</span>";
-            echo "<span class='autor_book'>{$bk['Author']}</span>";
-            echo '</div>';
-            echo '<div class="status">';
+                array_push($groups, $gid);
+                echo '<a class="result valid group">';
+                echo '<div class="left_part">';
+                echo "<div class='information'>$busy/$all</div>";
+                echo '<div class="FCS">';
+                echo "<span class='name_book'>{$bk['Name']}</span>";
+                echo "<span class='autor_book'>{$bk['Author']}</span>";
+                echo '</div></div></a>';
 
-            if (is_null($user)) {
-                echo 'Свободна';
+            } elseif (!$bk['Group_ID']) {
+                $id = $bk['User_id'];
+                $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
+                $user = mysqli_fetch_assoc($res);
+
+                if ($im && !$del && !is_null($id)) {
+                    echo "<a class='result'>";
+                } else {
+                    echo $src, $bk['ID'],"'>";
+                }
+
+                echo '<div class="left_part">';
+                echo "<span class='name_book'>{$bk['Name']}</span>";
+                echo "<span class='autor_book'>{$bk['Author']}</span>";
+                echo '</div>';
+                echo '<div class="right_part">';
+                echo "<div class='information'>{$bk['Inventory_NO']}</div>";
+                echo '<div class="FCS">';
+
+                if (is_null($user)) {
+                    echo 'Свободна';
+                }
+                else {
+                    echo $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'];
+                }
+                echo '</div></div></a>';
             }
-            else {
-                echo $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'];
-            }
-            echo '</div></a>';
         } while ($bk = mysqli_fetch_assoc($result));
         
         echo '</div>'
