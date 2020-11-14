@@ -15,7 +15,6 @@
 	<a class="but" id="home" href="/"></a>
 
     <h2>Поиск книг</h2>
-
     <?php
 
         $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
@@ -27,6 +26,7 @@
         $q     = filter_input(INPUT_GET, 'q');
         $del   = filter_input(INPUT_GET, 'del') && $_GET['del'] == '1';
         $im    = filter_input(INPUT_GET, 'im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
+        $group = filter_input(INPUT_GET, 'group') && ctype_digit($_GET['group']) ? $_GET['group'] : '';
         $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no']) ? $_GET['order'] : 'name';
 
         if (!preg_match('/^(\d|[а-я ]|[\.-])+$/ui', $q)) $q = '';
@@ -44,15 +44,20 @@
         }
         echo '</select>';
 
-        if ($im && $del) {
+        $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ";
+
+        if ($group) {
+            echo "<input type='hidden' name='group' value='$group'>";
+            $query .= "AND `Group_ID` = '$group' ORDER BY (`User_id`>0), BINARY(lower($order))";
+        } elseif ($im && $del) {
             echo "<input type='hidden' name='im' value='$im'>";
             echo "<input type='hidden' name='del' value=1>";
-            $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' AND `User_id` = '$im' ORDER BY (`User_id`>0), BINARY(lower($order))";
+            $query .= "AND `User_id` = '$im' ORDER BY (`User_id`>0), BINARY(lower($order))";
         } elseif ($im) {
             echo "<input type='hidden' name='im' value='$im'>";
-            $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ORDER BY (`User_id`>0), BINARY(lower($order))";
+            $query .= "ORDER BY (`User_id`>0), BINARY(lower($order))";
         } else {
-            $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ORDER BY (`User_id`>0), BINARY(lower($order))";
+            $query .= "ORDER BY (`User_id`>0), BINARY(lower($order))";
         }
         
         echo '<button type="submit" id="submit"></button>';
@@ -80,7 +85,7 @@
         echo '<div class="search_result">';
 
         do {
-            $gid = $bk['Group_ID'];
+            $gid = $group || $del ? '': $bk['Group_ID'];
 
             if ($gid && !in_array($gid, $groups) ) {
                 $res1 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid'");
@@ -89,7 +94,7 @@
                 $busy = mysqli_fetch_assoc($res2)['g'];
 
                 array_push($groups, $gid);
-                echo '<a class="result valid group">';
+                echo "<a class='result valid group' href='search_book.php?q=$q&order=$order&im=$im&del=$del&group=$gid'>";
                 echo '<div class="left_part">';
                 echo "<div class='information'>$busy/$all</div>";
                 echo '<div class="FCS">';
@@ -97,7 +102,7 @@
                 echo "<span class='autor_book'>{$bk['Author']}</span>";
                 echo '</div></div></a>';
 
-            } elseif (!$bk['Group_ID']) {
+            } elseif (!$gid) {
                 $id = $bk['User_id'];
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
                 $user = mysqli_fetch_assoc($res);

@@ -14,6 +14,7 @@
 <body>
     <a class="but" id="home" href="/"></a>
 
+    <h2>Поиск Учеников</h2>
     <?php
 
         $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
