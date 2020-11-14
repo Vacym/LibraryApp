@@ -46,19 +46,14 @@
 
         $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ";
 
-        if ($group) {
-            echo "<input type='hidden' name='group' value='$group'>";
-            $query .= "AND `Group_ID` = '$group' ORDER BY (`User_id`>0), BINARY(lower($order))";
-        } elseif ($im && $del) {
-            echo "<input type='hidden' name='im' value='$im'>";
-            echo "<input type='hidden' name='del' value=1>";
-            $query .= "AND `User_id` = '$im' ORDER BY (`User_id`>0), BINARY(lower($order))";
-        } elseif ($im) {
-            echo "<input type='hidden' name='im' value='$im'>";
-            $query .= "ORDER BY (`User_id`>0), BINARY(lower($order))";
-        } else {
-            $query .= "ORDER BY (`User_id`>0), BINARY(lower($order))";
-        }
+        if ($group) echo "<input type='hidden' name='group' value='$group'>";
+        if ($im)    echo "<input type='hidden' name='im' value='$im'>";
+        if ($del)   echo "<input type='hidden' name='del' value=1>";
+
+        if ($group)          { $query .= "AND `Group_ID` = '$group'"; }
+        elseif ($im && $del) { $query .= "AND `User_id` = '$im'"; } 
+
+        $query .= " ORDER BY (`User_id`>0), BINARY(lower($order))"; 
         
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
@@ -67,8 +62,7 @@
         $bk     = mysqli_fetch_assoc($result);
 
         if (is_null($bk)) {
-            echo "Ничего не найдено";
-            exit();
+            exit("Ничего не найдено");
         }
         $src = '<a class="result valid "'; 
 
