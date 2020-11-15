@@ -53,7 +53,8 @@
         if ($group)          { $query .= "AND `Group_ID` = '$group'"; }
         elseif ($im && $del) { $query .= "AND `User_id` = '$im'"; } 
 
-        $query .= " ORDER BY (`User_id`>0), BINARY(lower($order))"; 
+        if ($order == 'inventory_no') $query .= " ORDER BY $order";
+        else                          $query .= " ORDER BY (`User_id`>0), BINARY(lower($order))"; 
         
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';

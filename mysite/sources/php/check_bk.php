@@ -33,23 +33,39 @@
     $valid_author  = valid('name', $author);
     $valid_name    = valid('name', $name);
     $valid_comment = valid('name', $comment) || $comment == '';
-    $valid_inv_id  = valid('num',  $inv_no);
+    $valid_inv_no  = valid('num',  $inv_no);
 
-    if (!$valid_name || !$valid_author || !$valid_genre || !$valid_comment || !$valid_inv_id) {
+    if (!$valid_name || !$valid_author || !$valid_genre || !$valid_comment || !$valid_inv_no) {
         send();
     }
 
     $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
     if (ctype_digit($count) && $count > 1) {
-        print_r($_POST);
-    	$group = mysqli_fetch_assoc(mysqli_query($mysql, "SELECT MAX(`Group_ID`) as `group` FROM `books`"))['group'] + 1;
+        if ($count > 200) {
+            send();
+        }
 
-    	for ($i=0; $i < $count; $i++) { 
+    	$group  = mysqli_fetch_assoc(mysqli_query($mysql, "SELECT MAX(`Group_ID`) as `group` FROM `books`"))['group'] + 1;
+        $groups = [];
+
+        for ($i=1; $i<$count+1; $i++){
+            $j = filter_input(INPUT_POST, "book_$i");
+            if (!$j) $j = 404;
+            if (!ctype_digit($j) || (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$j'"))['id'] || in_array($j, $groups)) && $j != 404 ) {
+                echo $j;
+                send();
+            }
+            array_push($groups, $j);
+        }
+    	for ($i=0; $i<$count; $i++) {
+            $inv_no = $groups[$i];
     		mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`, `Inventory_NO`, `Group_ID`) VALUES ('$name', '$author', '$genre', '$comment', '$inv_no', '$group')");
-    		$inv_no++;
     	}
     } else {
+        if (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$j'"))['id']) {
+            send();
+        }
     	mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`, `Inventory_NO`) VALUES ('$name', '$author', '$genre', '$comment', '$inv_no')");
     }
 
