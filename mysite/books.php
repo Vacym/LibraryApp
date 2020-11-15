@@ -25,17 +25,13 @@
         $id     = array_shift($url_parts);
         $choose = array_shift($url_parts);
 
-        if (!ctype_digit($id)){
-            exit('<h1>Такой страницы не существует!</h1>');
-        }
+        if (!ctype_digit($id)) exit('<h1>Такой страницы не существует!</h1>');
 
         $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
         $q = mysqli_query($mysql, "SELECT * FROM `books` WHERE id = '$id'");
         $book = mysqli_fetch_assoc($q);
 
-        if (is_null($book)){
-            exit('<h1>Такой книги не существует!</h1>');
-        }
+        if (is_null($book)) exit('<h1>Такой книги не существует!</h1>');
 
     	$user_id = $book['User_id'];
     	$q = mysqli_query($mysql, "SELECT * FROM `users` WHERE id = '$user_id'");
@@ -44,24 +40,32 @@
     	if ($choose == 'edit') {
 
     		if (count($_POST)){
+                
+                function valid($i, $value) {
+                    $re = array('name' => '/^([а-яё-]|[\., ])+$/ui', 'num' => "/^\d+$/");
+                    return preg_match($re[$i], $value);
+                }
+
 		        $name    = $_POST['name'];
-		        $author  = $_POST['author'];
-		        $genre   = $_POST['genre'];
-		        $comment = $_POST['comment'];
+                $author  = $_POST['author'];
+                $genre   = $_POST['genre'];
+                $comment = $_POST['comment'];
+                $inv_no  = $_POST['id'];
 
-		        $valid_genre   = preg_match("/^[а-я- ]+$/ui", $genre);
-		        $valid_comment = preg_match("/^([а-яё-]|[\., ])+$/ui", $comment);
-		        $valid_author  = preg_match("/^([а-яё-]|[\., ])+$/ui", $author);
-		        $valid_name    = preg_match("/^([а-яё-]|[\., ])+$/ui", $name);
+                $valid_genre   = valid('name', $genre);
+                $valid_author  = valid('name', $author);
+                $valid_name    = valid('name', $name);
+                $valid_comment = valid('name', $comment) || $comment == '';
+                $valid_inv_no  = valid('num',  $inv_no);
 
-		        if (!$valid_name || !$valid_author || !$valid_genre || !($valid_comment || $comment == '')) {
+		        if (!$valid_name || !$valid_author || !$valid_genre || !$valid_comment || !$valid_inv_no || mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$inv_no' AND `ID` != '$id'"))['id']) {
 		            echo '<h1>Неправильно введенные данные!</h1>';
 
-		            header("refresh:2;url=/books.php/$id");
+		            header("refresh:2;url=/books.php/$id/edit");
 		            exit();
 		        }
 
-	            mysqli_query($mysql, "UPDATE `books` SET `Name` = '$name', `Author` = '$author', `Genre` = '$genre', `Comment` = '$comment' WHERE `ID` = '$id'");
+	            mysqli_query($mysql, "UPDATE `books` SET `Name` = '$name', `Author` = '$author', `Genre` = '$genre', `Comment` = '$comment', `Inventory_NO` = '$inv_no' WHERE `ID` = '$id'");
 
 	            echo '<h1>Книга успешно изменена</h1>';
 
@@ -84,19 +88,19 @@
             echo '<div class="but_window" id="cancel">Отменить</div>';
             echo '</div></div></div></div>';
 
-    		$arr = array('name' => 'Название', 'author' => 'Автор', 'genre' => 'Жанр');
+    		$a = array('id'=> 'ID', 'name' => 'Название', 'author' => 'Автор', 'genre' => 'Жанр');
+            $b = array('id'=> 'Inventory_NO', 'name' => 'Name', 'author' => 'Author', 'genre' => 'Genre');
 
-    		foreach ($arr as $i => $j) {
+    		foreach ($a as $i => $j) {
     			echo '<div class="line">';
-    			echo "<input type='text' name='$i' id='$i' value='{$book[ucfirst($i)]}' class='necessary_input' autocomplete='off'>";
-    			echo "<label for='name'>$j</label></div>";
+    			echo "<input type='text' name='$i' id='$i' value='{$book[$b[$i]]}' class='necessary_input' autocomplete='off'>";
+    			echo "<label for='$i'>$j</label></div>";
     		}
     		
     		echo '<div class="line">';
     		echo "<textarea type='text' name='comment' id='comment' autocomplete='off'>{$book['Comment']}</textarea>";
 		    echo '<label for="comment">Комментарий</label>';
-		    echo '</div><div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
-		    exit(); 
+		    exit('</div><div><input type="submit" id="submit" value="Сохранить" disabled></div></div>'); 
 		    
     	} else if ($choose == 'delete') {
                     
@@ -113,7 +117,7 @@
     	echo "<nav><a href='/books.php/$id/edit' class='but' id='edit'></a></nav>";
     	echo '<table class="head_information">';
     	
-    	$arr = array('Name' => 'Название', 'Author' => 'Автор', 'Genre' => 'Жанр', 'Comment' => 'Описание');
+    	$arr = array('Inventory_NO' => 'ID', 'Name' => 'Название', 'Author' => 'Автор', 'Genre' => 'Жанр', 'Comment' => 'Описание');
 
     	foreach ($arr as $i => $j) {
     		echo '<tr>';
@@ -125,11 +129,8 @@
     	echo '<div class="information">';
     	echo '<nav>';
 
-    	if (is_null($user_id)) {
-    		echo "<a href='/search_student.php?im=$id' class='but' id='add_book'></a>";
-    	} else {
-			echo "<a href='/give.php?bk=$id&us=$user_id' class='but' id='delate_book'></a>";
-    	}
+    	if (is_null($user_id)) echo "<a href='/search_student.php?im=$id' class='but' id='add_book'></a>";
+        else                   echo "<a href='/give.php?bk=$id&us=$user_id' class='but' id='delate_book'></a>";
     	
     	echo '</nav>';
     	echo '<table class="books">';
@@ -137,8 +138,7 @@
 
     	if (is_null($user)) {
     		echo '<th class="td_value">Свободна</th></tr>';
-    		echo '</tr></table></div></div>';
-    		exit();
+    		exit('</tr></table></div></div>');
     	}
 
     	if (is_null($book['Date_of_issue'])) $date = '-';
@@ -151,8 +151,7 @@
 		echo '<td class="td_head">Дата выдачи: </td>';
 		echo "<td class='td_value'>$date</td>";
 
-    	echo '</tr></table></div></div>';
-    	exit();
+    	exit('</tr></table></div></div>');
 	?>
 
 </body>

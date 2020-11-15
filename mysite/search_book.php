@@ -76,6 +76,7 @@
         }
 
         $groups = [];
+        $c      = 0;
 
         echo '<div class="search_result">';
 
@@ -83,6 +84,7 @@
             $gid = $group || $del ? '': $bk['Group_ID'];
 
             if ($gid && !in_array($gid, $groups) ) {
+                $c++;
                 $res1 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid'");
                 $res2 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid' AND `User_id`");
                 $all  = mysqli_fetch_assoc($res1)['g'];
@@ -98,6 +100,7 @@
                 echo '</div></div></a>';
 
             } elseif (!$gid) {
+                $c++;
                 $id = $bk['User_id'];
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
                 $user = mysqli_fetch_assoc($res);
@@ -124,6 +127,9 @@
                 }
                 echo '</div></div></a>';
             }
+
+            if ($c == 30) break;
+
         } while ($bk = mysqli_fetch_assoc($result));
         
         echo '</div>'

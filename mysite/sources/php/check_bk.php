@@ -1,5 +1,5 @@
 <?php
-    if (!count($_POST)) { echo 'Ошибка запроса!'; exit(); }
+    if (!count($_POST)) exit('Ошибка запроса!');
 
     function send() {
         $data = array('success' => false, 'id' => 0);
@@ -42,7 +42,7 @@
     $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
     if (ctype_digit($count) && $count > 1) {
-        if ($count > 200) {
+        if ($count > 500) {
             send();
         }
 
@@ -53,7 +53,6 @@
             $j = filter_input(INPUT_POST, "book_$i");
             if (!$j) $j = 404;
             if (!ctype_digit($j) || (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$j'"))['id'] || in_array($j, $groups)) && $j != 404 ) {
-                echo $j;
                 send();
             }
             array_push($groups, $j);

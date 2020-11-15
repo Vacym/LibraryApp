@@ -49,26 +49,20 @@
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
 
-        if ($order == 'class') {
-            $query = "SELECT * FROM `users` WHERE CONCAT(Class,Letter) LIKE '$q%' ORDER BY Class";
-        } else {
-            $query = "SELECT * FROM `users` WHERE $order LIKE '$q%' ORDER BY BINARY(lower($order))";
-        }
+        $query = "SELECT * FROM `users` WHERE $order LIKE '$q%' ORDER BY BINARY(lower($order)) LIMIT 30";
+        if ($order == 'class') { $query = "SELECT * FROM `users` WHERE CONCAT(Class,Letter) LIKE '$q%' ORDER BY Class LIMIT 30"; }
+
         $result = mysqli_query($mysql, $query);
         $st = mysqli_fetch_assoc($result);
 
         if (is_null($st)) {
-            echo "Ничего не найдено";
-            exit();
+            exit("Ничего не найдено");
         }
 
         echo '<div class="search_result">';
 
-        if ($im) {
-            $src = "<a class='result valid' href='get.php?bk=$im&us=";
-        } else {
-            $src = "<a class='result valid' href='/account.php/";
-        }
+        if ($im) { $src = "<a class='result valid' href='get.php?bk=$im&us="; } 
+        else     { $src = "<a class='result valid' href='/account.php/"; }
 
         do {    
             $id = $st['ID'];
