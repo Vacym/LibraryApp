@@ -13,12 +13,13 @@ window.onload = function() {
         var query = '';
         var y     = 0;
 
-        if (!books[0].value) books[0].value = book_id.value; 
+        if (books.length > 0) {
+            if (!books[0].value) books[0].value = book_id.value; 
 
-        for (var x = 0; x < books.length; x++) {
-            y = books[x].value
-            if (y) query += `&book_${x+1}=${y}`
-            // else   query += `&book_${x+1}=${parseInt(value)+x}`
+            for (var x = 0; x < books.length; x++) {
+                y = books[x].value
+                if (y) query += `&book_${x+1}=${y}`
+            }
         }
 
         var params = `name=${name.value}&author=${author.value}&genre=${genre.value}&comment=${comment.value}&id=${book_id.value}&count=${count.value}` + query;
