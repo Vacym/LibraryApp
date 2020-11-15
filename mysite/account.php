@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Личный кабинет</title>
+    <title>Ученик</title>
     
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/sources/style/account.css">
@@ -25,21 +25,21 @@
         $id     = array_shift($url_parts);
         $choose = array_shift($url_parts);
 
-        if (!ctype_digit($id)){
-            exit('<h1>Такой страницы не существует!</h1>');
-        }
+        if (!ctype_digit($id)) exit('<h1>Такой страницы не существует!</h1>');
 
         $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
         $q = mysqli_query($mysql, "SELECT * FROM `users` WHERE id = '$id'");
         $user = mysqli_fetch_assoc($q);
 
-        if (is_null($user)){
-            exit('<h1>Такого пользователя нет</h1>');
-        } 
+        if (is_null($user)) exit('<h1>Такого ученика нет</h1>');
+
+        $q = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
+        $book = mysqli_fetch_assoc($q);
 
         if ($choose == 'edit') {
 
             if (count($_POST)){
+
                 $firstname = $_POST['firstname'];
                 $surname   = $_POST['surname'];
                 $lastname  = $_POST['lastname'];
@@ -95,8 +95,7 @@
                 echo "<label for='$i'>$j</label></div>";
             }
 
-            echo '<div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
-            exit();
+            exit('<div><input type="submit" id="submit" value="Сохранить" disabled></div></div>');
 
         } else if ($choose == 'delete') {
             
@@ -108,9 +107,6 @@
             header("refresh:2;url=/");
             exit();
         }
-
-        $q = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'");
-        $book = mysqli_fetch_assoc($q);
 
         echo '<div class="box" style="width: 75%;">';
         echo '<div class="head">';
@@ -125,9 +121,7 @@
         echo '<nav>';
         echo "<a href='/search_book.php?im=$id' class='but' id='add_book'></a>";
 
-        if (!is_null($book)) {
-            echo "<a href='/search_book.php?im=$id&del=1' class='but' id='delate_book'></a>";
-        }
+        if (!is_null($book)) echo "<a href='/search_book.php?im=$id&del=1' class='but' id='delate_book'></a>";
 
         echo '</nav>';
         echo '<table class="books">';
@@ -140,8 +134,7 @@
             echo '<tr>';
             echo '<td class="td_head">Нет книг</td>';
             echo '<td class="td_value">-</td>';
-            echo '</tr></table></div></div>';
-            exit();
+            exit('</tr></table></div></div>');
         }
 
         do {
@@ -155,10 +148,8 @@
             echo '</tr>';
 
         } while ($book = mysqli_fetch_assoc($q));
-
-        echo '</table>';
-        echo '</div></div>';
-        exit();
+        
+        exit('</table></div></div>');
     ?>
 
 </body>

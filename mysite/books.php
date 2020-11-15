@@ -89,11 +89,11 @@
             echo '</div></div></div></div>';
 
     		$a = array('id'=> 'ID', 'name' => 'Название', 'author' => 'Автор', 'genre' => 'Жанр');
-            $b = array('id'=> 'Inventory_NO', 'name' => 'Name', 'author' => 'Author', 'genre' => 'Genre');
 
     		foreach ($a as $i => $j) {
     			echo '<div class="line">';
-    			echo "<input type='text' name='$i' id='$i' value='{$book[$b[$i]]}' class='necessary_input' autocomplete='off'>";
+                if ($i == 'id') echo "<input type='text' name='$i' id='$i' value='{$book['Inventory_NO']}' class='necessary_input' autocomplete='off'>";
+    			else            echo "<input type='text' name='$i' id='$i' value='{$book[ucfirst($i)]}' class='necessary_input' autocomplete='off'>";
     			echo "<label for='$i'>$j</label></div>";
     		}
     		
