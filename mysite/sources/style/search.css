@@ -261,7 +261,6 @@ a {
     justify-content: center;
     align-items: center;
     border: 1px ridge white;
-    margin-bottom: 4px;
     opacity: .5;
     transition: opacity .15s linear;
 }
@@ -277,10 +276,32 @@ a {
 .but:focus {
     background-color: rgba(0, 0, 0, 1);
     opacity: 1;
+    cursor: pointer;
 }
 
 
 /*________________________▲ */
+
+#more_result {
+    display: flex;
+    width: 50%;
+    height: 45px;
+    justify-content: center;
+    align-items: center;
+    border: 1px ridge white;
+    margin-bottom: 4px;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 1);
+    opacity: .5;
+    transition: .15s linear;
+    margin: auto
+}
+
+#more_result:hover {
+    background-color: rgba(0, 0, 0, 1);
+    opacity: .9;
+    cursor: pointer;
+}
 
 
 /* кнопка домой */
@@ -291,4 +312,20 @@ a {
 
 #home::before {
     content: "\f015";
+}
+
+#up {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 200;
+    transition: .25s;
+}
+
+#up::before {
+    content: "\f077";
+}
+
+#up.hidden {
+    transform: translateY(calc(100% + 20px));
 }
