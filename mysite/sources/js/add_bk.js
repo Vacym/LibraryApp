@@ -43,7 +43,7 @@ function ajaxGet(params) {
                 }
                 full_check()
             } else {
-                document.querySelector('#result').innerHTML = 'Неправильный ввод!';
+                document.querySelector('#result').innerHTML = req['msg'];
                 document.querySelector('#link').parentElement.classList.add("mes_dis");
             }
         }

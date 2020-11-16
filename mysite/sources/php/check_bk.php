@@ -1,8 +1,8 @@
 <?php
     if (!count($_POST)) exit('Ошибка запроса!');
 
-    function send() {
-        $data = array('success' => false, 'id' => 0);
+    function send($j) {
+        $data = array('success' => false, 'id' => 0, 'msg' => "Книга под номером `$j` уже существует!");
         $json = json_encode($data);
 
         exit($json);
@@ -48,12 +48,13 @@
 
     	$group  = mysqli_fetch_assoc(mysqli_query($mysql, "SELECT MAX(`Group_ID`) as `group` FROM `books`"))['group'] + 1;
         $groups = [];
+        $book_1 = filter_input(INPUT_POST, 'book_1');
 
         for ($i=1; $i<$count+1; $i++){
             $j = filter_input(INPUT_POST, "book_$i");
-            if (!$j) $j = 404;
-            if (!ctype_digit($j) || (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$j'"))['id'] || in_array($j, $groups)) && $j != 404 ) {
-                send();
+            if (!$j) $j = $book_1 + $i - 1;
+            if (!ctype_digit($j) || mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$j'"))['id'] || in_array($j, $groups)) {
+                send($j);
             }
             array_push($groups, $j);
         }
@@ -63,7 +64,7 @@
     	}
     } else {
         if (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$inv_no'"))['id']) {
-            send();
+            send($inv_no);
         }
     	mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`, `Inventory_NO`) VALUES ('$name', '$author', '$genre', '$comment', '$inv_no')");
     }
