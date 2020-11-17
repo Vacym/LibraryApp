@@ -1,4 +1,4 @@
-<!-- version 1.0 release -->
+<!-- version 1.1 release -->
 
 <!DOCTYPE html>
 <html>
@@ -128,7 +128,7 @@
                 echo '</div></div></a>';
             }
 
-            if ($c == 30) break;
+            if ($c == 100) break;
 
         } while ($bk = mysqli_fetch_assoc($result));
         

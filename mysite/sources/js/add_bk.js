@@ -9,7 +9,7 @@ window.onload = function() {
     var comment = document.querySelector("textarea[name=comment]");
 
     document.querySelector('#submit').onclick = function() {
-        var books = document.querySelectorAll(".books");
+        var books = document.querySelectorAll(".list_id input");
         var query = '';
         var y     = 0;
 

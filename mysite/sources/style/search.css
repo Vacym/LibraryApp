@@ -319,6 +319,8 @@ a {
     right: 10px;
     bottom: 10px;
     z-index: 200;
+    width: 60px;
+    height: 60px;
     transition: .25s;
 }
 

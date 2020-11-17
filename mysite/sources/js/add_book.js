@@ -7,20 +7,18 @@ function control_inputs(q_inputs) {
     // Определяем сколько элементов в реальности
     let real_q_inputs = cont_input_book.lastElementChild
     if (real_q_inputs) {
-        real_q_inputs = real_q_inputs.querySelector("input").id
+        real_q_inputs = real_q_inputs.querySelector("input").name
         real_q_inputs = parseInt(real_q_inputs.match(/\d+$/)[0])
     } else {
         real_q_inputs = 0
     }
-
-    console.log(real_q_inputs)
 
     // Добавление нужного количества элементов
     for (let x = 1 + real_q_inputs; x < q_inputs + 1; x++) {
         let input_book = document.createElement('div');
         input_book.className = "line";
         input_book.innerHTML = `<span>${x}. </span>
-    <input type="number" name="book_id_${x}" placeholder="ID ${x}" class="books" min="0" autocomplete="off">`;
+    <input type="number" name="book_id_${x}" placeholder="ID ${x}" min="0" autocomplete="off">`;
         cont_input_book.append(input_book)
     }
 
