@@ -1,8 +1,8 @@
 <?php
     if (!count($_POST)) exit('Ошибка запроса!');
 
-    function send($j) {
-        $data = array('success' => false, 'id' => 0, 'msg' => "Книга под номером `$j` уже существует!");
+    function send($msg) {
+        $data = array('success' => false, 'id' => 0, 'msg' => $msg);
         $json = json_encode($data);
 
         exit($json);
@@ -18,7 +18,7 @@
 
     foreach ($arr as $i) {
         if (!array_key_exists($i, $_POST)) {
-            send();
+            send("Ошибка создания книг!");
         }
     }
 
@@ -36,14 +36,14 @@
     $valid_inv_no  = valid('num',  $inv_no);
 
     if (!$valid_name || !$valid_author || !$valid_genre || !$valid_comment || !$valid_inv_no) {
-        send();
+        send("Некоректный ввод");
     }
 
     $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
     if (ctype_digit($count) && $count > 1) {
         if ($count > 500) {
-            send();
+            send("Невозможно создать группу с более 500 книгами!");
         }
 
     	$group  = mysqli_fetch_assoc(mysqli_query($mysql, "SELECT MAX(`Group_ID`) as `group` FROM `books`"))['group'] + 1;
@@ -53,8 +53,14 @@
         for ($i=1; $i<$count+1; $i++){
             $j = filter_input(INPUT_POST, "book_$i");
             if (!$j) $j = $book_1 + $i - 1;
-            if (!ctype_digit($j) || mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$j'"))['id'] || in_array($j, $groups)) {
-                send($j);
+            if (!valid('num', $j)) {
+                send("В $i книге допущена ошибка в числе");
+            }
+            elseif (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$j'"))['id']) {
+            	send("Книга под номером `$j` уже существует! 2");
+            }
+            elseif (in_array($j, $groups)) {
+            	send("Книга под номером `$j` уже записана в группу! 3");
             }
             array_push($groups, $j);
         }
@@ -64,7 +70,7 @@
     	}
     } else {
         if (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$inv_no'"))['id']) {
-            send($inv_no);
+            send("Книга под номером `$inv_no` уже существует! 2");
         }
     	mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`, `Inventory_NO`) VALUES ('$name', '$author', '$genre', '$comment', '$inv_no')");
     }
