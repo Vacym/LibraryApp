@@ -78,16 +78,6 @@
     		echo '<nav><div href="#" class="but" id="del" message="w_del"></div></nav>';
     		echo '<form action="" method="POST">';
 
-            echo '<div class="dark" id="w_del">';
-            echo '<div class="alert_window">';
-            echo '<div class="alert_message">Вы уверены, что хотите удалить книгу?</div>';
-            echo '<div class="sure">';
-            echo '<div class="but_window_space">';
-            echo "<a class='but_window' href='/books.php/$id/delete'>Удалить</a></div>";
-            echo '<div class="but_window_space">';
-            echo '<div class="but_window" id="cancel">Отменить</div>';
-            echo '</div></div></div></div>';
-
     		$a = array('id'=> 'ID', 'name' => 'Название', 'author' => 'Автор', 'genre' => 'Жанр');
 
     		foreach ($a as $i => $j) {
@@ -100,7 +90,17 @@
     		echo '<div class="line">';
     		echo "<textarea type='text' name='comment' id='comment' autocomplete='off'>{$book['Comment']}</textarea>";
 		    echo '<label for="comment">Комментарий</label>';
-		    exit('</div><div><input type="submit" id="submit" value="Сохранить" disabled></div></div>'); 
+		    echo '</div><div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
+
+            echo '<div class="dark" id="w_del">';
+            echo '<div class="alert_window">';
+            echo '<div class="alert_message">Вы уверены, что хотите удалить книгу?</div>';
+            echo '<div class="sure">';
+            echo '<div class="but_window_space">';
+            echo "<a class='but_window' href='/books.php/$id/delete'>Удалить</a></div>";
+            echo '<div class="but_window_space">';
+            echo '<div class="but_window" id="cancel">Отменить</div>';
+            exit('</div></div></div></div>');
 		    
     	} else if ($choose == 'delete') {
                     

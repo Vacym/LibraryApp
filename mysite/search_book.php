@@ -9,27 +9,31 @@
 
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/sources/style/search.css">
+    <script src="sources/js/search.js"></script>
 </head>
 
 <body>
 	<a class="but" id="home" href="/"></a>
 
-    <h2>Поиск книг</h2>
     <?php
 
         $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
-        if (!$mysql) {
-            exit('Ошибка Подключения'); 
+        if (!$mysql) exit('<h1>Ошибка Подключения</h1>');
+
+        function filter($name, $choice) {
+        	$regex = array('number' => '/^\d+$/', 'search' => '/^(\d|[а-я ]|[\.-])+$/ui');
+        	return filter_input(INPUT_GET, $name) && preg_match($regex[$choice], $_GET[$name]) ? $_GET[$name]: false;
         }
 
-        $q     = filter_input(INPUT_GET, 'q');
-        $del   = filter_input(INPUT_GET, 'del') && $_GET['del'] == '1';
-        $im    = filter_input(INPUT_GET, 'im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
-        $group = filter_input(INPUT_GET, 'group') && ctype_digit($_GET['group']) ? $_GET['group'] : '';
+        $q     = filter('q', 'search');
+        $im    = filter('im', 'number');
+        $del   = filter('del','number');
+        $group = filter('group', 'number');
         $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no']) ? $_GET['order'] : 'name';
 
-        if (!preg_match('/^(\d|[а-я ]|[\.-])+$/ui', $q)) $q = '';
+        if ($group) echo "<h2>Поиск книг по группе №$group</h2>";
+        else 	    echo '<h2>Поиск книг</h2>';
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
@@ -44,12 +48,11 @@
         }
         echo '</select>';
 
-        $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ";
-
         if ($group) echo "<input type='hidden' name='group' value='$group'>";
         if ($im)    echo "<input type='hidden' name='im' value='$im'>";
         if ($del)   echo "<input type='hidden' name='del' value=1>";
 
+        $query = "SELECT * FROM `books` WHERE $order LIKE '$q%' ";
         if ($group)          { $query .= "AND `Group_ID` = '$group'"; }
         elseif ($im && $del) { $query .= "AND `User_id` = '$im'"; } 
 
@@ -62,26 +65,20 @@
         $result = mysqli_query($mysql, $query);
         $bk     = mysqli_fetch_assoc($result);
 
-        if (is_null($bk)) {
-            exit("Ничего не найдено");
-        }
-        $src = '<a class="result valid "'; 
+        if (is_null($bk)) exit("Ничего не найдено");
 
-        if ($im && $del) {
-            $src .= "href='give.php?us=$im&bk=";
-        } elseif ($im) {
-            $src .= "href='get.php?us=$im&bk=";
-        } else {
-            $src .= "href='books.php/";
-        }
+        $src = '<a class="result valid "'; 
+        if ($im && $del) $src .= "href='give.php?us=$im&bk=";
+        elseif ($im)  	 $src .= "href='get.php?us=$im&bk=";
+        else 		     $src .= "href='books.php/";
 
         $groups = [];
-        $c      = 0;
+        $c = 0;
 
         echo '<div class="search_result">';
 
         do {
-            $gid = $group || $del ? '': $bk['Group_ID'];
+            $gid = $group || $del || ($order == 'inventory_no' && $q) ? '': $bk['Group_ID'];
 
             if ($gid && !in_array($gid, $groups) ) {
                 $c++;
@@ -105,11 +102,8 @@
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
                 $user = mysqli_fetch_assoc($res);
 
-                if ($im && !$del && !is_null($id)) {
-                    echo "<a class='result'>";
-                } else {
-                    echo $src, $bk['ID'],"'>";
-                }
+                if ($im && !$del && !is_null($id)) echo "<a class='result'>";
+                else  							   echo $src, $bk['ID'],"'>";
 
                 echo '<div class="left_part">';
                 echo "<span class='name_book'>{$bk['Name']}</span>";
@@ -119,12 +113,9 @@
                 echo "<div class='information'>{$bk['Inventory_NO']}</div>";
                 echo '<div class="FCS">';
 
-                if (is_null($user)) {
-                    echo 'Свободна';
-                }
-                else {
-                    echo $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'];
-                }
+                if (is_null($user)) echo 'Свободна';
+                else 				echo $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname'];
+
                 echo '</div></div></a>';
             }
 
@@ -134,6 +125,7 @@
         
         echo '</div>'
     ?>
+    <a id="up" class="but hidden"></a>
 
 </body>
 </html>

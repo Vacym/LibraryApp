@@ -9,16 +9,22 @@ window.onload = function() {
     var comment = document.querySelector("textarea[name=comment]");
 
     document.querySelector('#submit').onclick = function() {
+        var is_auto_id = document.getElementById("auto_id").checked;
+        var is_group = document.getElementById('group_checkbox').checked;
         var books = document.querySelectorAll(".list_id input");
         var query = '';
-        var y     = 0;
 
-        if (books.length > 0) {
-            if (!books[0].value) books[0].value = book_id.value; 
-
-            for (var x = 0; x < books.length; x++) {
-                y = books[x].value
-                if (y) query += `&book_${x+1}=${y}`
+        if (books.length > 0 && is_group) {
+            if (!is_auto_id) {
+                var book_value = books[0].value
+                if (book_value) query += `&book_1=${book_value}`;
+                else            query += `&book_1=${book_id.value}`;
+                for (var i = 1; i < books.length; i++) {
+                    book_value = books[i].value
+                    if (book_value) query += `&book_${i+1}=${book_value}`
+                }
+            } else {
+                query += `&book_1=${book_id.value}`;
             }
         }
 

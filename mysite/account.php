@@ -76,16 +76,6 @@
             echo '<nav><div class="but" id="del" message="w_del"></div></nav>';
             echo '<form action="" method="POST">';
 
-            echo '<div class="dark" id="w_del">';
-            echo '<div class="alert_window">';
-            echo '<div class="alert_message">Вы уверены, что хотите удалить профиль?</div>';
-            echo '<div class="sure">';
-            echo '<div class="but_window_space">';
-            echo "<a class='but_window' href='/account.php/$id/delete'>Удалить</a></div>";
-            echo '<div class="but_window_space">';
-            echo '<div class="but_window" id="cancel">Отменить</div>';
-            echo '</div></div></div></div>';
-
             $arr = array('surname' => 'Фамилия', 'firstname' => 'Имя', 'lastname' => 'Отчество', 'class' => 'Класс', 'letter' => 'Буква');
 
             foreach ($arr as $i => $j) {
@@ -95,7 +85,17 @@
                 echo "<label for='$i'>$j</label></div>";
             }
 
-            exit('<div><input type="submit" id="submit" value="Сохранить" disabled></div></div>');
+            echo '<div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
+            
+            echo '<div class="dark" id="w_del">';
+            echo '<div class="alert_window">';
+            echo '<div class="alert_message">Вы уверены, что хотите удалить профиль?</div>';
+            echo '<div class="sure">';
+            echo '<div class="but_window_space">';
+            echo "<a class='but_window' href='/account.php/$id/delete'>Удалить</a></div>";
+            echo '<div class="but_window_space">';
+            echo '<div class="but_window" id="cancel">Отменить</div>';
+            exit('</div></div></div></div>');
 
         } else if ($choose == 'delete') {
             

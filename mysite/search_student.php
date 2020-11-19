@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/sources/style/search.css">
+    <script src="sources/js/search.js"></script>
 </head>
 
 <body>
@@ -23,11 +24,9 @@
             exit('Ошибка Подключения'); 
         }
 
-        $q     = filter_input(INPUT_GET, 'q');
-        $im    = filter_input(INPUT_GET, 'im') && ctype_digit($_GET['im']) ? $_GET['im'] : '';
+        $q     = filter_input(INPUT_GET, 'q')  && preg_match('/^(\d|[а-я ]|[\.-])+$/ui', $_GET['q']) ? $_GET['q']: '';
+        $im    = filter_input(INPUT_GET, 'im') && preg_match('/^\d+$/', $_GET['im']) ? $_GET['im']: '';
         $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['firstname', 'lastname', 'class', 'letter']) ? $_GET['order'] : 'surname';
-
-        if (!preg_match('/^(\d|[а-я ]|[\.-])+$/ui', $q)) $q = '';
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
@@ -42,9 +41,7 @@
         }
         echo '</select>';
         
-        if ($im) {
-            echo "<input type='hidden' name='im' value='$im'>";
-        }
+        if ($im) echo "<input type='hidden' name='im' value='$im'>";
 
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
@@ -55,9 +52,7 @@
         $result = mysqli_query($mysql, $query);
         $st = mysqli_fetch_assoc($result);
 
-        if (is_null($st)) {
-            exit("Ничего не найдено");
-        }
+        if (is_null($st)) exit("Ничего не найдено");
 
         echo '<div class="search_result">';
 
@@ -89,6 +84,7 @@
         echo '</div>';
         
     ?>
+    <a id="up" class="but hidden"></a>
 
 </body>
 </html>

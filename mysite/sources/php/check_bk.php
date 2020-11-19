@@ -10,7 +10,6 @@
 
     function valid($i, $value) {
     	$re = array('name' => '/^([а-яё-]|[\., ])+$/ui', 'num' => "/^\d+$/");
-
     	return preg_match($re[$i], $value);
     }
 
@@ -48,19 +47,18 @@
 
     	$group  = mysqli_fetch_assoc(mysqli_query($mysql, "SELECT MAX(`Group_ID`) as `group` FROM `books`"))['group'] + 1;
         $groups = [];
-        $book_1 = filter_input(INPUT_POST, 'book_1');
 
         for ($i=1; $i<$count+1; $i++){
             $j = filter_input(INPUT_POST, "book_$i");
-            if (!$j) $j = $book_1 + $i - 1;
+            if (!$j) $j = $groups[$i-2] + 1;
             if (!valid('num', $j)) {
-                send("В $i книге допущена ошибка в числе");
+                send("В $i-ой книге допущена ошибка в написании числа");
             }
             elseif (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$j'"))['id']) {
-            	send("Книга под номером `$j` уже существует! 2");
+            	send("Книга под номером `$j` уже существует!");
             }
             elseif (in_array($j, $groups)) {
-            	send("Книга под номером `$j` уже записана в группу! 3");
+            	send("Книга под номером `$j` уже записана в эту группу!");
             }
             array_push($groups, $j);
         }
@@ -70,7 +68,7 @@
     	}
     } else {
         if (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$inv_no'"))['id']) {
-            send("Книга под номером `$inv_no` уже существует! 2");
+            send("Книга под номером `$inv_no` уже существует!");
         }
     	mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`, `Inventory_NO`) VALUES ('$name', '$author', '$genre', '$comment', '$inv_no')");
     }
