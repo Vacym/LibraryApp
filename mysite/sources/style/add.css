@@ -16,6 +16,8 @@ form {
     left: 50%;
     z-index: 50;
     display: block;
+    width: max-content;
+    min-width: min-content;
     background: rgba(0, 0, 0, .7);
     transform: translate(-50%, -50%);
     transition: .25s;
@@ -99,8 +101,7 @@ form #submit:disabled {
 
 /* for_group */
 
-.for_group,
-.list_id {
+.for_group {
     position: absolute;
     width: 100%;
     z-index: 40;
@@ -110,7 +111,17 @@ form #submit:disabled {
     transition: .25s;
 }
 
-.for_group input[type="number"] {
+.list_id {
+    position: absolute;
+    z-index: 40;
+    display: none;
+    opacity: 0;
+    transform: translate(-100%, 0);
+    transition: .25s;
+}
+
+.for_group input[type="number"],
+.list_id input[type="number"] {
     width: 80%;
     min-width: 100px;
 }
@@ -120,6 +131,10 @@ form #submit:disabled {
     display: block;
 }
 
+.list_id.fading {
+    width: 475px;
+}
+
 .for_group.show,
 .list_id.show {
     display: block;
@@ -127,17 +142,19 @@ form #submit:disabled {
     transform: translate(0, 0);
 }
 
+.list_id.show {
+    width: 475px;
+}
+
 .illusion {
     position: relative;
-    height: 0px;
-    width: 100%;
     z-index: 30;
     transition: .25s;
 }
 
 .list_id {
     position: relative;
-    max-height: 200px;
+    max-height: 100%;
     overflow-y: scroll;
     background: rgba(0, 0, 0, .7);
 }
@@ -146,12 +163,35 @@ form #submit:disabled {
     background: none;
 }
 
+.all_inputs {
+    display: flex;
+    align-items: flex-start;
+}
+
+.main_inputs {
+    flex-grow: 1;
+}
+
+.auto_inputs {
+    /* align-self: stretch; */
+}
+
 
 /* стилизация checkbox */
 
 input[type="checkbox"] {
     /*opacity: 0;*/
     display: none;
+}
+
+.single_checkbox {
+    display: inline-flex;
+    margin-top: 10px;
+}
+
+.single_checkbox label {
+    position: relative;
+    padding-left: 22px;
 }
 
 .single_checkbox label::before {
@@ -172,11 +212,6 @@ input[type="checkbox"] {
     opacity: 0;
     transform: rotate(-45deg);
     transition: opacity .1s;
-}
-
-.single_checkbox label {
-    position: relative;
-    padding-left: 22px;
 }
 
 .single_checkbox label::before,

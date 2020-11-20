@@ -26,13 +26,12 @@ function control_inputs(q_inputs) {
     for (let x = 0; x < real_q_inputs - q_inputs; x++) {
         cont_input_book.lastElementChild.remove()
     }
-
-    height_illusion()
+    height_illusion("i")
 
 }
 
 
-function show_group(checkbox, changeable, need_check = true, illusion = false) {
+function show_group(checkbox, changeable, need_check = true, illusion = true) {
 
     function toggle(a, b) {
         vis_box.classList.add(a)
@@ -43,19 +42,28 @@ function show_group(checkbox, changeable, need_check = true, illusion = false) {
         vis_box.classList.add("fading")
         setTimeout(() => {
             toggle("show", "fading");
-            height_illusion()
+            height_illusion(mode)
         }, 1)
     }
 
     function del_show() {
         toggle("fading", "show")
         vis_box.style.position = "absolute"
-        height_illusion()
-        if (illusion) { height_illusion("0px") }
+
+        if (illusion) {
+            console.log(mode)
+            if (mode == "q") {
+                height_illusion(mode, "0px")
+                height_illusion("i", "0px", "0px")
+            } else {
+                height_illusion(mode, undefined, "0px")
+            }
+        } else { height_illusion(mode) }
         vis_box.style.position = ""
         setTimeout(() => vis_box.classList.remove("fading"), 250);
     }
 
+    if (changeable == '.for_group') { mode = "q" } else { mode = "i" }
     let vis_box = document.querySelector(changeable)
     if (checkbox.checked == need_check) {
         add_show()
@@ -64,19 +72,35 @@ function show_group(checkbox, changeable, need_check = true, illusion = false) {
     }
 }
 
-function height_illusion(height) {
-    let illusion = document.querySelector(".illusion")
-    let vis_box = document.querySelector(".for_group")
-    if (!height) {
+function height_illusion(mode, height, width) {
+    console.log(mode, height, width)
+    if (mode == "q") {
+        var illusion = document.querySelector("#for_group_il")
+        var vis_box = document.querySelector(".for_group")
+    } else if (mode == "i") {
+        var illusion = document.querySelector("#list_id_il")
+        var vis_box = document.querySelector(".list_id")
+    }
+    if (!height && mode == "q") {
         height = getComputedStyle(vis_box).height
+        console.log(height)
         if (height == "auto") { height = "0px" }
     }
-    illusion.style.height = height
+    if (!width && mode == "i") {
+        width = getComputedStyle(vis_box).width
+        console.log(width)
+        if (width == "auto") { width = "0px" }
+        height = getComputedStyle(document.querySelector(".main_inputs")).height
 
+    }
+    illusion.style.height = height
+    illusion.style.width = width
 }
 
 function ready() {
-    height_illusion()
+    height_illusion("i")
+    height_illusion("q")
+
     document.querySelector("#quantity").addEventListener("change", () => control_inputs())
 }
 

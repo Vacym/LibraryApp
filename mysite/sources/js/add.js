@@ -14,8 +14,8 @@ function validation_text(element) {
         regex = /^([1-9]|1[01])$/
     } else if (id == "id" || id == "quantity" || id.includes("book_id_")) {
         regex = /^\d+$/
-    } else if (id == "name" || id == "comment" || id == "author") {
-        regex = /^([а-яё-]|[\., ])+$/i
+    } else if (id == "name" || id == "comment" || id == "author" || id == "genre") {
+        regex = /^([а-яё-]|[\., ])|\d+$/i
     }
 
     var is_valid = element.value.match(regex)
