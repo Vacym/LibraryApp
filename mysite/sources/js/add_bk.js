@@ -12,13 +12,14 @@ window.onload = function() {
         var is_auto_id = document.getElementById("auto_id").checked;
         var is_group = document.getElementById('group_checkbox').checked;
         var books = document.querySelectorAll(".list_id input");
-        var query = '';
+        var query = `name=${name.value}&author=${author.value}&genre=${genre.value}&comment=${comment.value}&id=${book_id.value}`;
 
         if (books.length > 0 && is_group) {
             if (!is_auto_id) {
                 var book_value = books[0].value
                 if (book_value) query += `&book_1=${book_value}`;
                 else            query += `&book_1=${book_id.value}`;
+
                 for (var i = 1; i < books.length; i++) {
                     book_value = books[i].value
                     if (book_value) query += `&book_${i+1}=${book_value}`
@@ -26,10 +27,10 @@ window.onload = function() {
             } else {
                 query += `&book_1=${book_id.value}`;
             }
+            query += `&count=${count.value}`
         }
 
-        var params = `name=${name.value}&author=${author.value}&genre=${genre.value}&comment=${comment.value}&id=${book_id.value}&count=${count.value}` + query;
-        ajaxGet(params);
+        ajaxGet(query);
     }
 }
 

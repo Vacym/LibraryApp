@@ -13,7 +13,7 @@
     	return preg_match($re[$i], $value);
     }
 
-    $arr = array('name', 'author', 'genre', 'comment', 'id', 'count');
+    $arr = array('name', 'author', 'genre', 'comment', 'id');
 
     foreach ($arr as $i) {
         if (!array_key_exists($i, $_POST)) {
@@ -26,7 +26,6 @@
     $genre   = $_POST['genre'];
     $comment = $_POST['comment'];
     $inv_no  = $_POST['id'];
-    $count	 = $_POST['count'];
 
     $valid_genre   = valid('name', $genre);
     $valid_author  = valid('name', $author);
@@ -40,7 +39,8 @@
 
     $mysql = mysqli_connect('localhost', 'root', '', 'Lib');
 
-    if (ctype_digit($count) && $count > 1) {
+    $count = filter_input(INPUT_POST, 'count');
+    if (valid('num', $count)) {
         if ($count > 500) {
             send("Невозможно создать группу с более 500 книгами!");
         }
