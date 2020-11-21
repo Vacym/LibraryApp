@@ -12,11 +12,11 @@
     $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no']) ? $_GET['order'] : 'name'; // Init which order you ewant
     $page  = filter('page', 'number'); // Init which books you should send to AJAX
 
-    function add_book($q, $im, $del, $order, $group, $page=0) { // function for adding books
+    $mysql = mysqli_connect('localhost', 'root', '', 'Lib'); // Connect to mysql
 
-        $mysql = mysqli_connect('localhost', 'root', '', 'Lib'); // Connect to mysql
+    if (!$mysql) exit('<h1>Ошибка Подключения</h1>'); // If error, exit
 
-        if (!$mysql) exit('<h1>Ошибка Подключения</h1>'); // If error, exit
+    function add_book($mysql, $q, $im, $del, $order, $group, $page=0) { // function for adding books
 
         $query = "SELECT * FROM `books` WHERE $order LIKE '$q%'";
 
@@ -30,7 +30,7 @@
                       $query GROUP BY `Group_ID` HAVING `Group_ID` > 0";
         }
 
-        if ($order == 'inventory_no') $query .= " ORDER BY (`User_id`>0), $order LIMIT 20 OFFSET $page"; // Sort by number
+        if ($order == 'inventory_no') $query .= " ORDER BY $order LIMIT 20 OFFSET $page"; // Sort by number
         else                          $query .= " ORDER BY (`User_id`>0), BINARY(lower($order)) LIMIT 20 OFFSET $page"; // Sort by russian words
 
         $result = mysqli_query($mysql, $query); // Send query
@@ -53,8 +53,8 @@
 
                 $res1 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid'");
                 $res2 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid' AND `User_id`");
-                $all  = mysqli_fetch_assoc($res1)['g'];
-                $busy = mysqli_fetch_assoc($res2)['g'];
+                $all  = mysqli_fetch_assoc($res1)['g']; // Get count of books
+                $busy = mysqli_fetch_assoc($res2)['g']; // Get count of busy books
 
                 echo "<a class='result valid group' href='search_book.php?q=$q&order=$order&im=$im&del=$del&group=$gid'>";
                 echo '<div class="left_part">';
@@ -65,12 +65,12 @@
                 echo '</div></div></a>';
 
             } else { // General book without group_id 
-                $id = $bk['User_id'];
+                $id = $bk['User_id']; // Get user id in book
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
-                $user = mysqli_fetch_assoc($res);
+                $user = mysqli_fetch_assoc($res); // Get user
 
-                if ($im && !$del && !is_null($id)) echo "<a class='result'>";
-                else                               echo $src, $bk['ID'],"'>";
+                if ($im && !$del && !is_null($id)) echo "<a class='result'>"; // If book isn't busy
+                else                               echo $src, $bk['ID'],"'>"; // If book is busy
 
                 echo '<div class="left_part">';
                 echo "<span class='name_book'>{$bk['Name']}</span>";
@@ -92,7 +92,7 @@
     }
 
     if ($page) { // If this is a AJAX query...
-        add_book($q, $im, $del, $order, $group, $page);
+        add_book($mysql, $q, $im, $del, $order, $group, $page);
         exit();
     }
 ?>
@@ -108,7 +108,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/sources/style/search.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="sources/js/ajax.js"></script>
     <script src="sources/js/search.js"></script>
 </head>
 
@@ -116,9 +116,18 @@
 	<a class="but" id="home" href="/"></a>
 
     <?php
+        if ($group) {
+            $result = mysqli_query($mysql, "SELECT `Name` FROM `books` WHERE `Group_ID` = $group"); // Send query
+            $name   = mysqli_fetch_assoc($result); // Output name of group
 
-        if ($group) echo "<h2>Поиск книг по группе №$group</h2>";
-        else 	    echo '<h2>Поиск книг</h2>';
+            if ($name) {
+                echo "<h2>Поиск книг по группе &#171;{$name['Name']}&#187; </h2>"; // Print name of group
+            } else {
+                echo '<h2>Поиск книг</h2>';   
+            }
+        } else {
+            echo '<h2>Поиск книг</h2>';
+        }	    
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';
@@ -141,7 +150,7 @@
         echo '</form></div>';
         echo '<div class="search_result">';
 
-        add_book($q, $im, $del, $order, $group);
+        add_book($mysql, $q, $im, $del, $order, $group);
     ?>
     <a id="up" class="but hidden"></a>
 
@@ -151,7 +160,7 @@
             var book_finish = false;
 
             $(window).scroll(function () {
-                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 5 && !book_finish) {
+                if (!book_finish && ($(window).scrollTop() + $(window).height() >= $(document).height()) ) {
                     $.ajax({
                         url: 'search_book.php',
                         method: 'get',

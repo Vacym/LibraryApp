@@ -9,7 +9,7 @@
     }
 
     function valid($i, $value) {
-    	$re = array('name' => '/^([а-яё-]|[\., ])+$/ui', 'num' => "/^\d+$/");
+    	$re = array('name' => '/^([а-яё-]|[\., ]|\d)+$/ui', 'num' => "/^\d+$/");
     	return preg_match($re[$i], $value);
     }
 
