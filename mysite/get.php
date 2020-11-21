@@ -5,10 +5,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Книга</title>
+    <title>Привязка книги</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="/sources/style/get.css">
+    <link rel="stylesheet" type="text/css" href="/sources/style/button.css">
+    <link rel="stylesheet" type="text/css" href="/sources/style/query.css">
 </head>
 
 <body>

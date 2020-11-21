@@ -37,7 +37,6 @@
         $bk     = mysqli_fetch_assoc($result); // Output query
 
          if (is_null($bk)) { // If books doesn't have...
-            if ($page) exit();
             exit("Ничего не найдено");
         } 
 
@@ -104,16 +103,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Поиск книги</title>
+    <title>Поиск книг</title>
 
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/sources/style/button.css">
     <link rel="stylesheet" type="text/css" href="/sources/style/search.css">
-    <script src="sources/js/ajax.js"></script>
     <script src="sources/js/search.js"></script>
 </head>
 
 <body>
-	<a class="but" id="home" href="/"></a>
+	<a class="but" id="home" href="/"></a>  <!-- Button home -->
 
     <?php
         if ($group) {
@@ -142,6 +140,7 @@
         }
         echo '</select>';
 
+        // If one of this params is exist
         if ($group) echo "<input type='hidden' name='group' value='$group'>";
         if ($im)    echo "<input type='hidden' name='im' value='$im'>";
         if ($del)   echo "<input type='hidden' name='del' value=1>";
@@ -150,35 +149,56 @@
         echo '</form></div>';
         echo '<div class="search_result">';
 
+        // Call function for print first 20 books 
         add_book($mysql, $q, $im, $del, $order, $group);
     ?>
-    <a id="up" class="but hidden"></a>
+    <a id="up" class="but hidden"></a> <!-- Button Up -->
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            var page = 20;
-            var book_finish = false;
 
-            $(window).scroll(function () {
-                if (!book_finish && ($(window).scrollTop() + $(window).height() >= $(document).height()) ) {
-                    $.ajax({
-                        url: 'search_book.php',
-                        method: 'get',
-                        dataType: 'html',
-                        data: {'q': '<?php echo $q ?>', 'im': '<?php echo $im ?>', 'del': '<?php echo $del ?>', 'order': '<?php echo $order ?>', 'group': '<?php echo $group ?>', 'page': page },
-                        success: function(data) {
-                            if (data) {
-                                $('.search_result').append(data);
-                                page += 20;
-                            } else {
-                                book_finish = true;
-                            }   
-                        }
-                    });
+        var page = 20;
+        var allowLoading = true; // Check, if request is free
+        var site = document.documentElement; // All html document
+        var list_books = document.querySelector('.search_result'); // Div for all books
+
+        function success(data) {
+            if (data != "Ничего не найдено") {
+                list_books.innerHTML += data; // Add new 20 books
+                allowLoading = true;
+                page += 20;
+            } else {
+                allowLoading = false;
+            }
+        }
+
+        function ajax(url, data) { // Send and Get Ajax-request
+            if (!allowLoading) return
+
+            var request = new XMLHttpRequest();
+
+            request.onreadystatechange = function() { // If request is comeback
+                if (request.readyState == 4 && request.status == 200) {
+                    var req = request.responseText;
+                    success(req);
+                } else {
+                    allowLoading = true;
                 }
-            })
-        })
+            }
+
+            request.open('GET', url + data);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-url');
+            request.send(); // Send ajax request
+        }
         
+        function ready() {
+            if (Math.floor(site.scrollTop + site.clientHeight) + 1 >= site.scrollHeight) {
+                var url  = 'search_book.php';
+                var data = `?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
+
+                ajax(url, data); // Call Ajax funciton
+            }
+        }
+        document.addEventListener('scroll', ready); // Event for listen your scroll in site
     </script>
 </body>
 </html>
