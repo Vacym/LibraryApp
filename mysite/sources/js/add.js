@@ -1,4 +1,4 @@
-// version 1.1 release
+// version 1.2 release
 
 function validation_text(element) {
     if (element.currentTarget) {
@@ -6,13 +6,12 @@ function validation_text(element) {
     }
     var id = element.id
     var regex = /^[а-яё-]+$/i
-
     if (id == "letter") {
         element.value = element.value.toUpperCase();
         regex = /^[А-Я]$/
     } else if (id == "class") {
         regex = /^([1-9]|1[01])$/
-    } else if (id == "id" || id == "quantity" || id.includes("book_id_")) {
+    } else if (id == "id" || id == "quantity" || element.name.includes("book_id_")) {
         regex = /^\d+$/
     } else if (id == "name" || id == "comment" || id == "author" || id == "genre") {
         regex = /^([а-яё-]|[\., ]|\d)+$/i
@@ -67,7 +66,6 @@ function button_control() {
 }
 
 function full_check() {
-    console.log("checking")
     text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
     for (let x = 0; x < text_inputs.length; x++) {
         validation_text(text_inputs[x])

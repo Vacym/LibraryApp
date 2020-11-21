@@ -36,7 +36,6 @@ form h1 {
 form .line {
     margin: 15px 40px;
     text-align: center;
-    background: rgba(0, 0, 0, .7);
 }
 
 form input,
@@ -45,7 +44,7 @@ textarea {
     padding: 10px;
     font-size: 20px;
     color: #fff;
-    background: none;
+    background: rgba(0, 0, 0, .7);
     outline: none;
     border: 1px solid #fff;
     box-sizing: border-box;
@@ -156,15 +155,6 @@ form #submit:disabled {
     position: relative;
     max-height: 100%;
     overflow-y: scroll;
-    background: rgba(0, 0, 0, 0);
-}
-
-.list_id .line {
-    background: none;
-}
-
-.list_id .line input {
-    background: rgba(0, 0, 0, .7);
 }
 
 .all_inputs {
@@ -176,12 +166,8 @@ form #submit:disabled {
     flex-grow: 1;
 }
 
-.auto_inputs {
-    /* align-self: stretch; */
-}
 
-
-/* ÑÑ‚Ð¸Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ checkbox */
+/* стилизация checkbox */
 
 input[type="checkbox"] {
     /*opacity: 0;*/
@@ -251,39 +237,4 @@ input[type="checkbox"] {
 #quantity {
     margin-right: 10px;
     width: 205px;
-}
-
-
-/* ÐºÐ½Ð¾Ð¿ÐºÐ° Ð´Ð¾Ð¼Ð¾Ð¹ */
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-.but {
-    position: absolute;
-    display: flex;
-    width: 40px;
-    height: 40px;
-    margin-bottom: 4px;
-    justify-content: center;
-    align-items: center;
-    border: 1px ridge white;
-    opacity: .5;
-    transition: opacity .15s linear;
-}
-
-#home::before {
-    content: "\f015";
-    display: flex;
-    font-family: FontAwesome;
-    font-size: 25px;
-    color: white;
-}
-
-.but:hover,
-.but:focus {
-    background-color: rgba(0, 0, 0, 1);
-    opacity: 1;
 }

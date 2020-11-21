@@ -14,6 +14,10 @@ body {
     text-align: center;
 }
 
+body>h2 {
+    margin-top: 0px;
+}
+
 .find_input {
     right: 50%;
     width: 70%;
@@ -129,6 +133,10 @@ select:focus {
     transition: background-color .15s linear;
 }
 
+.result:last-child {
+    margin-bottom: 0px;
+}
+
 .result.valid {
     border-color: #e3e3e3;
     color: white;
@@ -239,48 +247,12 @@ select:focus {
 }
 
 
-/* toolbar */
-
-.toolbar {
-    align-items: center;
-    outline: none;
-}
+/* buttons */
 
 a {
     text-decoration: none;
     color: white;
 }
-
-
-/* общие свойства кнопок ▼ */
-
-.but {
-    display: flex;
-    width: 45px;
-    height: 45px;
-    justify-content: center;
-    align-items: center;
-    border: 1px ridge white;
-    opacity: .5;
-    transition: opacity .15s linear;
-}
-
-.but::before {
-    display: flex;
-    font-family: FontAwesome;
-    color: white;
-    font-size: 20px;
-}
-
-.but:hover,
-.but:focus {
-    background-color: rgba(0, 0, 0, 1);
-    opacity: 1;
-    cursor: pointer;
-}
-
-
-/*________________________▲ */
 
 #more_result {
     display: flex;
@@ -301,17 +273,6 @@ a {
     background-color: rgba(0, 0, 0, 1);
     opacity: .9;
     cursor: pointer;
-}
-
-
-/* кнопка домой */
-
-#home {
-    position: fixed;
-}
-
-#home::before {
-    content: "\f015";
 }
 
 #up {

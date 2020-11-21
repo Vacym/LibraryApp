@@ -13,40 +13,9 @@ html {
 
 /* Общие настройки */
 
-.but {
-    display: inline-block;
-    height: 40px;
-    width: 40px;
-    border: 1px solid #888;
-    border-width: 1px 0px 1px 1px;
-    text-align: center;
-    transition: background-color .15s linear;
-}
-
-.but::before {
-    text-align: center;
-    font-family: FontAwesome;
-    color: white;
-    line-height: 40px;
-    font-size: 30px;
-}
-
-.but:hover {
-    opacity: .8;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
 a {
     text-decoration: none;
     color: white;
-}
-
-.but.disabled,
-.but.but.disabled::before {
-    pointer-events: none;
-    cursor: default;
-    color: #888;
-    border-color: #888;
 }
 
 
@@ -128,40 +97,12 @@ nav {
     content: "\f067";
 }
 
-#delate_book {
-    margin-top: 10px;
-    border-top: 1px solid #888;
+#edit {
+    border-right-width: 0;
 }
 
 #delate_book::before {
     content: "\f068";
-}
-
-#home {
-    position: absolute;
-    border-width: 1px;
-}
-
-#home::before {
-    content: "\f015";
-}
-
-#del {
-    border-top: 1px solid #888;
-}
-
-#del::before {
-    content: "\f014";
-    /*content: "\f1f8";*/
-}
-
-#home {
-    position: absolute;
-    border-width: 1px;
-}
-
-#home::before {
-    content: "\f015";
 }
 
 

@@ -1,41 +1,17 @@
-/* version 1.0 release */
+/* version 1.1 release */
 
 html {
-    background: url(../files/book.jpg);
-    -webkit-background-size: cover;
+    height: 100%;
+    font-family: sans-serif;
+    color: white;
+    background: url("../files/book.jpg");
     background-size: cover;
     background-attachment: fixed;
-    font-family: sans-serif;
-    height: 100%;
-    color: white;
+    background-position-x: center;
 }
 
 
 /* Общие настройки */
-
-.but {
-    display: inline-block;
-    height: 40px;
-    width: 40px;
-    border: 1px solid #888;
-    border-width: 0px 0px 1px 1px;
-    text-align: center;
-    transition: background-color .15s linear;
-}
-
-.but::before {
-    text-align: center;
-    font-family: FontAwesome;
-    color: white;
-    line-height: 40px;
-    font-size: 30px;
-}
-
-.but:hover {
-    opacity: .8;
-    background-color: rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-}
 
 a {
     text-decoration: none;
@@ -51,7 +27,7 @@ a {
 }
 
 
-/**/
+/* box */
 
 .box {
     position: absolute;
@@ -59,24 +35,24 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 75%;
+    min-width: min-content;
     background-color: rgba(0, 0, 0, .8);
-    /*background-color: rgba(120, 120, 120, .7);*/
 }
 
 
-/* ФИО */
+/* Статическая информация */
 
 .head {
-    border: 1px solid #888;
-    margin: auto;
     height: 20%;
-    color: white;
+    margin: auto;
     font-size: 30px;
+    color: white;
+    border: 1px solid #888;
 }
 
 table {
+    width: calc(100% - 46px);
     padding: 5px;
-    width: calc(100% - 41px);
 }
 
 table td,
@@ -88,34 +64,46 @@ table td {
     text-align: center;
 }
 
-#edit::before {
-    content: "\f040";
-}
-
 .class {
-    font-size: 60%;
     font-style: italic;
+    font-size: 60%;
 }
 
 
-/* Книги */
+/* Изменяемая информация */
 
 .information {
-    border: 1px solid #888;
-    margin: auto;
+    height: min-content;
     min-height: 93px;
-    color: white;
+    margin: auto;
     font-size: 30px;
+    color: white;
+    border: 1px solid #888;
     border-spacing: 10px;
 }
 
 nav {
     float: right;
-    width: 41px;
+    width: 46px;
 }
 
 
 /* кнопки */
+
+.but {
+    transition: .15s linear;
+}
+
+.but:hover,
+.but:focus {
+    border-color: #888;
+}
+
+#add_book,
+#delate_book,
+#edit {
+    border-width: 0 0 1px 1px;
+}
 
 #add_book::before {
     content: "\f067";
@@ -125,13 +113,8 @@ nav {
     content: "\f068";
 }
 
-#home {
-    position: absolute;
-    border-width: 1px;
-}
-
-#home::before {
-    content: "\f015";
+#edit::before {
+    content: "\f040";
 }
 
 #del {
@@ -143,26 +126,17 @@ nav {
     /*content: "\f1f8";*/
 }
 
-#home {
-    position: absolute;
-    border-width: 1px;
-}
 
-#home::before {
-    content: "\f015";
-}
-
-
-/* inputs */
+/* inputs for edit*/
 
 h1 {
-    background: rgba(0, 0, 0, 0);
     margin: 30px auto;
     padding: 0;
-    text-align: center;
-    color: #fff;
     font-size: 30px;
+    text-align: center;
     text-transform: uppercase;
+    color: #fff;
+    background: rgba(0, 0, 0, 0);
 }
 
 .line {
@@ -174,17 +148,16 @@ h1 {
 
 input,
 textarea {
-    padding: 10px;
     width: calc(100% - 252px);
     min-width: 200px;
+    padding: 10px;
     resize: none;
-    color: #fff;
-    font-size: 20px;
-    background: none;
-    outline: none;
-    border: 1px solid #fff;
     box-sizing: border-box;
+    font-size: 20px;
+    color: #fff;
     background: rgba(0, 0, 0, .7);
+    border: 1px solid #fff;
+    outline: none;
     transition: border.3s;
 }
 
@@ -206,8 +179,8 @@ textarea:focus {
 input[type="submit"] {
     width: 100%;
     margin-top: 20px;
-    color: #fff;
     font-weight: bold;
+    color: #fff;
     background: #0fc3f5;
     border: none;
     transition: .3s;
@@ -227,8 +200,8 @@ label {
     display: inline-block;
     width: 100px;
     height: 20px;
+    margin-left: 5%;
     vertical-align: middle;
     font-style: oblique;
     font-size: 20px;
-    margin-left: 5%;
 }
