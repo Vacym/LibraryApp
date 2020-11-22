@@ -170,7 +170,7 @@
             }
         }
 
-        function ajax(url, data) { // Send and Get Ajax-request
+        function ajax(url) { // Send and Get Ajax-request
             if (!allowLoading) return
             allowLoading = false;
 
@@ -185,17 +185,16 @@
                 }
             }
 
-            request.open('GET', url + data);
+            request.open('GET', url);
             request.setRequestHeader('Content-Type', 'application/x-www-form-url');
             request.send(); // Send ajax request
         }
         
         function ready() {
             if (!is_end_of_books && Math.floor(site.scrollTop + site.clientHeight) + 1 >= site.scrollHeight) {
-                var url  = 'search_book.php';
-                var data = `?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
+                var url = `search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
 
-                ajax(url, data); // Call Ajax funciton
+                ajax(url); // Call Ajax funciton
             }
         }
         document.addEventListener('scroll', ready); // Event for listen your scroll in site
