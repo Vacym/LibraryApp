@@ -30,6 +30,4 @@ function ready() {
     but_up.addEventListener('click', go_top)
 }
 
-
-
 document.addEventListener("DOMContentLoaded", ready)

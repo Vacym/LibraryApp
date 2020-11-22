@@ -30,8 +30,8 @@
                       $query GROUP BY `Group_ID` HAVING `Group_ID` > 0";
         }
 
-        if ($order == 'inventory_no') $query .= " ORDER BY $order LIMIT 20 OFFSET $page"; // Sort by number
-        else                          $query .= " ORDER BY (`User_id`>0), BINARY(lower($order)) LIMIT 20 OFFSET $page"; // Sort by russian words
+        if ($order == 'inventory_no' || $group) $query .= " ORDER BY `Inventory_NO` LIMIT 20 OFFSET $page"; // Sort by number
+        else                                    $query .= " ORDER BY (`User_id`>0), BINARY(lower($order)) LIMIT 20 OFFSET $page"; // Sort by russian words
 
         $result = mysqli_query($mysql, $query); // Send query
         $bk     = mysqli_fetch_assoc($result); // Output query
@@ -95,7 +95,6 @@
         exit();
     }
 ?>
-
 <!-- version 1.1 release -->
 
 <!DOCTYPE html>
@@ -107,7 +106,7 @@
 
     <link rel="stylesheet" type="text/css" href="/sources/style/button.css">
     <link rel="stylesheet" type="text/css" href="/sources/style/search.css">
-    <script src="sources/js/search.js"></script>
+    <script type="text/javascript" src="sources/js/search.js"></script>
 </head>
 
 <body>
@@ -158,21 +157,22 @@
 
         var page = 20;
         var allowLoading = true; // Check, if request is free
+        var is_end_of_books = false; // Check, if books is finished
         var site = document.documentElement; // All html document
         var list_books = document.querySelector('.search_result'); // Div for all books
 
         function success(data) {
             if (data != "Ничего не найдено") {
                 list_books.innerHTML += data; // Add new 20 books
-                allowLoading = true;
                 page += 20;
             } else {
-                allowLoading = false;
+                is_end_of_books = true;
             }
         }
 
         function ajax(url, data) { // Send and Get Ajax-request
             if (!allowLoading) return
+            allowLoading = false;
 
             var request = new XMLHttpRequest();
 
@@ -180,8 +180,8 @@
                 if (request.readyState == 4 && request.status == 200) {
                     var req = request.responseText;
                     success(req);
-                } else {
                     allowLoading = true;
+                    console.log("New stack...")
                 }
             }
 
@@ -191,7 +191,7 @@
         }
         
         function ready() {
-            if (Math.floor(site.scrollTop + site.clientHeight) + 1 >= site.scrollHeight) {
+            if (!is_end_of_books && Math.floor(site.scrollTop + site.clientHeight) + 1 >= site.scrollHeight) {
                 var url  = 'search_book.php';
                 var data = `?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
 

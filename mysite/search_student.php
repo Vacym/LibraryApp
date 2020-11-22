@@ -103,44 +103,44 @@
 
         var page = 20;
         var allowLoading = true; // Check, if request is free
+        var is_end_of_books = false; // Check, if books is finished
         var site = document.documentElement; // All html document
         var list_books = document.querySelector('.search_result'); // Div for all books
 
         function success(data) {
             if (data != "Ничего не найдено") {
                 list_books.innerHTML += data; // Add new 20 books
-                allowLoading = true;
                 page += 20;
             } else {
-                allowLoading = false;
+                is_end_of_books = true;
             }
         }
 
-        function ajax(url, data) {
+        function ajax(url) { // Send and Get Ajax-request
             if (!allowLoading) return
+            allowLoading = false;
 
             var request = new XMLHttpRequest();
 
-            request.onreadystatechange = function() {
+            request.onreadystatechange = function() { // If request is comeback
                 if (request.readyState == 4 && request.status == 200) {
                     var req = request.responseText;
                     success(req);
-                } else {
                     allowLoading = true;
+                    console.log("New stack...")
                 }
             }
 
-            request.open('GET', url + data);
+            request.open('GET', url);
             request.setRequestHeader('Content-Type', 'application/x-www-form-url');
-            request.send();
+            request.send(); // Send ajax request
         }
 
         function ready() {
-            if (Math.floor(site.scrollTop + site.clientHeight) + 1 >= site.scrollHeight) {
-                var url  = 'search_student.php';
-                var data = `?q=<?php echo $q ?>&im=<?php echo $im ?>&order=<?php echo $order ?>&page=${page}`;
+            if (!is_end_of_books && site.scrollTop + site.clientHeight >= site.scrollHeight) {
+                var data = `search_student.php?q=<?php echo $q ?>&im=<?php echo $im ?>&order=<?php echo $order ?>&page=${page}`;
 
-                ajax(url, data);
+                ajax(url);
             }
         }
         document.addEventListener('scroll', ready)
