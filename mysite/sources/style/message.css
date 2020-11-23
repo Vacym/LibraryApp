@@ -62,15 +62,18 @@
     border: 1px solid #777;
     padding: 0 12px;
     margin: 10px;
+    color: white;
     background: black;
     font-size: 16pt;
     cursor: pointer;
     transition: background-color, border .15s;
 }
 
-.but_window:hover {
+.but_window:hover,
+.but_window:focus {
     background: #222;
     border: 1px solid white;
+    outline: none;
     cursor: pointer;
 }
 

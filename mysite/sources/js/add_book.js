@@ -73,7 +73,6 @@ function show_group(checkbox, changeable, need_check = true, illusion = true) {
 }
 
 function height_illusion(mode, height, width) {
-    console.log(mode, height, width)
     if (mode == "q") {
         var illusion = document.querySelector("#for_group_il")
         var vis_box = document.querySelector(".for_group")
@@ -83,12 +82,10 @@ function height_illusion(mode, height, width) {
     }
     if (!height && mode == "q") {
         height = getComputedStyle(vis_box).height
-        console.log(height)
         if (height == "auto") { height = "0px" }
     }
     if (!width && mode == "i") {
         width = getComputedStyle(vis_box).width
-        console.log(width)
         if (width == "auto") { width = "0px" }
         height = getComputedStyle(document.querySelector(".main_inputs")).height
 
