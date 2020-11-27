@@ -120,6 +120,7 @@ select:focus {
 }
 
 .result {
+    position: relative;
     display: flex;
     width: 94%;
     min-width: min-content;
@@ -186,10 +187,11 @@ select:focus {
     margin: auto;
 }
 
-.name_book::after {
+.name_book::after,
+.autor_book::after {
     content: "";
     display: block;
-    height: 15px;
+    height: 8px;
 }
 
 .right_part {
@@ -210,26 +212,44 @@ select:focus {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-end;
     align-items: center;
     margin: 0px;
 }
 
 .information {
     position: absolute;
+    top: 0px;
+    right: 0px;
     align-self: start;
-    margin-top: 0px;
     padding: 1px 10px;
     font-size: 23px;
     font-weight: 800;
     border: 2px solid #777;
     border-width: 0px 0px 2px 2px;
     border-radius: 0px 10px;
-    transform: translate(10px, -10px);
 }
 
-.result.valid .information {
+.result.valid .information,
+.result.valid .сhoice {
     border-color: #e3e3e3;
+}
+
+.сhoice {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 5px 5px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #777;
+    border-width: 0px 2px 2px 0px;
+    border-radius: 10px 0px;
+}
+
+.date {
+    font-weight: 100;
+    font-size: 18px;
+    font-style: italic;
 }
 
 .FCS {
