@@ -27,7 +27,7 @@
     $comment = $_POST['comment'];
     $inv_no  = $_POST['id'];
 
-    $valid_genre   = valid('name', $genre);
+    $valid_genre   = valid('name', $genre) || $genre == '';
     $valid_author  = valid('name', $author);
     $valid_name    = valid('name', $name);
     $valid_comment = valid('name', $comment) || $comment == '';
