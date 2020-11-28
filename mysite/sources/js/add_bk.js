@@ -43,7 +43,7 @@ function ajaxGet(params) {
             if (req['success']) {
                 document.querySelector('#result').innerHTML = 'Книга успешно добавлена!';
                 document.querySelector('#link').parentElement.classList.remove("mes_dis");
-                document.querySelector("#link").setAttribute('href', `books.php/${req['id']}`);
+                document.querySelector("#link").setAttribute('href', req['url']);
                 inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea')
                 for (let x = 0; x < inputs.length; x++) {
                     inputs[x].value = ''

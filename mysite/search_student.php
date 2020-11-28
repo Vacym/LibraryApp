@@ -30,11 +30,15 @@
 
             echo $src, $id, "'>";
             echo '<div class="left_part">';
+            echo '<div class="сhoice"></div>';
 
             while ($bk = mysqli_fetch_assoc($res)) {
+                $date = date('d.m.y', strtotime($bk['Date_of_issue']));
+
                 echo '<div class="book">';
                 echo "<span class='name_book'>{$bk['Name']}</span>";
                 echo "<span class='autor_book'>{$bk['Author']}</span>";
+                echo "<span class='date'>$date</span>";
                 echo '</div>';
             }
             
@@ -69,6 +73,7 @@
 
 <body>
     <a class="but" id="home" href="/"></a>
+    <a id="up" class="but hidden"></a> <!-- Button Up -->
 
     <h2>Поиск Учеников</h2>
 
@@ -97,7 +102,6 @@
 	    echo '</div>';        
         
     ?>
-    <a id="up" class="but hidden"></a>
 
     <script type="text/javascript">
 
@@ -137,8 +141,8 @@
         }
 
         function ready() {
-            if (!is_end_of_books && site.scrollTop + site.clientHeight >= site.scrollHeight) {
-                var data = `search_student.php?q=<?php echo $q ?>&im=<?php echo $im ?>&order=<?php echo $order ?>&page=${page}`;
+            if (!is_end_of_books && site.scrollTop + site.clientHeight + 200 >= site.scrollHeight) {
+                var url = `search_student.php?q=<?php echo $q ?>&im=<?php echo $im ?>&order=<?php echo $order ?>&page=${page}`;
 
                 ajax(url);
             }

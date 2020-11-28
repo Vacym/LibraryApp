@@ -53,7 +53,7 @@
         		echo '<h1>Неправильно введенные данные!</h1>';
         	}
         	else {
-        		$query = mysqli_query($mysql, "UPDATE `books` SET `User_id` = NULL, `Date_of_issue` = '$date' WHERE `ID` = '$bk'");
+        		$query = mysqli_query($mysql, "UPDATE `books` SET `User_id` = NULL, `Date_of_issue` = NULL WHERE `ID` = '$bk'");
 
         		echo '<h1>Книга успешно откреплена!</h1>';
         	}

@@ -66,16 +66,17 @@
             $inv_no = $groups[$i];
     		mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`, `Inventory_NO`, `Group_ID`) VALUES ('$name', '$author', '$genre', '$comment', '$inv_no', '$group')");
     	}
+        $data['url'] = 'search_book.php?q=&order=name&im=&del=&group='.$group;
     } else {
         if (mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$inv_no'"))['id']) {
             send("Книга под номером `$inv_no` уже существует!");
         }
     	mysqli_query($mysql, "INSERT INTO `books` (`Name`, `Author`, `Genre`, `Comment`, `Inventory_NO`) VALUES ('$name', '$author', '$genre', '$comment', '$inv_no')");
-    }
+        $id = mysqli_insert_id($mysql);
 
-    $id = mysqli_insert_id($mysql);
+        $data['url'] = 'books.php/'.$id;
+    }
     $data['success'] = true;
-    $data['id'] = $id;
 
     $json = json_encode($data);
     exit($json);

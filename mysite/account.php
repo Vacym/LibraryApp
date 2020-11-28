@@ -141,7 +141,7 @@
         do {
 
             if (is_null($book['Date_of_issue'])) $date = '-';
-            else                                 $date = $book['Date_of_issue'];
+            else                                 $date = date('d.m.Y', strtotime($book['Date_of_issue']));
 
             echo '<tr>';
             echo "<td class='td_head'>{$book['Name']}</td>";

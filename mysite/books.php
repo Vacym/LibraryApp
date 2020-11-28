@@ -53,11 +53,11 @@
                 $comment = $_POST['comment'];
                 $inv_no  = $_POST['id'];
 
-                $valid_genre   = valid('name', $genre);
-                $valid_author  = valid('name', $author);
                 $valid_name    = valid('name', $name);
-                $valid_comment = valid('name', $comment) || $comment == '';
                 $valid_inv_no  = valid('num',  $inv_no);
+                $valid_author  = valid('name', $author);
+                $valid_genre   = valid('name', $genre) || $genre == '';
+                $valid_comment = valid('name', $comment) || $comment == '';
 
 		        if (!$valid_name || !$valid_author || !$valid_genre || !$valid_comment || !$valid_inv_no || mysqli_fetch_assoc(mysqli_query($mysql, "SELECT COUNT(`ID`) as `id` FROM `books` WHERE `Inventory_NO` = '$inv_no' AND `ID` != '$id'"))['id']) {
 		            echo '<h1>Неправильно введенные данные!</h1>';
@@ -79,7 +79,7 @@
     		echo '<nav><div href="#" class="but" id="del" message="w_del"></div></nav>';
     		echo '<form action="" method="POST">';
 
-    		$a = array('id'=> 'ID', 'name' => 'Название', 'author' => 'Автор', 'genre' => 'Жанр');
+    		$a = array('id'=> 'ID', 'name' => 'Название', 'author' => 'Автор');
 
     		foreach ($a as $i => $j) {
     			echo '<div class="line">';
@@ -87,11 +87,16 @@
     			else            echo "<input type='text' name='$i' id='$i' value='{$book[ucfirst($i)]}' class='necessary_input' autocomplete='off'>";
     			echo "<label for='$i'>$j</label></div>";
     		}
-    		
+
+    		echo '<div class="line">';
+            echo "<input type='text' name='genre' id='genre' value='{$book['Genre']}' autocomplete='off'>";
+            echo '<label for="genre">Жанр</label></div>';
+
     		echo '<div class="line">';
     		echo "<textarea type='text' name='comment' id='comment' autocomplete='off'>{$book['Comment']}</textarea>";
 		    echo '<label for="comment">Комментарий</label>';
-		    echo '</div><div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
+		    
+            echo '</div><div><input type="submit" id="submit" value="Сохранить" disabled></div></div>';
 
             echo '<div class="dark" id="w_del">';
             echo '<div class="alert_window">';
@@ -143,7 +148,7 @@
     	}
 
     	if (is_null($book['Date_of_issue'])) $date = '-';
-        else                                 $date = $book['Date_of_issue'];
+        else                                 $date = date('d.m.Y', strtotime($book['Date_of_issue']));
 
 		echo '<th class="td_head">Ученик</th>';
 		echo "<th class='td_value'>{$user['Surname']} {$user['Firstname']} {$user['Lastname']} ";

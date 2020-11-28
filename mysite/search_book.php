@@ -9,7 +9,7 @@
     $im    = filter('im', 'number'); // Init user_id
     $del   = filter('del','number'); // Init is_delete_page?
     $group = filter('group', 'number'); // Init is_group_page?
-    $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no']) ? $_GET['order'] : 'name'; // Init which order you ewant
+    $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no', 'Date_of_issue']) ? $_GET['order'] : 'name'; // Init which order you ewant
     $page  = filter('page', 'number'); // Init which books you should send to AJAX
 
     $mysql = mysqli_connect('localhost', 'root', '', 'Lib'); // Connect to mysql
@@ -57,6 +57,7 @@
 
                 echo "<a class='result valid group' href='search_book.php?q=$q&order=$order&im=$im&del=$del&group=$gid'>";
                 echo '<div class="left_part">';
+                echo '<div class="сhoice"></div>';
                 echo "<div class='information'>$busy/$all</div>";
                 echo '<div class="FCS">';
                 echo "<span class='name_book'>{$bk['Name']}</span>";
@@ -67,14 +68,18 @@
                 $id = $bk['User_id']; // Get user id in book
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
                 $user = mysqli_fetch_assoc($res); // Get user
+                $date = $bk['Date_of_issue'] ? date('d.m.y', strtotime($bk['Date_of_issue'])) : Null;
 
                 if ($im && !$del && !is_null($id)) echo "<a class='result'>"; // If book isn't busy
                 else                               echo $src, $bk['ID'],"'>"; // If book is busy
 
                 echo '<div class="left_part">';
+                echo '<div class="сhoice"></div>';
+                echo '<div class="FCS">';
                 echo "<span class='name_book'>{$bk['Name']}</span>";
                 echo "<span class='autor_book'>{$bk['Author']}</span>";
-                echo '</div>';
+                echo "<div class='date'>$date</div>";
+                echo '</div></div>';
                 echo '<div class="right_part">';
                 echo "<div class='information'>{$bk['Inventory_NO']}</div>";
                 echo '<div class="FCS">';
@@ -111,6 +116,7 @@
 
 <body>
 	<a class="but" id="home" href="/"></a>  <!-- Button home -->
+	<a id="up" class="but hidden"></a> <!-- Button Up -->
 
     <?php
         if ($group) {
@@ -131,7 +137,7 @@
         echo "<input type='search' name='q' value='$q' id='input' autocomplete='off' autofocus>";
         echo '<select name="order">';
 
-        $arr = array('name' => 'Название', 'author' => 'Автор', 'inventory_no' => 'ID', 'genre' => 'Жанр');
+        $arr = array('name' => 'Название', 'author' => 'Автор', 'inventory_no' => 'ID', 'genre' => 'Жанр', 'Date_of_issue' => 'Дата');
 
         foreach ($arr as $i => $j) {
             if ($i == $order) echo "<option value='$i' selected>$j</option>";
@@ -151,7 +157,6 @@
         // Call function for print first 20 books 
         add_book($mysql, $q, $im, $del, $order, $group);
     ?>
-    <a id="up" class="but hidden"></a> <!-- Button Up -->
 
     <script type="text/javascript">
 
@@ -191,7 +196,7 @@
         }
         
         function ready() {
-            if (!is_end_of_books && Math.floor(site.scrollTop + site.clientHeight) + 1 >= site.scrollHeight) {
+            if (!is_end_of_books && Math.floor(site.scrollTop + site.clientHeight) + 200 >= site.scrollHeight) {
                 var url = `search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
 
                 ajax(url); // Call Ajax funciton
