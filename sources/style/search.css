@@ -1,0 +1,388 @@
+/* version 1.2 release */
+
+html {
+    height: 100%;
+    font-family: sans-serif;
+    color: white;
+    background: url("../files/book.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position-x: center;
+}
+
+body {
+    text-align: center;
+}
+
+body>h2 {
+    margin-top: 0px;
+}
+
+.find_input {
+    right: 50%;
+    width: 70%;
+    min-width: min-content;
+    margin: 30px auto 10px auto;
+    text-align: center;
+    background-color: rgba(0, 0, 0, .8);
+}
+
+form {
+    text-align: center;
+    display: flex;
+    width: 100%;
+}
+
+#input {
+    margin: 5px 0px;
+}
+
+#input[name="q"] {
+    width: 100%;
+    min-width: 150px;
+    padding: 10px;
+    font-size: 20px;
+    color: #fff;
+    background: none;
+    outline: none;
+    border: 1px solid #fff;
+    border-width: 1px 0px;
+    box-sizing: border-box;
+    transition: border .3s;
+}
+
+#submit {
+    flex-basis: auto;
+    flex-shrink: 0;
+    height: calc(23px + 20px + 2px);
+    width: calc(23px + 20px + 2px);
+    margin-top: 5px;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+    transition: background-color .3s;
+}
+
+select {
+    flex-basis: auto;
+    flex-shrink: 0;
+    order: -1;
+    height: calc(23px + 20px + 2px);
+    font-size: 20px;
+    margin-top: 5px;
+    padding: 10px 5px;
+    background-color: rgb(239, 239, 239);
+    border: none;
+    outline: none;
+    transition: background-color .3s;
+}
+
+option {
+    background-color: #EEEEEE;
+}
+
+
+/* анимация поля ввода и кнопки */
+
+#input:focus {
+    border: 1px solid #0fc3f5;
+    border-width: 1px 0px;
+}
+
+#input:focus~#submit,
+#input:focus~select {
+    background-color: #0fc3f5;
+}
+
+#submit:before {
+    content: "\f002";
+    font-family: FontAwesome;
+    color: black;
+    font-size: 20px;
+}
+
+#submit:hover,
+#submit:focus,
+select:hover,
+select:focus {
+    background-color: #b0b0b0;
+}
+
+
+/* результаты поиска */
+
+.search_result {
+    width: 70%;
+    margin: 20px auto 0px auto;
+    background-color: rgba(0, 0, 0, .0);
+    transition: height .3s;
+}
+
+.result {
+    position: relative;
+    display: flex;
+    width: 94%;
+    min-width: min-content;
+    height: max-content;
+    margin: 10px auto;
+    padding: 10px;
+    border: 4px solid #777;
+    border-radius: 10px;
+    color: #bbb;
+    background-color: rgba(0, 0, 0, .7);
+    transition: background-color .15s linear;
+}
+
+.result:last-child {
+    margin-bottom: 0px;
+}
+
+.result.valid {
+    border-color: #e3e3e3;
+    color: white;
+}
+
+.result.valid:hover,
+.result.valid:focus {
+    background-color: rgba(255, 255, 255, .2);
+    outline: none;
+}
+
+.personal_information {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.one_book {
+    display: flex;
+    justify-content: space-around;
+    height: max-content;
+    margin: 8px;
+    padding: 6px;
+    font-size: 20px;
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, .8);
+}
+
+.name_book {
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+.autor_book {
+    font-style: italic;
+}
+
+.book {
+    margin: 20px;
+}
+
+
+/* Для книг */
+
+.left_part,
+.right_part {
+    width: 50%;
+    margin: auto;
+}
+
+.name_book::after,
+.autor_book::after {
+    content: "";
+    display: block;
+    height: 8px;
+}
+
+.right_part {
+    vertical-align: middle;
+    font-weight: 900;
+}
+
+.right_part {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0px;
+    font-size: 25px;
+}
+
+.result.group .left_part {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0px;
+}
+
+.information {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    align-self: start;
+    padding: 1px 10px;
+    font-size: 23px;
+    font-weight: 800;
+    border: 2px solid #777;
+    border-width: 0px 0px 2px 2px;
+    border-radius: 0px 10px;
+}
+
+.result.valid .information,
+.result.valid .сhoice {
+    border-color: #e3e3e3;
+}
+
+.сhoice {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #777;
+    border-width: 0px 2px 2px 0px;
+    border-radius: 10px 0px;
+}
+
+.date {
+    font-weight: 100;
+    font-size: 18px;
+    font-style: italic;
+}
+
+.FCS {
+    width: 100%;
+    height: min-content;
+    align-self: center;
+    margin: 30px 0px;
+}
+
+
+/* group */
+
+.group {
+    box-shadow: 5px 5px #e3e3e3;
+}
+
+
+/* сhoice */
+
+.сhoice input[type="checkbox"] {
+    display: none;
+}
+
+.сhoice input[type="checkbox"]+label {
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: 0px;
+    border-radius: 6px 0px 8px 0px;
+    transition: background-color .1s;
+    ;
+}
+
+.сhoice label::after {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    content: '';
+    display: inline-block;
+    height: 10px;
+    width: 18px;
+    border-left: 2px solid;
+    border-bottom: 2px solid;
+    opacity: 0;
+    transform: rotate(-45deg);
+    transition: opacity .1s;
+}
+
+.сhoice input[type="checkbox"]:checked+label::after {
+    opacity: 1;
+}
+
+.сhoice input[type="checkbox"]:checked+label {
+    background-color: #0fc3f5
+}
+
+
+/* buttons */
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+#more_result {
+    display: flex;
+    width: 50%;
+    height: 45px;
+    justify-content: center;
+    align-items: center;
+    border: 1px ridge white;
+    margin-bottom: 4px;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 1);
+    opacity: .5;
+    transition: .15s linear;
+    margin: auto
+}
+
+#more_result:hover {
+    background-color: rgba(0, 0, 0, 1);
+    opacity: .9;
+    cursor: pointer;
+}
+
+#up {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 200;
+    width: 60px;
+    height: 60px;
+    transition: .25s;
+}
+
+#up::before {
+    content: "\f077";
+}
+
+#up.hidden {
+    transform: translateY(calc(100% + 20px));
+}
+
+
+/* toolbar */
+
+.toolbar {
+    position: fixed;
+    justify-content: flex-end;
+    top: 0;
+    left: 0;
+    z-index: 400;
+    display: flex;
+    width: calc(100% - 2px);
+    height: 47px;
+    background-color: black;
+    border: 1px solid white;
+    transition: transform .25s;
+    transform: translateY(-100%);
+}
+
+.toolbar.show {
+    transform: translateY(0);
+}
+
+.toolbar.show+#home {
+    transform: translateY(52px);
+}
+
+#edit::before {
+    content: "\f040";
+}
+
+#del::before {
+    content: "\f014";
+    /*content: "\f1f8";*/
+}
