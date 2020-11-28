@@ -30,7 +30,10 @@
 
             echo $src, $id, "'>";
             echo '<div class="left_part">';
-            echo '<div class="сhoice"></div>';
+            echo '<div class="сhoice">';
+            echo "<input type='checkbox' id='{$st['ID']}'>";
+            echo "<label for='{$st['ID']}'></label>";
+            echo '</div>';
 
             while ($bk = mysqli_fetch_assoc($res)) {
                 $date = date('d.m.y', strtotime($bk['Date_of_issue']));
@@ -66,14 +69,37 @@
     <meta charset="UTF-8">
     <title>Найти ученика</title>
 
-    <link rel="stylesheet" type="text/css" href="/sources/style/button.css">
-    <link rel="stylesheet" type="text/css" href="/sources/style/search.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/search.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
     <script src="sources/js/search.js"></script>
+    <script src="sources/js/message.js"></script>
 </head>
 
 <body>
+    <div class="toolbar">
+        <div class="but" id="edit"></div>
+        <div class="but" id="del" message="delete"></div>
+    </div>
+
     <a class="but" id="home" href="/"></a>
     <a id="up" class="but hidden"></a> <!-- Button Up -->
+
+    <div class="dark" id="delete">
+        <div class="alert_window">
+            <div class="alert_message" id="result">
+                Будет удалено 34 ученика<br>Продолжить?
+            </div>
+            <div class="sure">
+                <div class="but_window_space">
+                    <a class="but_window" href="" id="link">Удалить</a>
+                </div>
+                <div class="but_window_space">
+                    <div class="but_window" id="cancel">Отменить</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <h2>Поиск Учеников</h2>
 

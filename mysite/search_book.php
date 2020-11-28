@@ -57,7 +57,10 @@
 
                 echo "<a class='result valid group' href='search_book.php?q=$q&order=$order&im=$im&del=$del&group=$gid'>";
                 echo '<div class="left_part">';
-                echo '<div class="сhoice"></div>';
+                echo '<div class="сhoice">';
+                echo "<input type='checkbox' id='-{$bk['Group_ID']}' name='-{$bk['Group_ID']}'>";
+                echo "<label for='-{$bk['Group_ID']}'></label>";
+         		echo '</div>';
                 echo "<div class='information'>$busy/$all</div>";
                 echo '<div class="FCS">';
                 echo "<span class='name_book'>{$bk['Name']}</span>";
@@ -74,7 +77,11 @@
                 else                               echo $src, $bk['ID'],"'>"; // If book is busy
 
                 echo '<div class="left_part">';
-                echo '<div class="сhoice"></div>';
+                
+                echo '<div class="сhoice">';
+                echo "<input type='checkbox' id='{$bk['ID']}' name='{$bk['ID']}'>";
+                echo "<label for='{$bk['ID']}'></label>";
+         		echo '</div>';
                 echo '<div class="FCS">';
                 echo "<span class='name_book'>{$bk['Name']}</span>";
                 echo "<span class='autor_book'>{$bk['Author']}</span>";
@@ -109,14 +116,37 @@
     <meta charset="UTF-8">
     <title>Поиск книг</title>
 
-    <link rel="stylesheet" type="text/css" href="/sources/style/button.css">
-    <link rel="stylesheet" type="text/css" href="/sources/style/search.css">
-    <script type="text/javascript" src="sources/js/search.js"></script>
+    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/search.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
+    <script src="sources/js/search.js"></script>
+    <script src="sources/js/message.js"></script>
 </head>
 
 <body>
+	<div class="toolbar">
+        <div class="but" id="edit"></div>
+        <div class="but" id="del" message="delete"></div>
+    </div>
+
 	<a class="but" id="home" href="/"></a>  <!-- Button home -->
 	<a id="up" class="but hidden"></a> <!-- Button Up -->
+
+	<div class="dark" id="delete"> <!-- window -->
+        <div class="alert_window">
+            <div class="alert_message" id="result">
+                Будет удалено 34 книги. 30 из группы и 4 одиночных<br>Продолжить?
+            </div>
+            <div class="sure">
+                <div class="but_window_space">
+                    <a class="but_window" href="" id="link">Удалить</a>
+                </div>
+                <div class="but_window_space">
+                    <div class="but_window" id="cancel">Отменить</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <?php
         if ($group) {
