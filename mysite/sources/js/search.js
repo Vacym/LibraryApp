@@ -1,4 +1,4 @@
-function ready() {
+function scroll_control() {
     function check_scroll() {
         let scroll = window.pageYOffset;
         let screen_height = document.documentElement.clientHeight / 4;
@@ -29,5 +29,45 @@ function ready() {
     window.addEventListener('scroll', check_scroll)
     but_up.addEventListener('click', go_top)
 }
+
+
+function check_contol() {
+    function toolbar_contol(choise_box) {
+        choise_box = choise_box.currentTarget
+        show_tool = false
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].checked) {
+                show_tool = true
+                break
+            }
+        }
+        toolbar_show(show_tool)
+    }
+
+    function toolbar_show(show) {
+        if (show) {
+            toolbar.classList.add("show")
+        } else {
+            toolbar.classList.remove("show")
+        }
+
+    }
+
+    inputs = document.querySelectorAll(".сhoice input[type='checkbox']")
+    toolbar = document.querySelector(".toolbar")
+
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener("change", toolbar_contol)
+
+    }
+}
+
+
+function ready() {
+    scroll_control()
+    check_contol()
+}
+
+
 
 document.addEventListener("DOMContentLoaded", ready)

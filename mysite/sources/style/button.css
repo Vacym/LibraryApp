@@ -44,6 +44,7 @@ a {
 #home {
     position: fixed;
     z-index: 500;
+    transition: .25s;
 }
 
 #home::before {
