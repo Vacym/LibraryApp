@@ -28,7 +28,7 @@
 
             echo $src, $id, "'>";
             echo '<div class="left_part">';
-            echo '<div class="сhoice">'; // Check box for edit users
+            echo '<div class="choice">'; // Check box for edit users
             echo "<input type='checkbox' id='{$st['ID']}'>";
             echo "<label for='{$st['ID']}'></label>";
             echo '</div>';
@@ -57,7 +57,6 @@
     	exit();
     }
 ?>
-
 <!-- version 1.0 release -->
 
 <!DOCTYPE html>
@@ -99,7 +98,7 @@
         </div>
     </div>
 
-    <h2>Поиск Учеников</h2>
+    <h2>Поиск учеников</h2>
 
     <?php
         echo '<div class="find_input">';
@@ -180,7 +179,7 @@
         }
 
         document.querySelector('#link').onclick = function() { // If user touch delete user button
-        	var checkboxes = document.querySelectorAll(".сhoice input[type='checkbox']:checked"); // Get all values of checkboxes in users
+        	var checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
         	var url = 'sources/php/delete_st.php';
         	var params = ''; // Your query
 
@@ -191,7 +190,7 @@
         }
 
         document.querySelector('#del').onclick = function() {
-        	var count = document.querySelectorAll(".сhoice input[type='checkbox']:checked").length
+        	var count = document.querySelectorAll(".choice input[type='checkbox']:checked").length
 
         	valid_1 = ['Будут удалены', 'Будет удалено', 'Будет удален'];
         	valid_2 = ['иков', 'ика', 'ик'];

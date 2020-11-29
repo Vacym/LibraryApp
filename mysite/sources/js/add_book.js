@@ -1,3 +1,5 @@
+// version 1.0 release
+
 function control_inputs(q_inputs) {
     // Определяем сколько елемнтов нужно
     if (!q_inputs) { q_inputs = parseInt(document.querySelector("#quantity").value) }

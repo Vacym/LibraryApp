@@ -1,3 +1,5 @@
+// version 1.0 release
+
 function scroll_control() {
     function check_scroll() {
         let scroll = window.pageYOffset;

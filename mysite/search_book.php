@@ -86,7 +86,7 @@
         exit();
     }
 ?>
-<!-- version 1.1 release -->
+<!-- version 1.0 release -->
 
 <!DOCTYPE html>
 <html>
@@ -108,17 +108,17 @@
         <div class="but" id="del" message="delete"></div>
     </div>
 
-	<a class="but" id="home" href="/"></a>  <!-- Button home -->
+	<a class="but" id="home" href="/"></a> <!-- Button home -->
 	<a id="up" class="but hidden"></a> <!-- Button Up -->
 
-	<div class="dark" id="delete"> <!-- window -->
+	<div class="dark" id="delete"> <!-- Toolbar -->
         <div class="alert_window">
             <div class="alert_message" id="result">
                 Будет удалено 34 книги. 30 из группы и 4 одиночных<br>Продолжить?
             </div>
             <div class="sure">
                 <div class="but_window_space">
-                    <div class="but_window" href="" id="link">Удалить</div>
+                    <div class="but_window" id="link">Удалить</div>
                 </div>
                 <div class="but_window_space">
                     <div class="but_window" id="cancel">Отменить</div>
@@ -162,6 +162,7 @@
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
         echo '<div class="search_result">';
+        echo '</div>';
     ?>
 
     <script type="text/javascript">
@@ -296,7 +297,7 @@
         }
 
         document.querySelector('#link').onclick = function() { // If user touch delete user button
-            var checkboxes = document.querySelectorAll(".сhoice input[type='checkbox']:checked"); // Get all values of checkboxes in users
+            var checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
             var url = 'sources/php/delete_bk.php';
             var params = ''; // Your query
 
