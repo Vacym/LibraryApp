@@ -30,11 +30,10 @@ function scroll_control() {
     but_up.addEventListener('click', go_top)
 }
 
-
 function check_contol() {
     function toolbar_contol(choise_box) {
-        choise_box = choise_box.currentTarget
-        show_tool = false
+        let choise_box = choise_box.currentTarget
+        let show_tool = false
         for (let i = 0; i < inputs.length; i++) {
             if (inputs[i].checked) {
                 show_tool = true
@@ -53,8 +52,9 @@ function check_contol() {
 
     }
 
-    inputs = document.querySelectorAll(".сhoice input[type='checkbox']")
-    toolbar = document.querySelector(".toolbar")
+    let inputs = document.querySelectorAll(".сhoice input[type='checkbox']")
+    let toolbar = document.querySelector(".toolbar")
+
 
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].addEventListener("change", toolbar_contol)
@@ -62,6 +62,12 @@ function check_contol() {
     }
 }
 
+function append_listener_for_new_change(how_mach) {
+    let inputs = document.querySelectorAll(".сhoice input[type='checkbox']")
+    for (let index = inputs.length - how_mach; index < inputs.length; index++) {
+        inputs[index].addEventListener("change", toolbar_contol)
+    }
+}
 
 function ready() {
     scroll_control()

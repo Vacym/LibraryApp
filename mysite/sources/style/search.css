@@ -360,7 +360,7 @@ a {
     justify-content: flex-end;
     top: 0;
     left: 0;
-    z-index: 400;
+    z-index: 60;
     display: flex;
     width: calc(100% - 2px);
     height: 47px;

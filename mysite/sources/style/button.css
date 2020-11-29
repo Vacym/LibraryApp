@@ -43,7 +43,7 @@ a {
 
 #home {
     position: fixed;
-    z-index: 500;
+    z-index: 60;
     transition: .25s;
 }
 
