@@ -1,0 +1,86 @@
+/* version 1.0 release */
+
+.dark {
+    background-color: rgba(90, 90, 90, 0);
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 90;
+    transition: .25s;
+}
+
+.dark.fading {
+    display: initial;
+}
+
+.alert_window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    z-index: 100;
+    width: 50%;
+    min-width: min-content;
+    height: min-content;
+    border: 2px solid white;
+    padding: 15px;
+    font-size: 20px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    transition: .25s;
+}
+
+.alert_message {
+    display: inline-block;
+    padding: 2px;
+    margin: 4px;
+    font-size: 110%;
+}
+
+.dark.show {
+    display: initial;
+    background-color: rgba(90, 90, 90, .5);
+}
+
+.show .alert_window {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+.but_window_space {
+    width: 100%;
+    min-width: min-content;
+    text-align: center;
+}
+
+.but_window {
+    display: inline-block;
+    border: 1px solid #777;
+    padding: 0 12px;
+    margin: 10px;
+    color: white;
+    background: black;
+    font-size: 16pt;
+    cursor: pointer;
+    transition: background-color, border .15s;
+}
+
+.but_window:hover,
+.but_window:focus {
+    background: #222;
+    border: 1px solid white;
+    outline: none;
+    cursor: pointer;
+}
+
+.sure {
+    display: flex;
+}
+
+.mes_dis {
+    display: none;
+}

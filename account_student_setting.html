@@ -1,0 +1,67 @@
+<!-- version 1.0 release -->
+<!-- Пример использования -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать читательский билет</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="sources/style/account.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
+    <script type="text/javascript" src="sources/js/add.js"></script>
+    <script type="text/javascript" src="sources/js/message.js"></script>
+</head>
+
+<body>
+    <a class="but" id="home" href="index.html"></a>
+
+    <div class="box">
+        <h1>Редактировать читательский билет</h1>
+        <nav>
+            <div class="but" id="del" message="w_del">
+            </div>
+        </nav>
+        <form action="save_settings.php_or_what_are_you_want?" method="POST">
+            <div class="line">
+                <input type="text" name="surname" id="surname" value="Горбатюк" class="necessary_input" autocomplete="off">
+                <label for="surname">Фамилия</label>
+            </div>
+            <div class="line">
+                <input type="text" name="firsname" id="firsname" value="Павел" class="necessary_input" autocomplete="off">
+                <label for="firsname">Имя</label>
+            </div>
+            <div class="line">
+                <input type="text" name="lastname" id="lastname" value="Викторович" autocomplete="off">
+                <label for="lastname">Отчество</label>
+            </div>
+            <div class="line">
+                <input type="number" name="class" id="class" value="10" min="1" max="11" class="necessary_input" autocomplete="off">
+                <label for="class">Класс</label>
+            </div>
+            <div class="line">
+                <input type="text" name="letter" id="letter" value="Е" maxlength="1" class="necessary_input" autocomplete="off">
+                <label for="letter">Буква</label>
+            </div>
+            <div>
+                <input type="submit" id="submit" value="Сохранить" disabled>
+            </div>
+    </div>
+    <div class="dark" id="w_del">
+        <div class="alert_window">
+            <div class="alert_message">Вы уверены, что хотите удалить профиль?
+            </div>
+            <div class="sure">
+                <div class="but_window_space">
+                    <a class="but_window" href="account.html/id">Удалить</a>
+                </div>
+                <div class="but_window_space">
+                    <div class="but_window" id="cancel">Отменить</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
