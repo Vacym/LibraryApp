@@ -230,11 +230,11 @@ select:focus {
 }
 
 .result.valid .information,
-.result.valid .сhoice {
+.result.valid .choice {
     border-color: #e3e3e3;
 }
 
-.сhoice {
+.choice {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -266,13 +266,13 @@ select:focus {
 }
 
 
-/* сhoice */
+/* choice */
 
-.сhoice input[type="checkbox"] {
+.choice input[type="checkbox"] {
     display: none;
 }
 
-.сhoice input[type="checkbox"]+label {
+.choice input[type="checkbox"]+label {
     display: block;
     width: 30px;
     height: 30px;
@@ -282,7 +282,7 @@ select:focus {
     ;
 }
 
-.сhoice label::after {
+.choice label::after {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -297,11 +297,11 @@ select:focus {
     transition: opacity .1s;
 }
 
-.сhoice input[type="checkbox"]:checked+label::after {
+.choice input[type="checkbox"]:checked+label::after {
     opacity: 1;
 }
 
-.сhoice input[type="checkbox"]:checked+label {
+.choice input[type="checkbox"]:checked+label {
     background-color: #0fc3f5
 }
 
