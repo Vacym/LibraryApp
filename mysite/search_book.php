@@ -9,8 +9,8 @@
     $im    = filter('im', 'number'); // Init user_id
     $del   = filter('del','number'); // Init is_delete_page?
     $group = filter('group', 'number'); // Init is_group_page?
-    $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no', 'Date_of_issue']) ? $_GET['order'] : 'name'; // Init which order you ewant
     $page  = filter('page', 'number'); // Init which books you should send to AJAX
+    $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no', 'Date_of_issue']) ? $_GET['order'] : 'name'; // Init which order you ewant
 
     $mysql = mysqli_connect('localhost', 'root', '', 'Lib'); // Connect to mysql
 
@@ -18,6 +18,8 @@
 
     function add_book($mysql, $q, $im, $del, $order, $group, $page=0) { // function for adding books
 
+        $books = array();
+        $page--;
         $query = "SELECT * FROM `books` WHERE $order LIKE '$q%'";
 
         if ($im && $del) { // Show only busy books
@@ -36,17 +38,15 @@
         $result = mysqli_query($mysql, $query); // Send query
         $bk     = mysqli_fetch_assoc($result); // Output query
 
-         if (is_null($bk)) { // If books doesn't have...
-            exit("Ничего не найдено");
-        } 
+        if (is_null($bk)) exit("Ничего не найдено");
 
-        $src = '<a class="result valid "'; // Sources
-        if ($im && $del) $src .= "href='give.php?us=$im&bk=";
-        elseif ($im)     $src .= "href='get.php?us=$im&bk=";
-        else             $src .= "href='books.php/";
+        if ($im && $del) $href = "give.php?us=$im&bk=";
+        elseif ($im)     $href = "get.php?us=$im&bk=";
+        else             $href = "books.php/";
 
         do { // While to adding books
-            $gid = $group || $del || ($order == 'inventory_no' && $q) ? '': $bk['Group_ID'];
+            $bk['Group_ID'] = $group || $del || ($order == 'inventory_no' && $q) ? '': $bk['Group_ID'];
+            $gid = $bk['Group_ID'];
 
             if ($gid) { // If this book in group
 
@@ -55,51 +55,31 @@
                 $all  = mysqli_fetch_assoc($res1)['g']; // Get count of books
                 $busy = mysqli_fetch_assoc($res2)['g']; // Get count of busy books
 
-                echo "<a class='result valid group' href='search_book.php?q=$q&order=$order&im=$im&del=$del&group=$gid'>";
-                echo '<div class="left_part">';
-                echo '<div class="сhoice">';
-                echo "<input type='checkbox' id='-{$bk['Group_ID']}' name='-{$bk['Group_ID']}'>";
-                echo "<label for='-{$bk['Group_ID']}'></label>";
-         		echo '</div>';
-                echo "<div class='information'>$busy/$all</div>";
-                echo '<div class="FCS">';
-                echo "<span class='name_book'>{$bk['Name']}</span>";
-                echo "<span class='autor_book'>{$bk['Author']}</span>";
-                echo '</div></div></a>';
+                $bk['Inventory_NO'] = "$busy/$all";
 
             } else { // General book without group_id 
                 $id = $bk['User_id']; // Get user id in book
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
                 $user = mysqli_fetch_assoc($res); // Get user
-                $date = $bk['Date_of_issue'] ? date('d.m.y', strtotime($bk['Date_of_issue'])) : Null;
-
-                if ($im && !$del && !is_null($id)) echo "<a class='result'>"; // If book isn't busy
-                else                               echo $src, $bk['ID'],"'>"; // If book is busy
-
-                echo '<div class="left_part">';
                 
-                echo '<div class="сhoice">';
-                echo "<input type='checkbox' id='{$bk['ID']}' name='{$bk['ID']}'>";
-                echo "<label for='{$bk['ID']}'></label>";
-         		echo '</div>';
-                echo '<div class="FCS">';
-                echo "<span class='name_book'>{$bk['Name']}</span>";
-                echo "<span class='autor_book'>{$bk['Author']}</span>";
-                echo "<div class='date'>$date</div>";
-                echo '</div></div>';
-                echo '<div class="right_part">';
-                echo "<div class='information'>{$bk['Inventory_NO']}</div>";
-                echo '<div class="FCS">';
+                $bk['Username']      = $user['Surname'].' '.$user['Firstname'].' '.$user['Lastname'];
+                $bk['Date_of_issue'] = $bk['Date_of_issue'] ? date('d.m.y', strtotime($bk['Date_of_issue'])) : Null;
 
-                if (is_null($user)) echo 'Свободна'; // If book is freedom
-                else                echo $user['Surname'], ' ', $user['Firstname'], ' ', $user['Lastname']; // If not, show saibi
-
-                echo '</div></div></a>';
+                if ($im && !$del && !is_null($id)) {
+                    $bk['Class'] = 'result';
+                    $bk['href'] = '';
+                } else { 
+                    $bk['Class'] = 'result valid';
+                    $bk['href'] = $href.$bk['ID'];
+                }
             }
+            array_push($books, $bk);
 
         } while ($bk = mysqli_fetch_assoc($result));
         
-        echo '</div>';
+        // echo '</div>';
+        $json = json_encode($books);
+        echo $json;
     }
 
     if ($page) { // If this is a AJAX query...
@@ -139,7 +119,7 @@
             </div>
             <div class="sure">
                 <div class="but_window_space">
-                    <a class="but_window" href="" id="link">Удалить</a>
+                    <div class="but_window" href="" id="link">Удалить</div>
                 </div>
                 <div class="but_window_space">
                     <div class="but_window" id="cancel">Отменить</div>
@@ -183,29 +163,188 @@
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
         echo '<div class="search_result">';
-
-        // Call function for print first 20 books 
-        add_book($mysql, $q, $im, $del, $order, $group);
     ?>
 
     <script type="text/javascript">
 
-        var page = 20;
+        function create_block(data) {
+
+            a = document.createElement('a');
+
+            // If group...
+            if (data['Group_ID'] > 0) {
+                
+                a.className = "result valid group";
+                a.href = `search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=${data['Group_ID']}`
+
+                list_books.append(a);
+
+                // A - attribute
+
+                left_part = document.createElement('div');
+                left_part.className = "left_part";
+
+                a.append(left_part);
+
+                // Left and Right parts
+
+                choice = document.createElement('div');
+                fcs_1  = document.createElement('div');
+                info   = document.createElement('div');
+
+                info.innerHTML  = data['Inventory_NO'];
+
+                info.className   = "information";
+                choice.className = "choice";
+                fcs_1.className  = "FCS";
+
+                left_part.append(choice);
+                left_part.append(info);
+                left_part.append(fcs_1);
+
+                // Choice
+
+                checkbox = document.createElement('input');
+                checkbox.type = "checkbox";
+                checkbox.id = -data['Group_ID'];
+
+                label = document.createElement('label');
+                label.htmlFor = -data['Group_ID'];
+
+                choice.append(checkbox);
+                choice.append(label);
+
+                // FCS 1
+
+                name_book = document.createElement('span');
+                name_book.className = "name_book";
+                name_book.innerHTML = data['Name'];
+
+                autor_book = document.createElement('span');
+                autor_book.className = 'autor_book';
+                autor_book.innerHTML = data['Author'];
+
+                date = document.createElement('div');
+                date.className = 'date';
+                date.innerHTML = data['Date_of_issue'];
+
+                fcs_1.append(name_book);
+                fcs_1.append(autor_book);
+                fcs_1.append(date);
+
+            } else {
+                
+                a.className = data['Class'];
+                
+                if (data['href']) a.href = data['href'];
+
+                list_books.append(a);
+
+                // A - attribute
+
+                left_part = document.createElement('div');
+                left_part.className = "left_part";
+
+                right_part = document.createElement('div');
+                right_part.className = "right_part";
+
+                a.append(left_part);
+                a.append(right_part);
+
+                // Left and Right parts
+
+                choice = document.createElement('div');
+                fcs_1  = document.createElement('div');
+
+                info   = document.createElement('div');
+                fcs_2  = document.createElement('div');
+
+                info.innerHTML  = data['Inventory_NO'];
+
+                if (data['User_id'] > 0) {
+                    fcs_span = document.createElement('span');
+                    fcs_span.innerHTML = data['Username'];
+                } else {
+                    fcs_2.innerHTML = "Свободна"; 
+                }
+
+                info.className   = "information";
+                choice.className = "choice";
+                fcs_1.className  = "FCS";
+                fcs_2.className  = "FCS";
+
+                left_part.append(choice);
+                left_part.append(fcs_1);
+
+                right_part.append(info);
+                right_part.append(fcs_2);
+
+                if (data['User_id'] > 0) fcs_2.append(fcs_span);
+
+                // Choice
+
+                checkbox = document.createElement('input');
+                checkbox.type = "checkbox";
+                checkbox.id = data['ID'];
+
+                label = document.createElement('label');
+                label.htmlFor = data['ID'];
+
+                choice.append(checkbox);
+                choice.append(label);
+
+                // FCS 1
+
+                name_book = document.createElement('span');
+                name_book.className = "name_book";
+                name_book.innerHTML = data['Name'];
+
+                autor_book = document.createElement('span');
+                autor_book.className = 'autor_book';
+                autor_book.innerHTML = data['Author'];
+
+                date = document.createElement('div');
+                date.className = 'date';
+                date.innerHTML = data['Date_of_issue'];
+
+                fcs_1.append(name_book);
+                fcs_1.append(autor_book);
+                fcs_1.append(date);
+            }
+        }
+
+        var page = 1;
         var allowLoading = true; // Check, if request is free
         var is_end_of_books = false; // Check, if books is finished
         var site = document.documentElement; // All html document
         var list_books = document.querySelector('.search_result'); // Div for all books
 
-        function success(data) {
+        var url = `search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
+        ajax(url, add, 'GET'); // Call Ajax funciton
+
+        function add(data) {
+            console.log("New stack...")
             if (data != "Ничего не найдено") {
-                list_books.innerHTML += data; // Add new 20 books
+                data = JSON.parse(data)
+
+                for (let i = 0; i < data.length; i++) {
+                    create_block(data[i]);
+                }
                 page += 20;
+                    
             } else {
+                if (page === 1) list_books.innerHTML = "Ничего не найдено";
+
                 is_end_of_books = true;
             }
         }
 
-        function ajax(url) { // Send and Get Ajax-request
+        function result(data) {
+            document.querySelector('.alert_message').innerHTML = data;
+            document.querySelector('#cancel').innerHTML = 'Ок'; // Это надо будет исправить!!!
+        }
+
+        function ajax(url, success, method, data="") { // Send and Get Ajax-request
             if (!allowLoading) return
             allowLoading = false;
 
@@ -214,24 +353,37 @@
             request.onreadystatechange = function() { // If request is comeback
                 if (request.readyState == 4 && request.status == 200) {
                     var req = request.responseText;
-                    success(req);
+                    success(req); // If success request, call function
                     allowLoading = true;
-                    console.log("New stack...")
                 }
             }
 
-            request.open('GET', url);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-url');
-            request.send(); // Send ajax request
+            request.open(method, url);
+            
+            if (method == 'GET') request.setRequestHeader('Content-Type', 'application/x-www-form-url');
+            else                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            request.send(data); // Send ajax request
         }
         
         function ready() {
-            if (!is_end_of_books && Math.floor(site.scrollTop + site.clientHeight) + 200 >= site.scrollHeight) {
+            if (!is_end_of_books && (site.scrollTop + site.clientHeight) * 1.04 >= site.scrollHeight) {
                 var url = `search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
-
-                ajax(url); // Call Ajax funciton
+                ajax(url, add, 'GET'); // Call Ajax funciton
             }
         }
+
+        document.querySelector('#link').onclick = function() { // If user touch delete user button
+            var checkboxes = document.querySelectorAll(".сhoice input[type='checkbox']:checked"); // Get all values of checkboxes in users
+            var url = 'sources/php/delete_bk.php';
+            var params = ''; // Your query
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                params += `${i+1}=${checkboxes[i].id}&`;
+            }
+            ajax(url, result, 'POST', params);
+        }
+
         document.addEventListener('scroll', ready); // Event for listen your scroll in site
     </script>
 </body>

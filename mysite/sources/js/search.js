@@ -32,7 +32,7 @@ function scroll_control() {
 
 function check_contol() {
     function toolbar_contol(choise_box) {
-        let choise_box = choise_box.currentTarget
+        var choise_box = choise_box.currentTarget
         let show_tool = false
         for (let i = 0; i < inputs.length; i++) {
             if (inputs[i].checked) {

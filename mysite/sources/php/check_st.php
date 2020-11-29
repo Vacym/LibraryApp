@@ -1,13 +1,12 @@
 <?php
-    if (!count($_POST)) { echo 'Ошибка запроса!'; exit(); }
+    if (!count($_POST)) exit('Ошибка запроса!');
 
     function send() {
 
         $data = array('success' => false, 'id' => 0);
         $json = json_encode($data);
 
-        echo $json;
-        exit();
+        exit($json);
     }
 
     $arr = array('firstname', 'surname', 'lastname', 'class', 'letter');
@@ -30,9 +29,7 @@
     $valid_clss = preg_match("/^([1-9]|1[01])$/", $class);
     $valid_lttr = preg_match("/^[А-Я]$/u", $letter);
 
-    if (trim($lastname) == "") {
-        $valid_last = True;
-    }
+    if (trim($lastname) == "") $valid_last = True;
 
     if (!$valid_name || !$valid_surn || !$valid_last || !$valid_clss || !$valid_lttr) {
         send();
@@ -47,6 +44,5 @@
     $data['id'] = $id;
     
     $json = json_encode($data);
-    echo $json;
-    exit();
+    exit($json);
 ?>
