@@ -1,0 +1,36 @@
+/* version 1.0 release */
+
+html {
+    background: url("../files/book.jpg");
+    color: wheat;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: sans-serif;
+}
+
+a {
+    background-color: black;
+    opacity: .6;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 10px;
+    font-weight: 600;
+    border: 2px solid white;
+    text-align: center;
+    transition: opacity .2s linear;
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    cursor: pointer;
+    opacity: .9;
+}
+
+.nav {
+    display: flex;
+    text-transform: uppercase;
+    font-size: 2vw;
+    /*white-space: nowrap;*/
+}
