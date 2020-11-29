@@ -235,7 +235,7 @@
             } else {
                 
                 a.className = data['Class'];
-                
+
                 if (data['href']) a.href = data['href'];
 
                 list_books.append(a);
