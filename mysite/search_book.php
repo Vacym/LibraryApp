@@ -265,7 +265,11 @@
 
         function result(data) {
             document.querySelector('.alert_message').innerHTML = data;
-            document.querySelector('#cancel').innerHTML = 'Ок'; // Это надо будет исправить!!!
+            document.querySelector(".but_window_space").remove();
+
+            cancel_button = document.getElementById("cancel");
+            cancel_button.innerHTML = 'Ок';
+            cancel_button.onclick = () => { window.location = ''; }
         }
 
         function ajax(url, success, method, data="") { // Send and Get Ajax-request
