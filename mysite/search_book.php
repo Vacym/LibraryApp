@@ -139,7 +139,7 @@
             }
         } else {
             echo '<h2>Поиск книг</h2>';
-        }	    
+        }
 
         echo '<div class="find_input">';
         echo '<form action="" method="GET">';

@@ -4,12 +4,15 @@
     $im    = filter_input(INPUT_GET, 'im') && preg_match('/^\d+$/', $_GET['im']) ? $_GET['im']: ''; // Parameter for connect user with book
     $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['firstname', 'lastname', 'class', 'letter']) ? $_GET['order'] : 'surname'; // Parameter for change search opinion
     $page  = filter_input(INPUT_GET, 'page') && preg_match('/^\d+$/', $_GET['page']) ? $_GET['page']: '';
+    
+    $mysql = mysqli_connect('localhost', 'root', '', 'Lib'); // Connect with MYSQL
 
-    function add_user($q, $im, $order, $page=0) { // Function for adding new 20 users in site 
+    if (!$mysql) exit('<h1>Ошибка Подключения</h1>'); // If connection error
+    
+    function add_user($mysql, $q, $im, $order, $page=0) { // Function for adding new 20 users in site 
 
-    	$mysql = mysqli_connect('localhost', 'root', '', 'Lib'); // Connect with MYSQL
-
-    	if (!$mysql) exit('<h1>Ошибка Подключения</h1>'); // If connection error
+    	$users = array();
+        $page--;
 
     	$query = "SELECT * FROM `users` WHERE $order LIKE '$q%' ORDER BY BINARY(lower($order)) LIMIT 20 OFFSET $page"; // Query for any parameter
     	if ($order == 'class') $query = "SELECT * FROM `users` WHERE CONCAT(Class,Letter) LIKE '$q%' ORDER BY Class LIMIT 20 OFFSET $page"; // Only for class number
@@ -19,41 +22,36 @@
 
         if (is_null($st)) exit("Ничего не найдено"); // If not found show
 
-        if ($im) $src = "<a class='result valid' href='get.php?bk=$im&us="; // Source for book a book
-        else     $src = "<a class='result valid' href='/account.php/"; // Source for follow the account
+        $href = "account.php/"; // Source for follow the account
+        if ($im) $href = "get.php?bk=$im&us="; // Source for book a book
 
-        do {    
+        do {
             $id = $st['ID']; // User id
-            $res = mysqli_query($mysql, "SELECT * FROM `books` WHERE `User_id` = '$id'"); // Get user books
 
-            echo $src, $id, "'>";
-            echo '<div class="left_part">';
-            echo '<div class="choice">'; // Check box for edit users
-            echo "<input type='checkbox' id='{$st['ID']}'>";
-            echo "<label for='{$st['ID']}'></label>";
-            echo '</div>';
+            $user = array(); // User db
+            $user['ID'] = $id; // User id
+            $user['books'] = array(); // Books db
+            $user['href'] = $href.$user['ID']; // href for block
+            $user['Class'] = $st['Class'].' '.$st['Letter'];
+            $user['Username'] = $st['Surname'].' '.$st['Firstname'].' '.$st['Lastname'];
+
+            $res = mysqli_query($mysql, "SELECT `Name`, `Author`, `Date_of_issue` FROM `books` WHERE `User_id` = '$id'"); // Get user books
 
             while ($bk = mysqli_fetch_assoc($res)) { // While output user books
-                $date = date('d.m.y', strtotime($bk['Date_of_issue']));
+                $bk['Date'] = date('d.m.y', strtotime($bk['Date_of_issue']));
 
-                echo '<div class="book">';
-                echo "<span class='name_book'>{$bk['Name']}</span>";
-                echo "<span class='autor_book'>{$bk['Author']}</span>";
-                echo "<span class='date'>$date</span>";
-                echo '</div>';
+                array_push($user['books'], $bk);
             }
-            
-            echo '</div>';
-            echo '<div class="right_part">';
-            echo "<div class='information'>{$st['Class']} {$st['Letter']}</div>";
-            echo "<div class='FCS'>{$st['Surname']} {$st['Firstname']} {$st['Lastname']}</div>";
-            echo '</div></a>';
+            array_push($users, $user);
 
         } while ($st = mysqli_fetch_assoc($result)); // While user have in the database
+
+        $json = json_encode($users);
+        echo $json;
     }
 
     if ($page) { // If you scroll down and you want new 20 users
-    	add_user($q, $im, $order, $page);
+    	add_user($mysql, $q, $im, $order, $page);
     	exit();
     }
 ?>
@@ -119,31 +117,80 @@
         echo '<button type="submit" id="submit"></button>';
         echo '</form></div>';
         echo '<div class="search_result">';
-
-        add_user($q, $im, $order); // Show first 20 users
-
-	    echo '</div>';        
-        
+	    echo '</div>';  
     ?>
 
     <script type="text/javascript">
 
         function create_block(data) {   // Здесь будет создание блоков с учениками
 
+            a = document.createElement('a');
+
+            a.className = 'result valid';
+            a.href = data['href'];
+            
+            a.innerHTML = `<div class="left_part">\
+                                <div class="choice">\
+                                    <input type="checkbox" id="${data['ID']}">\
+                                    <label for="${data['ID']}"></label>\
+                                </div>\
+                            </div>\
+                            <div class="right_part">\
+                                <div class="information">${data['Class']}</div>\
+                                <div class="FCS">${data['Username']}</div>\
+                            </div>`;
+
+            list_books.append(a);
+
+            left_part = document.querySelector(`.result[href='${data['href']}'] .left_part`);
+            books = data['books'];
+            
+            for (var i = 0; i < data['books'].length; i++) {
+
+                book       = document.createElement('div');
+                date       = document.createElement('span');
+                name_book  = document.createElement('span');
+                autor_book = document.createElement('span');
+
+                book.className       = 'book'
+                date.className       = 'date';
+                name_book.className  = 'name_book';
+                autor_book.className = 'autor_book';
+
+                name_book.innerHTML  = books[i]['Name'];
+                autor_book.innerHTML = books[i]['Author'];
+                date.innerHTML       = books[i]['Date'];
+
+                left_part.append(book);
+                book.append(name_book);
+                book.append(autor_book);
+                book.append(date);
+            }
         }
 
-        var page = 20;
+        var page = 1;
         var allowLoading = true; // Check, if request is free
         var is_end_of_books = false; // Check, if books is finished in database
         var site = document.documentElement; // All html document
         var list_books = document.querySelector('.search_result'); // Div for all books
 
+        var url =  `search_student.php?q=<?php echo $q ?>&im=<?php echo $im ?>&order=<?php echo $order ?>&page=${page}`;
+        ajax(url, add, 'GET'); // Call Ajax funciton
+
         function add(data) {
-        	console.log("New stack...")
+            console.log("New stack...")
             if (data != "Ничего не найдено") {
-                list_books.innerHTML += data; // Add new 20 books
+                data = JSON.parse(data)
+
+                for (let i = 0; i < data.length; i++) {
+                    create_block(data[i]);
+                }
+                append_listener_for_new_change();
                 page += 20;
+                    
             } else {
+                if (page === 1) list_books.innerHTML = "Ничего не найдено";
+
                 is_end_of_books = true;
             }
         }
