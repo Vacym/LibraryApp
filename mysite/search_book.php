@@ -253,6 +253,7 @@
                 for (let i = 0; i < data.length; i++) {
                     create_block(data[i]);
                 }
+                append_listener_for_new_change();
                 page += 20;
                     
             } else {
@@ -305,6 +306,26 @@
                 params += `${i+1}=${checkboxes[i].id}&`;
             }
             ajax(url, result, 'POST', params);
+        }
+
+        document.querySelector('#del').onclick = function() {
+            var count_group = document.querySelectorAll(".group .choice input[type='checkbox']:checked").length
+            var count_books = document.querySelectorAll(".choice input[type='checkbox']:checked").length - count_group
+
+            valid_1 = ['Будут удалены', 'Будет удалено', 'Будет удалена'];
+            valid_2 = ['г', 'ги', 'га'];
+            valid_3 = ['п', 'пы', 'па'];
+
+            function get_i(count) {
+                if (count%10 >= 5 || count%10 == 0 || count%100 > 10 && count%100 <= 20) i = 0;
+                else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
+                else                                                                     i = 2;
+                return i;
+            }
+            var a = get_i(count_books); // index of count_books
+            var b = get_i(count_group); // index of count_groups
+
+            document.querySelector('#result').innerHTML = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
         }
 
         document.addEventListener('scroll', ready); // Event for listen your scroll in site
