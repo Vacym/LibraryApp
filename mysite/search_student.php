@@ -185,7 +185,7 @@
                 for (let i = 0; i < data.length; i++) {
                     create_block(data[i]);
                 }
-                append_listener_for_new_change();
+                tool.append_listener_for_new_change();
                 page += 20;
                     
             } else {

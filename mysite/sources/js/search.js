@@ -1,5 +1,3 @@
-// version 1.0 release
-
 function scroll_control() {
     function check_scroll() {
         let scroll = window.pageYOffset;
@@ -32,46 +30,58 @@ function scroll_control() {
     but_up.addEventListener('click', go_top)
 }
 
-function toolbar_control() {
-    let show_tool = false
-    let inputs = document.querySelectorAll(".choice input[type='checkbox']")
-    for (let i = 0; i < inputs.length; i++) {
-        if (inputs[i].checked) {
-            show_tool = true
-            break
+class Toolbar_control {
+    constructor() {
+        this.toolbar = document.querySelector(".toolbar")
+        this.dedicated = document.querySelector("#summ_checked>span")
+        this.append_listener_for_new_change()
+        document.querySelector("#remove").onclick = () => this.remove()
+    }
+
+    append_listener_for_new_change(how_mach) {
+        this.inputs = document.querySelectorAll(".choice input[type='checkbox']")
+        if (!how_mach) { how_mach = this.inputs.length }
+        for (let i = this.inputs.length - how_mach; i < this.inputs.length; i++) {
+            this.inputs[i].addEventListener("change", () => this.move_control())
         }
     }
-    toolbar_show(show_tool)
-}
 
-function toolbar_show(show) {
-    let toolbar = document.querySelector(".toolbar")
-    if (show) {
-        toolbar.classList.add("show")
-    } else {
-        toolbar.classList.remove("show")
+    move_control() {
+        let show_tool = false
+        let counter = 0
+        for (let i = 0; i < this.inputs.length; i++) {
+            if (this.inputs[i].checked) {
+                show_tool = true
+                counter += 1
+            }
+        }
+        this.dedicated.innerHTML = counter
+        this.toolbar_show(show_tool)
     }
-}
 
-function check_control() {
-
-
-    append_listener_for_new_change()
-}
-
-function append_listener_for_new_change(how_mach) {
-    let inputs = document.querySelectorAll(".choice input[type='checkbox']")
-    if (!how_mach) { how_mach = inputs.length }
-    for (let i = inputs.length - how_mach; i < inputs.length; i++) {
-        inputs[i].addEventListener("change", toolbar_control)
+    toolbar_show(show) {
+        if (show) {
+            this.toolbar.classList.add("show")
+        } else {
+            this.toolbar.classList.remove("show")
+        }
     }
+
+    remove() {
+        for (let i = 0; i < this.inputs.length; i++) {
+            this.inputs[i].checked = 0
+        }
+        this.move_control()
+    }
+
 }
 
-function ready() {
+function ready_search() {
     scroll_control()
-    check_control()
+    let tool = new Toolbar_control()
+    console.log(tool)
+    return tool
 }
 
 
-
-document.addEventListener("DOMContentLoaded", ready)
+document.addEventListener("DOMContentLoaded", () => { tool = ready_search() })

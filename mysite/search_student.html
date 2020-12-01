@@ -12,13 +12,16 @@
     <link rel="stylesheet" type="text/css" href="sources/style/message.css">
     <script src="sources/js/search.js"></script>
     <script src="sources/js/message.js"></script>
-
 </head>
 
 <body>
     <div class="toolbar">
-        <div class="but" id="edit"></div>
-        <div class="but" id="del" message="delete"></div>
+        <div id="summ_checked">Выделено: <span></span></div>
+        <div class="toolbar_buttons">
+            <div class="but" id="remove"></div>
+            <div class="but" id="edit"></div>
+            <div class="but" id="del" message="delete"></div>
+        </div>
     </div>
 
     <a class="but" id="home" href="index.html"></a>
@@ -39,7 +42,7 @@
     <div class="search_result">
         <a class="valid result" href="account.html">
             <div class="left_part">
-                <div class="сhoice">
+                <div class="choice">
                     <input type="checkbox" id="12">
                     <label for="12"></label>
                 </div>

@@ -357,7 +357,8 @@ a {
 
 .toolbar {
     position: fixed;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     top: 0;
     left: 0;
     z-index: 60;
@@ -376,6 +377,22 @@ a {
 
 .toolbar.show+#home {
     transform: translateY(52px);
+}
+
+#summ_checked {
+    margin-left: 15%;
+}
+
+#summ_checked>span {
+    font-weight: 900;
+}
+
+.toolbar_buttons {
+    display: flex;
+}
+
+#remove::before {
+    content: "\f00d";
 }
 
 #edit::before {
