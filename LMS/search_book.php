@@ -56,13 +56,14 @@
                 $busy = mysqli_fetch_assoc($res2)['g']; // Get count of only busy books
 
                 $bk['Inventory_NO'] = "$busy/$all";
+                $bk['href'] = "search_book.php?q=$q&im=$im&del=$del&order=$order&group=$gid";
 
             } else { // General book without group_id 
                 $id = $bk['User_id']; // Get user id in book
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
                 $user = mysqli_fetch_assoc($res); // Get user
                 
-                $bk['Username']      = $user['Surname'].' '.$user['Firstname'].' '.$user['Lastname']; // Save all username in one parameter
+                $bk['Owner']      = $user['Surname'].' '.$user['Firstname'].' '.$user['Lastname']; // Save all username in one parameter
                 $bk['Date_of_issue'] = $bk['Date_of_issue'] ? date('d.m.y', strtotime($bk['Date_of_issue'])) : Null; // Save date if exist
 
                 if ($im && !$del && !is_null($id)) {
@@ -103,7 +104,7 @@
 </head>
 
 <body>
-	<div class="toolbar">
+	<div class="toolbar"> <!-- Toolbar -->
 		<div id="summ_checked">Выделено: <span></span></div>
 		<div class="toolbar_buttons">
 			<div class="but" id="remove"></div>
@@ -115,7 +116,7 @@
 	<a class="but" id="home" href="/"></a> <!-- Button home -->
 	<a id="up" class="but hidden"></a> <!-- Button Up -->
 
-	<div class="dark" id="delete"> <!-- Toolbar -->
+	<div class="dark" id="delete">
         <div class="alert_window">
             <div class="alert_message" id="result"></div>
             <div class="sure">
@@ -169,124 +170,9 @@
 
     <script type="text/javascript">
 
-        function create_block(data) {
-
-            a = document.createElement('a');
-
-            // If group...
-            if (data['Group_ID'] > 0) {
-                
-                a.className = "result valid group"; // Add parameter class
-                a.href = `search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=${data['Group_ID']}` // Add parameter href
-
-                a.innerHTML = `<div class="left_part">\
-                                    <div class="choice">\
-                                        <input type="checkbox" id="-${data['Group_ID']}">\
-                                        <label for="-${data['Group_ID']}"></label>\
-                                    </div>\
-                                    <div class="information">${data['Inventory_NO']}</div>\
-                                    <div class="FCS">\
-                                        <span class="name_book">${data['Name']}</span>\
-                                        <span class="autor_book">${data['Author']}</span>\
-                                    </div>\
-                                </div>`;
-
-                list_books.append(a); // Add new block
-
-            } else {
-                
-                a.className = data['Class']; // Add parameter class
-                if (data['href']) a.href = data['href']; // Add parameter href
-
-                div_class_date = data['Date_of_issue'] ? `<div class="date">${data['Date_of_issue']}</div>` : ''; //Init date parameter
-                span_username  = data['User_id'] ? `<span>${data['Username']}</span>` : 'Свободна'; // Init username if exist
-
-                var innerHTML = `<div class="left_part">\
-                                    <div class="choice">\
-                                        <input type="checkbox" id="${data['ID']}">\
-                                        <label for="${data['ID']}"></label>\
-                                    </div>\
-                                    <div class="FCS">\
-                                        <span class="name_book">${data['Name']}</span>\
-                                        <span class="autor_book">${data['Author']}</span>\
-                                        ${div_class_date}\
-                                    </div>\
-                                </div>\
-                                <div class="right_part">\
-                                    <div class="information">${data['Inventory_NO']}</div>
-                                    <div class="FCS">${span_username}</div>\
-                                </div>`;
-
-                a.innerHTML = innerHTML;
-
-                list_books.append(a); // Add new block
-            }
-        }
-
-        var page = 1; // Count of books in one site
-        var allowLoading = true; // Check, if request is free
-        var is_end_of_books = false; // Check, if books is finished
-        var site = document.documentElement; // All html document
+        var url = 'search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=';
         var list_books = document.querySelector('.search_result'); // Div for all books
-
-        var url = `search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
-        ajax(url, add, 'GET'); // Call Ajax funciton
-
-        function add(data) {
-            console.log("New stack...")
-            if (data != "Ничего не найдено") {
-                data = JSON.parse(data)
-
-                for (let i = 0; i < data.length; i++) {
-                    create_block(data[i]);
-                }
-                tool.append_listener_for_new_change();
-                page += 20;
-                    
-            } else {
-                if (page === 1) list_books.innerHTML = "Ничего не найдено";
-
-                is_end_of_books = true;
-            }
-        }
-
-        function result(data) {
-            document.querySelector('.alert_message').innerHTML = data;
-            document.querySelector(".but_window_space").remove();
-
-            cancel_button = document.getElementById("cancel");
-            cancel_button.innerHTML = 'Ок';
-            cancel_button.onclick = () => { window.location = ''; }
-        }
-
-        function ajax(url, success, method, data="") { // Send and Get Ajax-request
-            if (!allowLoading) return
-            allowLoading = false;
-
-            var request = new XMLHttpRequest();
-
-            request.onreadystatechange = function() { // If request is comeback
-                if (request.readyState == 4 && request.status == 200) {
-                    var req = request.responseText;
-                    success(req); // If success request, call function
-                    allowLoading = true;
-                }
-            }
-
-            request.open(method, url);
-            
-            if (method == 'GET') request.setRequestHeader('Content-Type', 'application/x-www-form-url');
-            else                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            
-            request.send(data); // Send ajax request
-        }
-        
-        function ready() {
-            if (!is_end_of_books && (site.scrollTop + site.clientHeight) * 1.04 >= site.scrollHeight) {
-                var url = `search_book.php?q=<?php echo $q ?>&im=<?php echo $im ?>&del=<?php echo $del ?>&order=<?php echo $order ?>&group=<?php echo $group ?>&page=${page}`;
-                ajax(url, add, 'GET'); // Call Ajax funciton
-            }
-        }
+        ajax(url + '1', add, 'GET'); // Call Ajax funciton
 
         document.querySelector('#link').onclick = function() { // If user touch delete user button
             var checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
@@ -318,8 +204,6 @@
 
             document.querySelector('#result').innerHTML = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
         }
-
-        document.addEventListener('scroll', ready); // Event for listen your scroll in site
     </script>
 </body>
 </html>
