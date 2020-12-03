@@ -73,8 +73,12 @@
 
 <body>
     <div class="toolbar">
-        <div class="but" id="edit"></div>
-        <div class="but" id="del" message="delete"></div>
+        <div id="summ_checked">Выделено: <span></span></div>
+        <div class="toolbar_buttons">
+            <div class="but" id="remove"></div>
+            <div class="but" id="edit"></div>
+            <div class="but" id="del" message="delete"></div>
+        </div>
     </div>
 
     <a class="but" id="home" href="/"></a> <!-- Button home -->
@@ -128,44 +132,33 @@
 
             a.className = 'result valid';
             a.href = data['href'];
-            
-            a.innerHTML = `<div class="left_part">\
+
+            var innerHTML = `<div class="left_part">\
                                 <div class="choice">\
                                     <input type="checkbox" id="${data['ID']}">\
                                     <label for="${data['ID']}"></label>\
-                                </div>\
-                            </div>\
-                            <div class="right_part">\
-                                <div class="information">${data['Class']}</div>\
-                                <div class="FCS">${data['Username']}</div>\
-                            </div>`;
+                                </div>`;
+
+            data['books'].forEach((book) => {
+
+                innerHTML += `\
+                    <div class="book">\
+                        <span class="name_book">${book['Name']}</span>\
+                        <span class="autor_book">${book['Author']}</span>\
+                        <span class="date">${book['Date']}</span>\
+                    </div>
+                `;
+            })
+
+            innerHTML += `</div>
+                    <div class="right_part">\
+                        <div class="information">${data['Class']}</div>\
+                        <div class="FCS">${data['Username']}</div>\
+                    </div>`;
+            
+            a.innerHTML = innerHTML;
 
             list_books.append(a);
-
-            left_part = document.querySelector(`.result[href='${data['href']}'] .left_part`);
-            books = data['books'];
-            
-            for (var i = 0; i < data['books'].length; i++) {
-
-                book       = document.createElement('div');
-                date       = document.createElement('span');
-                name_book  = document.createElement('span');
-                autor_book = document.createElement('span');
-
-                book.className       = 'book'
-                date.className       = 'date';
-                name_book.className  = 'name_book';
-                autor_book.className = 'autor_book';
-
-                name_book.innerHTML  = books[i]['Name'];
-                autor_book.innerHTML = books[i]['Author'];
-                date.innerHTML       = books[i]['Date'];
-
-                left_part.append(book);
-                book.append(name_book);
-                book.append(autor_book);
-                book.append(date);
-            }
         }
 
         var page = 1;
@@ -180,7 +173,7 @@
         function add(data) {
             console.log("New stack...")
             if (data != "Ничего не найдено") {
-                data = JSON.parse(data)
+                data = JSON.parse(data);
 
                 for (let i = 0; i < data.length; i++) {
                     create_block(data[i]);

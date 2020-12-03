@@ -55,7 +55,7 @@ class Toolbar_control {
                 counter += 1
             }
         }
-        this.dedicated.innerHTML = counter
+        this.dedicated.innerHTML = counter.toString()
         this.toolbar_show(show_tool)
     }
 

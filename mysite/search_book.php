@@ -18,8 +18,8 @@
 
     function add_book($mysql, $q, $im, $del, $order, $group, $page=0) { // function for adding books
 
-        $books = array();
-        $page--;
+        $books = array(); // Init books array
+        $page--; // Because
         $query = "SELECT * FROM `books` WHERE $order LIKE '$q%'";
 
         if ($im && $del) { // Show only busy books
@@ -52,8 +52,8 @@
 
                 $res1 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid'");
                 $res2 = mysqli_query($mysql, "SELECT COUNT(*) as g FROM `books` WHERE Group_ID = '$gid' AND `User_id`");
-                $all  = mysqli_fetch_assoc($res1)['g']; // Get count of books
-                $busy = mysqli_fetch_assoc($res2)['g']; // Get count of busy books
+                $all  = mysqli_fetch_assoc($res1)['g']; // Get count of all books
+                $busy = mysqli_fetch_assoc($res2)['g']; // Get count of only busy books
 
                 $bk['Inventory_NO'] = "$busy/$all";
 
@@ -62,8 +62,8 @@
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
                 $user = mysqli_fetch_assoc($res); // Get user
                 
-                $bk['Username']      = $user['Surname'].' '.$user['Firstname'].' '.$user['Lastname'];
-                $bk['Date_of_issue'] = $bk['Date_of_issue'] ? date('d.m.y', strtotime($bk['Date_of_issue'])) : Null;
+                $bk['Username']      = $user['Surname'].' '.$user['Firstname'].' '.$user['Lastname']; // Save all username in one parameter
+                $bk['Date_of_issue'] = $bk['Date_of_issue'] ? date('d.m.y', strtotime($bk['Date_of_issue'])) : Null; // Save date if exist
 
                 if ($im && !$del && !is_null($id)) {
                     $bk['Class'] = 'result';
@@ -104,8 +104,12 @@
 
 <body>
 	<div class="toolbar">
-        <div class="but" id="edit"></div>
-        <div class="but" id="del" message="delete"></div>
+		<div id="summ_checked">Выделено: <span></span></div>
+		<div class="toolbar_buttons">
+			<div class="but" id="remove"></div>
+        	<div class="but" id="edit"></div>
+        	<div class="but" id="del" message="delete"></div>
+        </div>
     </div>
 
 	<a class="but" id="home" href="/"></a> <!-- Button home -->
@@ -113,9 +117,7 @@
 
 	<div class="dark" id="delete"> <!-- Toolbar -->
         <div class="alert_window">
-            <div class="alert_message" id="result">
-                Будет удалено 34 книги. 30 из группы и 4 одиночных<br>Продолжить?
-            </div>
+            <div class="alert_message" id="result"></div>
             <div class="sure">
                 <div class="but_window_space">
                     <div class="but_window" id="link">Удалить</div>
@@ -196,10 +198,10 @@
                 a.className = data['Class']; // Add parameter class
                 if (data['href']) a.href = data['href']; // Add parameter href
 
-                date_class = '';
-                if (data['Date_of_issue'] != null) date_class = `<div class="date">${data['Date_of_issue']}</div>`;
+                div_class_date = data['Date_of_issue'] ? `<div class="date">${data['Date_of_issue']}</div>` : ''; //Init date parameter
+                span_username  = data['User_id'] ? `<span>${data['Username']}</span>` : 'Свободна'; // Init username if exist
 
-                a.innerHTML = `<div class="left_part">\
+                var innerHTML = `<div class="left_part">\
                                     <div class="choice">\
                                         <input type="checkbox" id="${data['ID']}">\
                                         <label for="${data['ID']}"></label>\
@@ -207,32 +209,17 @@
                                     <div class="FCS">\
                                         <span class="name_book">${data['Name']}</span>\
                                         <span class="autor_book">${data['Author']}</span>\
-                                        ${date_class}</div></div>`;
+                                        ${div_class_date}\
+                                    </div>\
+                                </div>\
+                                <div class="right_part">\
+                                    <div class="information">${data['Inventory_NO']}</div>
+                                    <div class="FCS">${span_username}</div>\
+                                </div>`;
+
+                a.innerHTML = innerHTML;
 
                 list_books.append(a); // Add new block
-
-                r_part = document.createElement('div'); // <div class="right_part"></div>
-                info   = document.createElement('div'); // <div class="information"></div>
-                fcs    = document.createElement('div'); // <div class="FCS"></div>
-
-                fcs.className = 'FCS';
-                info.className = 'information';
-                r_part.className = 'right_part';
-
-                info.innerHTML = data['Inventory_NO'];
-
-                a.append(r_part);
-                r_part.append(info);
-                r_part.append(fcs);
-
-                if (data['User_id'] > 0) { // If book is busy
-                    fcs_text = document.createElement('span');
-                    fcs_text.innerHTML = data['Username'];
-                    fcs.append(fcs_text);
-
-                } else {
-                    fcs.innerHTML = "Свободна"; 
-                }
             }
         }
 
