@@ -1,3 +1,5 @@
+<!-- version 1.0 release -->
+
 <?php
 
     function filter($name, $choice) { // function for init values from GET-form

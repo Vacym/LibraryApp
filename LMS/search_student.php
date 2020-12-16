@@ -1,3 +1,5 @@
+<!-- version 1.0 release -->
+
 <?php
 
     $q     = filter_input(INPUT_GET, 'q')  && preg_match('/^(\d|[а-я ]|[\.-])+$/ui', $_GET['q']) ? $_GET['q']: ''; // General parameter - query
