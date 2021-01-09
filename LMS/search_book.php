@@ -63,8 +63,8 @@
                 $res = mysqli_query($mysql, "SELECT * FROM `users` WHERE `ID` = '$id'");
                 $user = mysqli_fetch_assoc($res); // Get user
                 
-                $bk['Owner']      = $user['Surname'].' '.$user['Firstname'].' '.$user['Lastname']; // Save all username in one parameter
-                $bk['Date_of_issue'] = $bk['Date_of_issue'] ? date('d.m.y', strtotime($bk['Date_of_issue'])) : Null; // Save date if exist
+                if($user) {$bk['Owner'] = $user['Surname'].' '.$user['Firstname'].' '.$user['Lastname']; } // Save all username in one parameter
+                $bk['Date_of_issue']    = $bk['Date_of_issue'] ? date('d.m.y', strtotime($bk['Date_of_issue'])) : Null; // Save date if exist
 
                 if ($im && !$del && !is_null($id)) {
                     $bk['Class'] = 'result';
