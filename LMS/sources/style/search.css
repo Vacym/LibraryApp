@@ -131,7 +131,8 @@ select:focus {
     border-radius: 10px;
     color: #bbb;
     background-color: rgba(0, 0, 0, .7);
-    transition: background-color .15s linear;
+    transition-property: background-color, border;
+    transition: .15s linear;
 }
 
 .result:last-child {
@@ -232,6 +233,7 @@ select:focus {
 .result.valid .information,
 .result.valid .choice {
     border-color: #e3e3e3;
+    transition: .15s linear;
 }
 
 .choice {
@@ -242,7 +244,8 @@ select:focus {
     height: 30px;
     border: 2px solid #777;
     border-width: 0px 2px 2px 0px;
-    border-radius: 10px 0px;
+    border-radius: 4px 0 10px 0px;
+    transition: .15s linear;
 }
 
 .date {
@@ -290,21 +293,57 @@ select:focus {
     display: inline-block;
     height: 10px;
     width: 18px;
-    border-left: 2px solid;
-    border-bottom: 2px solid;
+    border-left: 1px solid;
+    border-bottom: 1px solid;
     opacity: 0;
     transform: rotate(-45deg);
-    transition: opacity .1s;
+    transition: .15s linear, opacity .1s;
 }
 
 .choice input[type="checkbox"]:checked+label::after {
     opacity: 1;
 }
 
-.choice input[type="checkbox"]:checked+label {
-    background-color: #0fc3f5
+
+/* selecting */
+
+.result.valid.selected .information,
+.result.valid.selected .choice,
+.result.selected {
+    border-color: #0fc3f5;
 }
 
+.group.selected {
+    box-shadow: 5px 5px #0fc3f5;
+}
+
+.selected .choice{
+    background-color: #0fc3f5;
+}
+
+.selecting .choice{
+    width: 50px;
+    height: 50px;
+}
+
+.selecting .choice input[type="checkbox"]+label{
+    width: 50px;
+    height: 50px;
+}
+
+.selecting .choice label::after {
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    content: '';
+    display: inline-block;
+    height: 17px;
+    width: 32px;
+    border-left: 4px solid;
+    border-bottom: 4px solid;
+    opacity: 0;
+    transform: rotate(-45deg);
+}
 
 /* buttons */
 

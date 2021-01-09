@@ -32,41 +32,53 @@ function scroll_control() {
 
 class Toolbar_control {
     constructor() {
-        this.toolbar = document.querySelector(".toolbar")
-        this.dedicated = document.querySelector("#summ_checked>span")
+        this.toolbar = document.querySelector(".toolbar") //Определяем тулбар
+        this.dedicated = document.querySelector("#summ_checked>span") //Определяем число с количеством выделенных элементов
+        this.box_element = document.querySelector(".search_result") //Определяем блок со всеми элементами
         this.append_listener_for_new_change()
         document.querySelector("#remove").onclick = () => this.remove()
     }
 
+    //Добавление прослушивания для новых элементов (которые создаются при прокрутке страницы)
     append_listener_for_new_change(how_mach) {
         this.inputs = document.querySelectorAll(".choice input[type='checkbox']")
+        console.log(this.inputs)
         if (!how_mach) { how_mach = this.inputs.length }
         for (let i = this.inputs.length - how_mach; i < this.inputs.length; i++) {
             this.inputs[i].addEventListener("change", () => this.move_control())
         }
     }
 
+    //Движение тулбара
     move_control() {
         let show_tool = false
         let counter = 0
         for (let i = 0; i < this.inputs.length; i++) {
             if (this.inputs[i].checked) {
+                this.inputs[i].parentNode.parentNode.parentNode.classList.add("selected")
                 show_tool = true
                 counter += 1
+            }
+            else{
+                this.inputs[i].parentNode.parentNode.parentNode.classList.remove("selected")
             }
         }
         this.dedicated.innerHTML = counter.toString()
         this.toolbar_show(show_tool)
     }
 
+    //Переключение видимости
     toolbar_show(show) {
         if (show) {
+            this.box_element.classList.add("selecting")
             this.toolbar.classList.add("show")
         } else {
+            this.box_element.classList.remove("selecting")
             this.toolbar.classList.remove("show")
         }
     }
 
+    //Отменя выделения для всех элементов
     remove() {
         for (let i = 0; i < this.inputs.length; i++) {
             this.inputs[i].checked = 0
