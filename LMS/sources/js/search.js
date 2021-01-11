@@ -42,7 +42,6 @@ class Toolbar_control {
     //Добавление прослушивания для новых элементов (которые создаются при прокрутке страницы)
     append_listener_for_new_change(how_mach) {
         this.inputs = document.querySelectorAll(".choice input[type='checkbox']")
-        console.log(this.inputs)
         if (!how_mach) { how_mach = this.inputs.length }
         for (let i = this.inputs.length - how_mach; i < this.inputs.length; i++) {
             this.inputs[i].addEventListener("change", () => this.move_control())

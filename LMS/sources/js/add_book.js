@@ -1,6 +1,9 @@
 // version 1.0 release
 
 function control_inputs(q_inputs) {
+    //Определяем открыто ли это окно
+    if (document.querySelector("#auto_id").checked) { return }
+
     // Определяем сколько елемнтов нужно
     if (!q_inputs) { q_inputs = parseInt(document.querySelector("#quantity").value) }
     if (!q_inputs) { q_inputs = 0 }
@@ -17,6 +20,7 @@ function control_inputs(q_inputs) {
 
     // Добавление нужного количества элементов
     for (let x = 1 + real_q_inputs; x < q_inputs + 1; x++) {
+        if (x > 500) { break }
         let input_book = document.createElement('div');
         input_book.className = "line";
         input_book.innerHTML = `<span>${x}. </span>
@@ -53,7 +57,6 @@ function show_group(checkbox, changeable, need_check = true, illusion = true) {
         vis_box.style.position = "absolute"
 
         if (illusion) {
-            console.log(mode)
             if (mode == "q") {
                 height_illusion(mode, "0px")
                 height_illusion("i", "0px", "0px")
@@ -75,12 +78,12 @@ function show_group(checkbox, changeable, need_check = true, illusion = true) {
 }
 
 function height_illusion(mode, height, width) {
-    if (mode == "q") {
+    if (mode == "q") { //quantity
         var illusion = document.querySelector("#for_group_il")
-        var vis_box = document.querySelector(".for_group")
-    } else if (mode == "i") {
+        var vis_box  = document.querySelector(".for_group")
+    } else if (mode == "i") { //inputs
         var illusion = document.querySelector("#list_id_il")
-        var vis_box = document.querySelector(".list_id")
+        var vis_box  = document.querySelector(".list_id")
     }
     if (!height && mode == "q") {
         height = getComputedStyle(vis_box).height
@@ -88,12 +91,12 @@ function height_illusion(mode, height, width) {
     }
     if (!width && mode == "i") {
         width = getComputedStyle(vis_box).width
-        if (width == "auto") { width = "0px" }
+        if (width == "auto")  { width = "0px" }
         height = getComputedStyle(document.querySelector(".main_inputs")).height
 
     }
     illusion.style.height = height
-    illusion.style.width = width
+    illusion.style.width  = width
 }
 
 function ready() {
@@ -101,6 +104,7 @@ function ready() {
     height_illusion("q")
 
     document.querySelector("#quantity").addEventListener("change", () => control_inputs())
+    document.querySelector("#auto_id" ).addEventListener("change", () => control_inputs())
 }
 
 
