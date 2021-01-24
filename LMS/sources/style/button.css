@@ -39,7 +39,7 @@ a {
 }
 
 
-/* кнопка домой */
+/* Кнопка "домой" */
 
 #home {
     position: fixed;
@@ -49,4 +49,17 @@ a {
 
 #home::before {
     content: "\f015";
+}
+
+/* Кнопка "назад" */
+
+#back {
+    position: fixed;
+    z-index: 59;
+    margin-top: 50px;
+    transition: .25s;
+}
+
+#back::before {
+    content: "\f060";
 }
