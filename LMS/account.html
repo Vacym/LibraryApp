@@ -158,7 +158,7 @@
             tableValues[1].innerHTML = `${user['class']}${user['letter']}`; // Класс, Буква
 
             let a = document.getElementsByClassName('but'); // Сменяем текущую ссылку на ссылку для редактирования
-            a[1].href = `account.html?id=${GET['id']}&choose=edit`;
+            a[2].href = `account.html?id=${GET['id']}&choose=edit`;
 
             let information = document.querySelector('.information'); // Инициализируем блок с информацией, чтоб потом туда все поставить
             let booksBlock = document.createElement('table'); // Создаем блок-таблицу где будем выводить все данные учащегося
