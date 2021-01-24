@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" href="sources/style/account.css">
     <link rel="stylesheet" type="text/css" href="sources/style/message.css">
     <link rel="stylesheet" type="text/css" href="sources/style/button.css">
+
+    <script type="text/javascript" src="sources/js/nesql.js"></script>
     <script type="text/javascript" src="sources/js/add.js"></script>
     <script type="text/javascript" src="sources/js/message.js"></script>
 </head>
@@ -21,7 +23,7 @@
 	<div class="box">
 		<div class="head">
 			<nav>
-				<a href="/books.php/13/edit" class="but" id="edit"></a>
+				<a class="but" id="edit"></a>
 			</nav>
 			<table class="head_information">
 				<tbody>
@@ -54,7 +56,6 @@
 	</div>
 
     <script>
-        let fs = require("fs"); // Подключаем библиотеку для работы с файловой системой
         let GET = parseURL(); // Сюда сохраняем данные из ссылки на страницу
 
         let users = new Table('users'); // Создаем таблицу для работы с учениками

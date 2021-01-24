@@ -116,94 +116,94 @@ function ready() {
 document.addEventListener("DOMContentLoaded", ready)
 
 // Мой код
-class Table { // Класс для работы с библиотекой
-    constructor(name) {
-        this.name = name + '.json';
-    }
+// class Table { // Класс для работы с библиотекой
+//     constructor(name) {
+//         this.name = name + '.json';
+//     }
 
-    equal(traspose, param, value) { // Возвращает массив с столбцами, где параметр равен определонному значению (Н-ер где name = Иван)
-        let result = [];
-        for (let item in traspose) { // Перебираем значения таблицы
-            if (value == traspose[item][param]) { // Если значение столбца удовлетворяет условию...
-                result.push(traspose[item]); // Добавить в массив
-            }
-        }
-        return result;
-    }
+//     equal(traspose, param, value) { // Возвращает массив с столбцами, где параметр равен определонному значению (Н-ер где name = Иван)
+//         let result = [];
+//         for (let item in traspose) { // Перебираем значения таблицы
+//             if (value == traspose[item][param]) { // Если значение столбца удовлетворяет условию...
+//                 result.push(traspose[item]); // Добавить в массив
+//             }
+//         }
+//         return result;
+//     }
 
-    SELECT(value) { // Возвращает таблицу с данными
-        try {
-            return JSON.parse(fs.readFileSync(this.name, 'utf8'));
-        } catch (err) {
-            console.log('ОШИБКА ЧТЕНИЯ ТАБЛИЦЫ', err);
-        }
-    }
+//     SELECT(value) { // Возвращает таблицу с данными
+//         try {
+//             return JSON.parse(fs.readFileSync(this.name, 'utf8'));
+//         } catch (err) {
+//             console.log('ОШИБКА ЧТЕНИЯ ТАБЛИЦЫ', err);
+//         }
+//     }
 
-    DELETE(id) { // Удаляет стобец через его ID
-        let data = this.translate();
-        let params = this.SELECT();
+//     DELETE(id) { // Удаляет стобец через его ID
+//         let data = this.translate();
+//         let params = this.SELECT();
         
-        for (let item in data) {
-            if (data[item]['id'] == id) {
-                id = item;
-                break;
-            }
-        }
+//         for (let item in data) {
+//             if (data[item]['id'] == id) {
+//                 id = item;
+//                 break;
+//             }
+//         }
 
-        for (let item in params) {
-            params[item]['users'].splice(id,1);
-        }
+//         for (let item in params) {
+//             params[item]['users'].splice(id,1);
+//         }
 
-        this.write(params); // Записываем изменения в таблицу
-    }
+//         this.write(params); // Записываем изменения в таблицу
+//     }
 
-    UPDATE(id, values) { // Обновляем значения столбца на значения из словаря values
-        let data = this.SELECT();
-        for (item in values) {
-            data[item]['users'][id] = values[item];
-        }
+//     UPDATE(id, values) { // Обновляем значения столбца на значения из словаря values
+//         let data = this.SELECT();
+//         for (item in values) {
+//             data[item]['users'][id] = values[item];
+//         }
 
-        this.write(data); // Записываем изменения в таблицу
-    }
+//         this.write(data); // Записываем изменения в таблицу
+//     }
 
-    isSameID(otherItem) { // Проверяем, существует ли такой инвентарный номер в базе
-        for (let item of this.SELECT()['inventoryno']['users']) {
-            if (otherItem == item) {
-                return true;
-            }
-        }
-        return false;
-    }
+//     isSameID(otherItem) { // Проверяем, существует ли такой инвентарный номер в базе
+//         for (let item of this.SELECT()['inventoryno']['users']) {
+//             if (otherItem == item) {
+//                 return true;
+//             }
+//         }
+//         return false;
+//     }
 
-    write(params) { // Переписывает данные таблицы на свои
-        try {
-            fs.writeFileSync(this.name, JSON.stringify(params));
-        } catch (err) {
-            console.log('ОШИБКА ИЗМЕНЕНИЯ ТАБЛИЦЫ', err);
-        }
-    }
+//     write(params) { // Переписывает данные таблицы на свои
+//         try {
+//             fs.writeFileSync(this.name, JSON.stringify(params));
+//         } catch (err) {
+//             console.log('ОШИБКА ИЗМЕНЕНИЯ ТАБЛИЦЫ', err);
+//         }
+//     }
 
-    translate(data=this.SELECT()) { // Возвращает данные таблицу в человеческом виде
-        let result = [];
-        for (let i = 0; i < data['id']['users'].length; i++) {
-            result[i] = {};
-            for (let item in data) {
-                result[i][item] = data[item]['users'][i];
-            }
-        }
-        return result;
-    }
+//     translate(data=this.SELECT()) { // Возвращает данные таблицу в человеческом виде
+//         let result = [];
+//         for (let i = 0; i < data['id']['users'].length; i++) {
+//             result[i] = {};
+//             for (let item in data) {
+//                 result[i][item] = data[item]['users'][i];
+//             }
+//         }
+//         return result;
+//     }
 
-    getIndexFromID(ID) { // Возвращает индекс столбца, исходя из его id
-        let data = this.SELECT()['id']['users']; // Сохраняем значения всех id, чтобы идентифицировать нашего ученика или книгу
+//     getIndexFromID(ID) { // Возвращает индекс столбца, исходя из его id
+//         let data = this.SELECT()['id']['users']; // Сохраняем значения всех id, чтобы идентифицировать нашего ученика или книгу
 
-        for (let index in data) {
-            if (data[index] == ID) {
-                return index;
-            }
-        }
-    }
-}
+//         for (let index in data) {
+//             if (data[index] == ID) {
+//                 return index;
+//             }
+//         }
+//     }
+// }
 
 function valid(i, value) { // Проверяет на правильность введенных данных
     let re = {'username': /^[а-я-]+$/i, 'name': /^([а-яё-]|[\., ]|\d)+$/i, 'num': /^\d+$/, 'class': /^([1-9]|1[01])$/, 'letter': /^[А-Я]$/};

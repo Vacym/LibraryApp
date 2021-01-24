@@ -8,6 +8,8 @@
     <title>Книга</title>
     <link rel="stylesheet" type="text/css" href="sources/style/button.css">
     <link rel="stylesheet" type="text/css" href="sources/style/query.css">
+
+    <script type="text/javascript" src="sources/js/nesql.js"></script>
 </head>
 
 <body>
@@ -42,66 +44,17 @@
     </div>
 
     <script>
-        class Table {
-            constructor(name) {
-                this.name = name + '.json';
-            }
-
-            equal(traspose, param, value) {
-                let result = [];
-                for (let item in traspose) {
-                    if (value == traspose[item][param]) {
-                        result.push(traspose[item]);
-                    }
-                }
-                return result;
-            }
-
-            SELECT(value) {
-                try {
-                    return JSON.parse(fs.readFileSync(this.name, 'utf8'));
-                } catch (err) {
-                    console.log('ОШИБКА ЧТЕНИЯ ТАБЛИЦЫ', err);
-                }
-            }
-
-            write(params) {
-                try {
-                    fs.writeFileSync(this.name, JSON.stringify(params));
-                } catch (err) {
-                    console.log('ОШИБКА ИЗМЕНЕНИЯ ТАБЛИЦЫ', err);
-                }
-            }
-
-            translate(data=this.SELECT()) {
-                let result = [];
-                for (let i = 0; i < Object.keys(data['id']['users']).length; i++) {
-                    result[i] = {};
-                    for (let item in data) {
-                        result[i][item] = data[item]['users'][i];
-                    }
-                }
-                return result;
-            }
-        }
-    </script>
-
-    <script>
-        var fs = require("fs");
         var GET = [];
         var users = new Table('users');
         var books = new Table('books');
-
-        let udata = users.translate();
-        let bdata = books.translate();
 
         for (item of window.location.search.replace('?','').split('&')) {
             let value = item.split('=');
             GET[decodeURIComponent(value[0])] = decodeURIComponent(value[1]);
         }
 
-        user = users.equal(udata, 'id', GET['us'])[0];
-        book = books.equal(bdata, 'id', GET['bk'])[0];
+        user = users.equal(users.translate(), 'id', GET['us'])[0];
+        book = books.equal(books.translate(), 'id', GET['bk'])[0];
 
         if (!user || !book || !book['userid']) {
             console.log('КНИГИ ИЛИ УЧЕНИКА НЕ СУЩЕСТВУЕТ')

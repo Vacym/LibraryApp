@@ -7,56 +7,6 @@ window.onload = function() {
     let classNum  = document.querySelector("input[name=class]");
     let classLtr  = document.querySelector("input[name=letter]");
 
-    let fs = require("fs");
-
-    // Мой код, принимающий массив с данными и преобразующий его в блоки
-    class Table {
-        constructor(name) {
-            this.name = name + '.json';
-        }
-
-        SELECT() {
-            try {
-                return JSON.parse(fs.readFileSync(this.name, 'utf8'));
-            } catch (err) {
-                console.log('ОШИБКА ЧТЕНИЯ ТАБЛИЦЫ', err);
-            }
-        }
-
-        INSERT(values) {
-            let params = this.SELECT();
-
-            for (let i = 0; i < Object.keys(params).length-1; i++) {
-                if(values[i] === null) values[i] = null;
-            }
-
-            let len = params['id']['users'].length;
-            let i = -1;
-
-            let nextID = len ? params['id']['users'][len-1]+1 : 1;
-
-            for (let item in params) {
-                if (item == 'id') {
-                    params[item]['users'][len] = nextID;
-                } else {
-                    params[item]['users'][len] = values[i];
-                }
-                i++;
-            }
-
-            this.write(params);
-            return nextID;
-        }
-
-        write(params) {
-            try {
-                fs.writeFileSync(this.name, JSON.stringify(params));
-            } catch (err) {
-                console.log('ОШИБКА ИЗМЕНЕНИЯ ТАБЛИЦЫ', err);
-            }
-        }
-    }
-
     let users = new Table('users');
 
     document.querySelector('#submit').onclick = function () {
