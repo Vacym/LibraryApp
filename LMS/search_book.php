@@ -137,8 +137,6 @@
 
             if ($name) {
                 echo "<h2>Поиск книг по группе &#171;{$name['Name']}&#187; </h2>"; // Print name of group
-            } else {
-                echo '<h2>Поиск книг</h2>';   
             }
         } else {
             echo '<h2>Поиск книг</h2>';

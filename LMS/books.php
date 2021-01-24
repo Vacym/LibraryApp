@@ -16,7 +16,7 @@
 </head>
 
 <body>
-	<a class="but" id="home" href="/"></a>
+	<a class="but" id="home" href="index.html"></a>
 
 	<?php
 

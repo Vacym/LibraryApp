@@ -5,6 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self';" />
     <title>Добавление Ученика</title>
 
     <link rel="stylesheet" type="text/css" href="sources/style/button.css">
@@ -16,7 +17,7 @@
 </head>
 
 <body>
-    <a class="but" id="home" href="/"></a>
+    <a class="but" id="home" href="index.html"></a>
 
     <form>
         <h1>Добавить Ученика</h1>
@@ -45,7 +46,7 @@
             <div class="sure">
                 <!-- При неудачном стечении обстоятельств не показывать эту кнопку ▼ -->
                 <div class="but_window_space">
-                    <a class="but_window" href="account.php/" id="link">Перейти в личный кабинет</a>
+                    <a class="but_window" href="" id="link">Перейти в личный кабинет</a>
                 </div>
                 <div class="but_window_space">
                     <div class="but_window" id="cancel">Ок</div>

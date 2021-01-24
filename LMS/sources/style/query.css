@@ -126,6 +126,7 @@ h1 {
 }
 
 input,
+button,
 textarea {
     padding: 10px;
     width: calc(100% - 252px);
@@ -156,7 +157,7 @@ textarea:focus {
     border: 1px solid #0fc3f5;
 }
 
-input[type="submit"] {
+#submit {
     width: 100%;
     margin-top: 20px;
     color: #fff;
@@ -166,13 +167,13 @@ input[type="submit"] {
     transition: .3s;
 }
 
-input[type="submit"]:enabled:hover,
-input[type="submit"]:enabled:focus {
+#submit:enabled:hover,
+#submit:enabled:focus {
     background: #4442db;
     cursor: pointer;
 }
 
-input[type="submit"]:disabled {
+#submit:disabled {
     background: #888;
 }
 
