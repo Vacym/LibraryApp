@@ -9,8 +9,10 @@
 
     <link rel="stylesheet" type="text/css" href="sources/style/button.css">
     <link rel="stylesheet" type="text/css" href="sources/style/query.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
 
     <script type="text/javascript" src="sources/js/nesql.js"></script>
+    <script src="sources/js/message.js"></script>
 </head>
 
 <body>
@@ -21,8 +23,19 @@
         <div class="head">
             <form>
                 <table class="head_information"></table>
-                <input type="button" id="submit" value="Получить">
+                <input type="button" id="submit" value="Получить" message="get">
             </form>
+        </div>
+    </div>
+
+    <div class="dark" id="get">
+        <div class="alert_window">
+            <div class="alert_message" id="result">Подождите...</div>
+            <div class="sure">
+                <div class="but_window_space">
+                    <div class="but_window" id="cancel">Ок</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -86,7 +99,7 @@
             books.write(params);
             console.log('Успешно');
 
-            window.location = `account.html?id=${GET['us']}`;
+            //window.location = `account.html?id=${GET['us']}`; сделай потом что-то с этим
         }
     </script>
 </body>

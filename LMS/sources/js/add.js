@@ -13,8 +13,12 @@ function validation_text(element) {
         regex = /^([1-9]|1[01])$/
     } else if (id == "id" || id == "quantity" || element.name.includes("book_id_")) {
         regex = /^\d+$/
-    } else if (id == "name" || id == "comment" || id == "author" || id == "genre") {
+    } else if (id == "author" || id == "genre") {
         regex = /^([а-яё-]|[\., ]|\d)+$/i
+    } else if (id == "name") {
+        regex = /^([а-яё-]|[\.,?! ]|[\d])+$/i
+    } else if (id == "comment") {
+        regex = /^([а-яё-]|[\.,?!\(\) ]|[\d\n])+$/i
     }
 
     var is_valid = element.value.match(regex)
