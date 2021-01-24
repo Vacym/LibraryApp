@@ -33,7 +33,18 @@ function ready() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", ready);
 
+// Мой код
+function success(url, isGet=false) { // Функция добавляем ссылку кнопке и заменяет текст
+    let msg = isGet ? 'привязана' : 'откреплена';
+    document.querySelector('#result').innerHTML = `Книга успешно ${msg}!`;
+    document.querySelector('#cancel').setAttribute('href', url);
+}
 
-
-document.addEventListener("DOMContentLoaded", ready)
+function sendErr() {
+    document.body.innerHTML = '<a class="but" id="home" href="index.html"></a>\
+                                <a class="but" id="back" onclick="history.back()"></a>\
+                                <h1>Упс, вас здесь быть не должно 😱!</h1>\
+                                <h2 align=center>Чтобы продолжить вернитесь на главную страницу</h2>';
+}
