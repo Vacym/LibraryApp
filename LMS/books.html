@@ -66,6 +66,18 @@
         let user  = users.equal(users.translate(), 'id', book['userid'])[0]; // Сохраняем в переменную значения ученика, которому принадлежит эта книга
 
         if (GET['choose'] == 'edit') { // Страница редактирования ученика
+
+            document.body.innerHTML += `<div class="dark" id="w_save">
+                                                <div class="alert_window">
+                                                    <div class="alert_message">Подождите...</div>
+                                                        <div class="sure">
+                                                            <div class="but_window_space">
+                                                                <a class="but_window" id="cancel">Ок</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>`; // Добавляем блок для вывода всплывающего окна сохранения книги
+
             document.getElementsByClassName('box')[0].innerHTML = `
                             <h1>Редактировать книгу</h1>
                             <nav>
@@ -93,7 +105,7 @@
                                     <label for="comment">Комментарий</label>
                                 </div>
                                 <div>
-                                    <input type="button" id="submit" value="Сохранить" class="good_input">
+                                    <input type="button" id="submit" value="Сохранить" class="good_input" message="w_save">
                                 </div>
                             </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
 
@@ -112,6 +124,7 @@
                                                 </div>`; // Добавляем блок для вывода всплывающего окна удаления книги
 
             document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
+                return //Временное ограничение работы до момента адаптации кода с уведомлением
                 let name    = document.querySelector("input[name=name]").value; // Название
                 let genre   = document.querySelector("input[name=genre]").value; // Жанр
                 let author  = document.querySelector("input[name=author]").value; // Автор

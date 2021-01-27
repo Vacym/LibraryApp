@@ -1,6 +1,6 @@
 // version 1.0 release
 
-function ready() {
+function message_ready() {
     class But_message {
         constructor(button) {
             this.button = button
@@ -18,7 +18,7 @@ function ready() {
         }
         add_show() {
             this.window.classList.add("fading")
-            setTimeout(() => this.toggle("show", "fading"), 1)
+            setTimeout(() => this.toggle("show", "fading"), 20)
         }
         del_show() {
             this.toggle("fading", "show")
@@ -33,9 +33,9 @@ function ready() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", ready);
+document.addEventListener("DOMContentLoaded", message_ready);
 
-// Мой код
+// Мой код (АААААААААА!!!! Не пиши так!!!)
 function success(url, isGet=false) { // Функция добавляем ссылку кнопке и заменяет текст
     let msg = isGet ? 'привязана' : 'откреплена';
     document.querySelector('#result').innerHTML = `Книга успешно ${msg}!`;

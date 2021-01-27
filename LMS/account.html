@@ -52,6 +52,19 @@
         let userBooks = books.equal(books.translate(), 'userid', GET['id']); // Сохраняем в переменную значения книг, принадлежащих ученику
 
         if (GET['choose'] == 'edit') { // Страница редактирования ученика
+
+            document.body.innerHTML += `<div class="dark" id="w_save">
+                                                <div class="alert_window">
+                                                    <div class="alert_message">Подождите...</div>
+                                                        <div class="sure">
+                                                            <div class="but_window_space">
+                                                                <a class="but_window" id="cancel">Ок</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>`; // Добавляем блок для вывода всплывающего окна сохранения ученика
+
+
             document.getElementsByClassName('box')[0].innerHTML = `
                             <h1>Редактировать профиль</h1>
                             <nav>
@@ -79,7 +92,7 @@
                                     <label for="letter">Буква</label>
                                 </div>
                                 <div>
-                                    <input type="button" id="submit" value="Сохранить" class="good_input">
+                                    <input type="button" id="submit" value="Сохранить" class="good_input" message="w_save">
                                 </div>
                             </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
 
@@ -95,9 +108,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>`; // Добавляем блок для вывода всплывающего окна удаления книги
+                                                </div>`; // Добавляем блок для вывода всплывающего окна удаления ученика
 
             document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
+                return //Временное ограничение работы до момента адаптации кода с уведомлением
                 let firstname = document.querySelector("input[name=firstname]").value; // Имя 
                 let surname   = document.querySelector("input[name=surname]").value; // Фамилия
                 let lastname  = document.querySelector("input[name=lastname]").value; // Отчество (если есть)
