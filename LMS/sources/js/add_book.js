@@ -36,7 +36,6 @@ function control_inputs(q_inputs) {
 
 }
 
-
 function show_group(checkbox, changeable, need_check = true, illusion = true) {
 
     function toggle(a, b) {

@@ -64,7 +64,7 @@ window.onload = function() {
             for (IN of groups) {
                 books.INSERT([name.value, author.value, genre.value, comment.value, IN, null, null, MaxGroupID]);
             }
-            success(`search_book.html?group=${MaxGroupID}`, true);
+            successS(`search_book.html?group=${MaxGroupID}`, 'Группа успешно добавлена!');
         } else {
             if (books.isSameID(bookID.value)) {
                 send(`Книга под номером '${bookID.value}' уже существует!`);
@@ -72,29 +72,7 @@ window.onload = function() {
             }
 
             let id = books.INSERT([name.value, author.value, genre.value, comment.value, parseInt(bookID.value), null, null, null]);
-            success(`books.html?id=${id}`);
+            successS(`books.html?id=${id}`, 'Книга успешно добавлена!');
         }
     }
-}
-
-function valid(i, value) {
-    let re = {'name': /^([а-яё-]|[\., ]|\d)+$/i, 'num': /^\d+$/};
-    return value.match(re[i]);
-}
-
-function send(msg) {
-    document.querySelector('#result').innerHTML = msg;
-    document.querySelector('#link').parentElement.classList.add("mes_dis");
-}
-
-function success(url, isGroup=false) {
-    let msg = isGroup ? 'Группа' : 'Книга';
-    document.querySelector('#result').innerHTML = msg + ' успешно добавлена!';
-    document.querySelector('#link').parentElement.classList.remove("mes_dis");
-    document.querySelector("#link").setAttribute('href', url);
-    inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-    for (let x = 0; x < inputs.length; x++) {
-        inputs[x].value = '';
-    }
-    full_check()
 }

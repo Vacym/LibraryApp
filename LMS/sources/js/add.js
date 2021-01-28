@@ -116,17 +116,12 @@ function ready() {
     }
 }
 
-
 document.addEventListener("DOMContentLoaded", ready)
 
 // Мой код
 function valid(i, value) { // Проверяет на правильность введенных данных
     let re = {'username': /^[а-я-]+$/i, 'name': /^([а-яё-]|[\., ]|\d)+$/i, 'num': /^\d+$/, 'class': /^([1-9]|1[01])$/, 'letter': /^[А-Я]$/};
     return value.match(re[i]);
-}
-
-function send(msg) { // Здесь должна будет быть функция для вывода на экран окна ошибки
-    console.log(msg)
 }
 
 function parseURL() { // Парсер ссылки на страницу
@@ -137,4 +132,20 @@ function parseURL() { // Парсер ссылки на страницу
     }
 
     return params;
+}
+
+function send(msg) { // Выводит в всплывающем окне сообщение
+    document.querySelector('#result').innerHTML = msg;
+    document.querySelector('#link').parentElement.classList.add("mes_dis");
+}
+
+function successS(url, msg) { // Выводит успешное сообщение и добавляет ссылку на профиль ученика/книги
+    document.querySelector('#result').innerHTML = msg;
+    document.querySelector('#link').parentElement.classList.remove("mes_dis");
+    document.querySelector("#link").setAttribute('href', url);
+    inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+    for (let x = 0; x < inputs.length; x++) {
+        inputs[x].value = '';
+    }
+    full_check()
 }

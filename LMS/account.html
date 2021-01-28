@@ -54,15 +54,28 @@
         if (GET['choose'] == 'edit') { // Страница редактирования ученика
 
             document.body.innerHTML += `<div class="dark" id="w_save">
-                                                <div class="alert_window">
-                                                    <div class="alert_message">Подождите...</div>
-                                                        <div class="sure">
-                                                            <div class="but_window_space">
-                                                                <a class="but_window" id="cancel">Ок</a>
-                                                            </div>
-                                                        </div>
+                                            <div class="alert_window">
+                                                <div class="alert_message" id="result">Подождите...</div>
+                                                <div class="sure">
+                                                    <div class="but_window_space">
+                                                        <a class="but_window" id="cancel">Ок</a>
                                                     </div>
-                                                </div>`; // Добавляем блок для вывода всплывающего окна сохранения ученика
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="dark" id="w_del">
+                                            <div class="alert_window">
+                                                <div class="alert_message">Вы уверены, что хотите удалить профиль?</div>
+                                                <div class="sure">
+                                                    <div class="but_window_space">
+                                                        <a class="but_window" href="account.html?id=${GET['id']}&choose=delete">Удалить</a>
+                                                    </div>
+                                                    <div class="but_window_space">
+                                                        <div class="but_window" id="cancel">Отменить</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`; // Добавляем блок для вывода всплывающего окна удаления/редактирования ученика
 
 
             document.getElementsByClassName('box')[0].innerHTML = `
@@ -96,22 +109,7 @@
                                 </div>
                             </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
 
-            document.body.innerHTML += `<div class="dark" id="w_del">
-                                                <div class="alert_window">
-                                                    <div class="alert_message">Вы уверены, что хотите удалить профиль?</div>
-                                                        <div class="sure">
-                                                            <div class="but_window_space">
-                                                                <a class="but_window" href="account.html?id=${GET['id']}&choose=delete">Удалить</a>
-                                                            </div>
-                                                            <div class="but_window_space">
-                                                                <div class="but_window" id="cancel">Отменить</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>`; // Добавляем блок для вывода всплывающего окна удаления ученика
-
             document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
-                return //Временное ограничение работы до момента адаптации кода с уведомлением
                 let firstname = document.querySelector("input[name=firstname]").value; // Имя 
                 let surname   = document.querySelector("input[name=surname]").value; // Фамилия
                 let lastname  = document.querySelector("input[name=lastname]").value; // Отчество (если есть)
@@ -126,7 +124,7 @@
                 let _classLtr  = valid('letter', classLtr);
 
                 if (!_firstname || !_surname || !_lastname || !_classNum || !_classLtr) { // Если хотя бы один параметр неверен, вернуть ошибку
-                    send('Некоректный ввод');
+                    error('Некоректный ввод');
                     return;
                 }
 
@@ -142,8 +140,8 @@
                 }
 
                 users.UPDATE(ID, values); // Обновляем значения, того самого ученика
-
-                window.location = `account.html?id=${GET['id']}`; // Переадресовать на главную страницу (это надо будет исправить!!!)
+                
+                success(`account.html?id=${GET['id']}`, 'Ученик успешно изменен!');
             }
 
         } else if (GET['choose'] == 'delete') { // Страница удаления книги

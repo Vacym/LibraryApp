@@ -35,11 +35,14 @@ function message_ready() {
 
 document.addEventListener("DOMContentLoaded", message_ready);
 
-// Мой код (АААААААААА!!!! Не пиши так!!!)
-function success(url, isGet=false) { // Функция добавляем ссылку кнопке и заменяет текст
-    let msg = isGet ? 'привязана' : 'откреплена';
-    document.querySelector('#result').innerHTML = `Книга успешно ${msg}!`;
+// Ок
+function success(url, msg) { // Функция добавляем ссылку кнопке и заменяет текст
+    document.querySelector('#result').innerHTML = msg;
     document.querySelector('#cancel').setAttribute('href', url);
+}
+
+function error(msg) { // Здесь должна будет быть функция для вывода на экран окна ошибки
+    document.querySelector('#result').innerHTML = msg;
 }
 
 function sendErr() {

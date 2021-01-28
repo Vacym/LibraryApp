@@ -10,28 +10,18 @@ window.onload = function() {
     let users = new Table('users');
 
     document.querySelector('#submit').onclick = function () {
-        let _firstname = firstname.value.match(/^[а-я-]+$/i);
-        let _surname   = surname.value.match(/^[а-я-]+$/i);
-        let _lastname  = lastname.value.match(/^[а-я-]+$/i) || lastname.value == '';
-        let _classNum  = classNum.value.match(/^([1-9]|1[01])$/);
-        let _classLtr  = classLtr.value.match(/^[А-Я]$/);
+        let _firstname = valid('username', firstname.value);
+        let _surname   = valid('username', surname.value);
+        let _lastname  = valid('username', lastname.value) || lastname.value == '';
+        let _classNum  = valid('class', classNum.value);
+        let _classLtr  = valid('letter', classLtr.value);
 
         if (!_firstname || !_surname || !_lastname || !_classNum || !_classLtr) {
-            document.querySelector('#result').innerHTML = 'Неправильный ввод!';
-            document.querySelector('#link').parentElement.classList.add("mes_dis");
-
-            console.log('Ошибка');
-        } else {
-            let id = users.INSERT([firstname.value, surname.value, lastname.value, classNum.value, classLtr.value]);
-            
-            document.querySelector('#result').innerHTML = 'Ученик успешно добавлен!';
-            document.querySelector('#link').parentElement.classList.remove("mes_dis");
-            document.querySelector("#link").setAttribute('href', `account.html?id=${id}`);
-            inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-            for (let x = 0; x < inputs.length; x++) {
-                inputs[x].value = '';
-            }
-            full_check();
+            send('Некоректный ввод!');
+            return;
         }
+
+        let id = users.INSERT([firstname.value, surname.value, lastname.value, classNum.value, classLtr.value]);
+        successS(`account.html?id=${id}`, 'Ученик успешно добавлен!');
     }
 }

@@ -62,21 +62,34 @@
         let users = new Table('users'); // Создаем таблицу для работы с учениками
         let books = new Table('books'); // Создаем таблицу для работы с книгами
 
-        book = books.equal(books.translate(), 'id', GET['id'])[0]; // Сохраняем в переменную значения книги по ID
+        let book = books.equal(books.translate(), 'id', GET['id'])[0]; // Сохраняем в переменную значения книги по ID
         let user  = users.equal(users.translate(), 'id', book['userid'])[0]; // Сохраняем в переменную значения ученика, которому принадлежит эта книга
 
-        if (GET['choose'] == 'edit') { // Страница редактирования ученика
+        if (GET['choose'] == 'edit') { // Страница редактирования книги
 
             document.body.innerHTML += `<div class="dark" id="w_save">
-                                                <div class="alert_window">
-                                                    <div class="alert_message">Подождите...</div>
-                                                        <div class="sure">
-                                                            <div class="but_window_space">
-                                                                <a class="but_window" id="cancel">Ок</a>
-                                                            </div>
-                                                        </div>
+                                            <div class="alert_window">
+                                                <div class="alert_message" id="result">Подождите...</div>
+                                                <div class="sure">
+                                                    <div class="but_window_space">
+                                                        <a class="but_window" id="cancel">Ок</a>
                                                     </div>
-                                                </div>`; // Добавляем блок для вывода всплывающего окна сохранения книги
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="dark" id="w_del">
+                                            <div class="alert_window">
+                                                <div class="alert_message">Вы уверены, что хотите удалить профиль?</div>
+                                                <div class="sure">
+                                                    <div class="but_window_space">
+                                                        <a class="but_window" href="account.html?id=${GET['id']}&choose=delete">Удалить</a>
+                                                    </div>
+                                                    <div class="but_window_space">
+                                                        <div class="but_window" id="cancel">Отменить</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`; // Добавляем блок для вывода всплывающего окна удаления/редактирования книги
 
             document.getElementsByClassName('box')[0].innerHTML = `
                             <h1>Редактировать книгу</h1>
@@ -109,22 +122,7 @@
                                 </div>
                             </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
 
-            document.body.innerHTML += `<div class="dark" id="w_del">
-                                                <div class="alert_window">
-                                                    <div class="alert_message">Вы уверены, что хотите удалить профиль?</div>
-                                                        <div class="sure">
-                                                            <div class="but_window_space">
-                                                                <a class="but_window" href="books.html?id=${GET['id']}&choose=delete">Удалить</a>
-                                                            </div>
-                                                            <div class="but_window_space">
-                                                                <div class="but_window" id="cancel">Отменить</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>`; // Добавляем блок для вывода всплывающего окна удаления книги
-
             document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
-                return //Временное ограничение работы до момента адаптации кода с уведомлением
                 let name    = document.querySelector("input[name=name]").value; // Название
                 let genre   = document.querySelector("input[name=genre]").value; // Жанр
                 let author  = document.querySelector("input[name=author]").value; // Автор
@@ -139,12 +137,12 @@
                 let _bookID  = valid('num', bookID);
 
                 if (!_name || !_genre || !_author || !_bookID || !_comment) { // Если хотя бы один параметр неверен, вернуть ошибку
-                    send('Некоректный ввод');
+                    error('Некоректный ввод');
                     return;
                 }
 
                 if (bookID != book['inventoryno'] && books.isSameID(bookID)) { // Если выбрана занятая книга, также вернуть ошибку
-                    send(`Книга под номером '${bookID}' уже существует!`);
+                    error(`Книга под номером '${bookID}' уже существует!`);
                     return;
                 }
 
@@ -162,7 +160,7 @@
                 
                 books.UPDATE(ID, values); // Обновляем значения, того самого ученика
 
-                window.location = `books.html?id=${GET['id']}`; // Переадресовать на главную страницу (это надо будет исправить!!!)
+                success(`books.html?id=${GET['id']}`, 'Книга успешна изменена!');
             }
 
         } else if (GET['choose'] == 'delete') { // Страница удаления книги

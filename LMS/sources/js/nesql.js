@@ -53,8 +53,14 @@ class Table { // Класс для работы с библиотекой
         let choose = this.SELECT()[param]['options'][0];
 
         switch (choose) {
-            case 'num':  return data.sort((a,b) => a[param] - b[param]);
-            case 'text': return data.sort((a,b) => { return (a[param] < b[param]) ? -1: (a[param] > b[param]) ? 1: 0 } )
+            case 'num':  data.sort((a,b) => a[param] - b[param]); break;
+            case 'text': 
+                data.sort((a,b) => { return (a[param] < b[param]) ? -1: (a[param] > b[param]) ? 1: 0 } );
+
+                if (!isUsers) {
+                    data = this.ORDER_BY(data, 'userid') // Отсортировка по инвентарному номеру
+                }
+                break;
         }
         return data;
     }
@@ -64,7 +70,9 @@ class Table { // Класс для работы с библиотекой
         let result = [];
 
         for (let item of data) {
-            if (String(item[value]).toLowerCase().startsWith(query)) {
+            if (value == 'class' && (item['class']+item['letter']).toLowerCase().startsWith(query)) {
+                result.push(item);
+            } else if (String(item[value]).toLowerCase().startsWith(query)) {
                 result.push(item);
             }
         }
@@ -161,20 +169,21 @@ class Table { // Класс для работы с библиотекой
     }
 
     get() { // Возращает таблицу измененную под определенные настройкт
+
+        let data = this.LIKE(this.translate(), GET['order'], GET['q']);
+        let result = [];
+
         if (GET['im'] && GET['del']) { // Если это страница с откреплением книги от ученика
-            let data = this.LIKE(this.ORDER_BY(this.translate(), GET['order']), GET['order'], GET['q']);
-            let result = [];
+            data = this.ORDER_BY(this.translate(), GET['order']);
             
             for (let item of data) {
                 if (item['userid'] == GET['im']) {
                     result.push(item)
                 }
             }
-
             return result;
         } else if (GET['group']) { // Если это страница с развернутой группой книг
-            let data = this.LIKE(this.translate(), GET['order'], GET['q']);
-            let result = [];
+            data = this.ORDER_BY(this.translate(), 'inventoryno');
 
             for (let item of data) {
                 if (item['groupid'] == GET['group']) {
@@ -183,9 +192,8 @@ class Table { // Класс для работы с библиотекой
             }
             return result;
         } else { // Если это обычная страница
-            let data = this.LIKE(this.ORDER_BY(this.translate(), GET['order']), GET['order'], GET['q']);
+            data = this.ORDER_BY(data, GET['order']);
             
-            let result = [];
             let groups = [];
 
             for (let item of data) {
