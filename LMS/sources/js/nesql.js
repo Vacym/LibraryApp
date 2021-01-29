@@ -168,31 +168,27 @@ class Table { // Класс для работы с библиотекой
         return nextID;
     }
 
-    get() { // Возращает таблицу измененную под определенные настройкт
-
-        let data = this.LIKE(this.translate(), GET['order'], GET['q']);
+    get(query='') { // Возращает таблицу измененную под определенные настройкт
         let result = [];
 
         if (GET['im'] && GET['del']) { // Если это страница с откреплением книги от ученика
-            data = this.ORDER_BY(this.translate(), GET['order']);
+            let data = this.ORDER_BY(this.translate(), GET['order']);
             
             for (let item of data) {
                 if (item['userid'] == GET['im']) {
                     result.push(item)
                 }
             }
-            return result;
         } else if (GET['group']) { // Если это страница с развернутой группой книг
-            data = this.ORDER_BY(this.translate(), 'inventoryno');
+            let data = this.ORDER_BY(this.translate(), 'inventoryno');
 
             for (let item of data) {
                 if (item['groupid'] == GET['group']) {
                     result.push(item);
                 }
             }
-            return result;
         } else { // Если это обычная страница
-            data = this.ORDER_BY(data, GET['order']);
+            let data = this.ORDER_BY(this.translate(), GET['order']);
             
             let groups = [];
 
@@ -206,8 +202,8 @@ class Table { // Класс для работы с библиотекой
                     result.push(item)
                 }
             }
-            return result;
         }
+        return this.LIKE(result, GET['order'], query);
     }
 
     equal(traspose, param, value) { // Возвращает массив с столбцами, где параметр равен определонному значению (Н-ер где name = Иван)

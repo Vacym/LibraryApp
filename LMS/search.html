@@ -1,0 +1,200 @@
+ <!-- version 1.0 release -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск</title>
+
+    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/search.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
+
+    <script src="sources/js/nesql.js"></script>
+    <script src="sources/js/search.js"></script>
+    <script src="sources/js/message.js"></script>
+</head>
+
+<body>
+	<div class="toolbar"> <!-- Toolbar -->
+		<div id="summ_checked">Выделено: <span></span></div>
+		<div class="toolbar_buttons">
+			<div class="but" id="remove"></div>
+        	<div class="but" id="edit"></div>
+        	<div class="but" id="del" message="delete"></div>
+        </div>
+    </div>
+
+    <a class="but" id="home" href="index.html"></a> <!-- Button home -->
+    <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
+	<a id="up" class="but hidden"></a> <!-- Button Up -->
+
+    <div class="dark" id="delete">
+        <div class="alert_window">
+            <div class="alert_message" id="result"></div>
+            <div class="sure">
+                <div class="but_window_space">
+                    <div class="but_window" id="link">Удалить</div>
+                </div>
+                <div class="but_window_space">
+                    <div class="but_window" id="cancel">Отменить</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script> // Скрипт отвечает за запуск работы с таблицей
+    	const GET = parseURL();
+        const isUsers = (GET['type'] == 'users');
+
+        const users = new Table('users');
+        const books = new Table('books');
+
+        var db = isUsers ? users.get(): books.get();
+    </script>
+
+    <script> // Скрипт отвечает за дописывание текста в коде
+        let Body = document.body;
+        let header = document.createElement('h2');
+
+        if (GET['group']) {
+            let data = books.translate();
+            let name = books.equal(data,'groupid',GET['group'])[0]['name'];
+
+            if (name) {
+                header.innerHTML = `Поиск книг по группе &#171;${name}&#187;`; // Print name of group
+            }
+        } else {
+        	if (isUsers) {
+        		header.innerHTML = 'Поиск учеников';
+        	} else {
+            	header.innerHTML = 'Поиск книг';
+            }
+        }
+
+        let div = document.createElement('div');
+        div.className = 'find_input';
+
+        let text = `<input type='search' name='q' id='input' autofocus>
+                    <select name="order">`;
+
+        let arr = {'surname': 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс'};
+
+        if (!isUsers) {
+            arr = {'name': 'Название', 'author': 'Автор', 'inventoryno': 'ID', 'genre': 'Жанр', 'dateofissue': 'Дата'};
+        }
+
+        for (let item in arr) {
+            text += `<option value='${item}'>${arr[item]}</option>`;
+        }
+        text += '</select>';
+
+        if (GET['group']) text += `<input type='hidden' name='group' value='${GET['group']}'>`;
+        if (GET['im'])    text += `<input type='hidden' name='im' value='${GET['im']}'>`;
+        if (GET['del'])   text += "<input type='hidden' name='del' value=1>";
+
+        text += `<input type='hidden' name='type' value=${GET['type']}>`;
+        text += '<button type="button" id="submit"></button></div>';
+
+        div.innerHTML = text;
+        Body.append(header);
+        Body.append(div);
+    </script>
+
+    <div class="search_result"></div>
+
+    <script> // Скрипт отвечает за верхний тулбар
+        var list_table = document.querySelector('.search_result'); // Сохраняем блок с результатами
+        send();
+
+        document.querySelector('#link').onclick = function() { // If user touch delete user button
+            let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
+
+            if (!isUsers) {
+                for (let item of checkboxes) {
+                    books.DELETE(item.id);
+                }
+                result("Книги успешно удалены!");
+                return;
+            }
+
+            for (let item of checkboxes) {
+                users.DELETE(item.id);
+
+                let userBooks = books.equal(books.translate(), 'userid', item.id);
+
+                if (userBooks) {
+                    let values = {
+                        'userid': null,
+                        'dateofissue': null
+                    };
+
+                    let ID;
+
+                    for (let value of userBooks) {
+                        ID = books.getIndexFromID(value.id);
+                        books.UPDATE(ID, values);
+                    }
+                }
+
+            }
+            result("Ученики успешно удалены!");
+        }
+
+        document.querySelector('#del').onclick = function() {
+            let count = document.querySelectorAll(".choice input[type='checkbox']:checked").length;
+
+            if (!isUsers) {
+                let count_group = document.querySelectorAll(".group .choice input[type='checkbox']:checked").length;
+                let count_books = count - count_group;
+
+                let valid_1 = ['Будут удалены', 'Будет удалено', 'Будет удалена'];
+                let valid_2 = ['г', 'ги', 'га'];
+                let valid_3 = ['п', 'пы', 'па'];
+
+                function get_i(count) {
+                    if (count%10 >= 5 || count%10 == 0 || count%100 > 10 && count%100 <= 20) i = 0;
+                    else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
+                    else                                                                     i = 2;
+                    return i;
+                }
+                let a = get_i(count_books); // index of count_books
+                let b = get_i(count_group); // index of count_groups
+
+                document.querySelector('#result').innerHTML = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
+                return
+            }
+
+            let valid_1 = ['Будут удалены', 'Будет удалено', 'Будет удален'];
+            let valid_2 = ['иков', 'ика', 'ик'];
+
+            if (count%10 >= 5 || count%10 == 0 || count%100 > 10 && count%100 <= 20) i = 0;
+            else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
+            else                                                                     i = 2;
+
+            document.querySelector('#result').innerHTML = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
+        }
+
+        document.querySelector('#input').addEventListener('input', function (e) {
+            changeDB(e.target.value)
+        })
+
+        document.querySelector("select").addEventListener('change', function (e) {
+            GET['order'] = e.target.value; // Призваиваем списку новое значение
+            document.querySelector('#input').value = ''; // Стираем то что написал пользователь
+
+            changeDB(); // Меняем результаты поиска
+        })
+
+        function changeDB(query) { // Меняем результаты поиска
+            list_table.innerHTML = ''; // Стираем значение поиска
+
+            db = (isUsers) ? users.get(query) : books.get(query); // Изменяем результаты поиска
+            
+            is_end_of_table = false;
+            page = 0;
+            send(); // Выводим результаты на экран
+        }
+    </script>
+</body>

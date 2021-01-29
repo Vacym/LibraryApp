@@ -2,28 +2,22 @@
 
 function validation_text(element) {
     if (element.currentTarget) {
-        var element = element.currentTarget
+        var element = element.currentTarget;
     }
-    var id = element.id
-    var regex = /^[а-яё-]+$/i
+    var id = element.id;
+    let param = id;
+
     if (id == "letter") {
         element.value = element.value.toUpperCase();
-        regex = /^[А-Я]$/
-    } else if (id == "class") {
-        regex = /^([1-9]|1[01])$/
     } else if (id == "id" || id == "quantity" || element.name.includes("book_id_")) {
-        regex = /^\d+$/
+        param = 'num';
     } else if (id == "author" || id == "genre") {
-        regex = /^([a-zа-яё-]|[\., ]|\d)+$/i
-    } else if (id == "name") {
-        regex = /^([a-zа-яё-]|[\., ]|[\d])+$/i
-    } else if (id == "comment") {
-        regex = /^([a-zа-яё-]|[\.,?!\(\) ]|[\d\n])+$/i
+        param = 'name';
     }
 
     let space = /(^\S.*\S$)|(^.$)/s;
 
-    var is_valid = Boolean(element.value.match(regex)) & Boolean(element.value.match(space))
+    var is_valid = valid(param, element.value) && Boolean(element.value.match(space));
     var static = "bad";
 
     //если ничего не введено

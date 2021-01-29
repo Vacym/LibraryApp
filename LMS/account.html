@@ -21,7 +21,7 @@
     <a class="but" id="home" href="index.html"></a> <!-- Button home -->
     <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
 
-    <div class="box" style="width: 75%;">
+    <div class="box">
         <div class="head">
             <nav>
                 <a href="" class="but" id="edit"></a>
@@ -154,7 +154,6 @@
                 };
 
                 let ID;
-
                 for (let value of userBooks) {
                     ID = books.getIndexFromID(value.id);
                     books.UPDATE(ID, values);
@@ -182,7 +181,7 @@
                                         <th class="td_value">Дата выдачи</th>\
                                     </tr>';
 
-            nav.innerHTML += `<a href="search_book.html?im=${GET['id']}" class="but" id="add_book"></a>`; // Создаем кнопку с ссылкой на взятие книг в поиске
+            nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}" class="but" id="add_book"></a>`; // Создаем кнопку с ссылкой на взятие книг в поиске
 
             if (!userBooks.length) { // Если книг у ученика нет
                 booksBlock.innerHTML += `<tr>
@@ -192,7 +191,7 @@
             } else if (userBooks.length == 1) { // Если есть, добавить кнопку с ссылкой на открепление своей книги
                 nav.innerHTML += `<a href="give.html?us=${GET['id']}&bk=${userBooks[0]['id']}" class="but" id="delate_book"></a>`;
             } else {
-                nav.innerHTML += `<a href="search_book.html?im=${GET['id']}&del=1" class="but" id="delate_book"></a>`;
+                nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}&del=1" class="but" id="delate_book"></a>`;
             }
 
             for (let book of userBooks) { // Перебираем каждую книгу ученика и создаем под нее блок

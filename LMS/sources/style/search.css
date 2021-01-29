@@ -25,12 +25,8 @@ body>h2 {
     margin: 30px auto 10px auto;
     text-align: center;
     background-color: rgba(0, 0, 0, .8);
-}
-
-form {
     text-align: center;
     display: flex;
-    width: 100%;
 }
 
 #input {

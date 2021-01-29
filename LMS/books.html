@@ -200,7 +200,7 @@
                 nav.innerHTML = `<a href="give.html?bk=${book['id']}&us=${user['id']}" class="but" id="delate_book"></a>`
        		} else {
        			userBlock.innerHTML = '<tr><th class="td_value">Свободна</th></tr>';
-                nav.innerHTML = `<a href="search_student.html?im=${GET['id']}" class="but" id="add_book"></a>`
+                nav.innerHTML = `<a href="search.html?type=users&im=${GET['id']}" class="but" id="add_book"></a>`
        		}
 
             information.append(userBlock);

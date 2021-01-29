@@ -97,7 +97,7 @@ document.addEventListener('scroll', ready); // Event for listen your scroll in s
 document.addEventListener("DOMContentLoaded", () => { tool = ready_search() })
 
 
-// Мой код
+// Код Djacon
 var page = 0; // Так сказать, значение, с которого идет отсчет о 20 новых книгах / учениках
 var allowLoading = true; // Check, if request is free
 var is_end_of_table = false; // Check, if table is finished in database
@@ -127,7 +127,7 @@ function create_block(data) { // Создает блок с книгой/гру�
 
         innerHTML += `</div>
                 <div class="right_part">\
-                    <div class="information">${data['class']}</div>\
+                    <div class="information">${data['fullclass']}</div>\
                     <div class="FCS">${data['username']}</div>\
                 </div>`;
 
@@ -191,7 +191,7 @@ function send() { // Упакувывает и создает массив пр�
         if (data[i]['firstname']) {
             let href = (GET['im']) ? `get.html?bk=${GET['im']}&us=`: 'account.html?id=';
             
-            data[i]['class'] = data[i]['class'] + data[i]['letter'];
+            data[i]['fullclass'] = data[i]['class'] + data[i]['letter'];
             data[i]['username'] = data[i]['surname'] + ' ' + data[i]['firstname'] + ' ' + data[i]['lastname'];
             data[i]['books'] = books.equal(books.translate(), 'userid', data[i]['id']);
             data[i]['href'] = href + data[i]['id'];
@@ -203,7 +203,7 @@ function send() { // Упакувывает и создает массив пр�
                 let count = books.COUNT(books.translate(), 'groupid', data[i]['groupid']);
 
                 data[i]['inventoryno'] = count;
-                data[i]['href'] = `search_book.html?q=${GET['q']}&im=${GET['im']}&del=${GET['del']}&order=${GET['order']}&group=${data[i]['groupid']}`;
+                data[i]['href'] = `search.html?type=books&q=${GET['q']}&im=${GET['im']}&del=${GET['del']}&order=${GET['order']}&group=${data[i]['groupid']}`;
 
             } else {
                 if (data[i]['userid']) {
@@ -237,7 +237,6 @@ function send() { // Упакувывает и создает массив пр�
 
 function parseURL() { // Парсер ссылки на страницу
     let params = {'q':'', 'im': '', 'del': '', 'group': '', 'order': ''};
-    let regex = /^([а-яё-]|\d)+|\s*$/i // это надо будет исправить
 
     for (item of window.location.search.replace('?','').split('&')) {
         let value = item.split('=');
@@ -246,7 +245,7 @@ function parseURL() { // Парсер ссылки на страницу
 
     // params['q']  = params['q'].match(regex);
 
-    if (isUsers) {
+    if (params['type'] == 'users') {
         params['order'] = (['firstname', 'lastname', 'class', 'letter'].includes(params['order'])) ? params['order']: 'surname';
     } else {
         params['order'] = (['author', 'genre', 'inventoryno', 'dateofissue'].includes(params['order']) ) ? params['order']: 'name';
