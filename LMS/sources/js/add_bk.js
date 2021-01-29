@@ -17,7 +17,7 @@ window.onload = function() {
         let _name    = valid('name', name.value);
         let _author  = valid('name', author.value);
         let _genre   = valid('name', genre.value) || genre.value == '';
-        let _comment = valid('name', comment.value) || comment.value == '';
+        let _comment = valid('comment', comment.value) || comment.value == '';
         let _bookID  = valid('num', bookID.value);
         let _count   = valid('num', count.value);
 

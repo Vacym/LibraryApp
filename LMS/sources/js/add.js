@@ -14,14 +14,16 @@ function validation_text(element) {
     } else if (id == "id" || id == "quantity" || element.name.includes("book_id_")) {
         regex = /^\d+$/
     } else if (id == "author" || id == "genre") {
-        regex = /^([а-яё-]|[\., ]|\d)+$/i
+        regex = /^([a-zа-яё-]|[\., ]|\d)+$/i
     } else if (id == "name") {
-        regex = /^([а-яё-]|[\.,?! ]|[\d])+$/i
+        regex = /^([a-zа-яё-]|[\., ]|[\d])+$/i
     } else if (id == "comment") {
-        regex = /^([а-яё-]|[\.,?!\(\) ]|[\d\n])+$/i
+        regex = /^([a-zа-яё-]|[\.,?!\(\) ]|[\d\n])+$/i
     }
 
-    var is_valid = element.value.match(regex)
+    let space = /(^\S.*\S$)|(^.$)/s;
+
+    var is_valid = Boolean(element.value.match(regex)) & Boolean(element.value.match(space))
     var static = "bad";
 
     //если ничего не введено
@@ -118,10 +120,19 @@ function ready() {
 
 document.addEventListener("DOMContentLoaded", ready)
 
-// Мой код
+// Код Djacon
 function valid(i, value) { // Проверяет на правильность введенных данных
-    let re = {'username': /^[а-я-]+$/i, 'name': /^([а-яё-]|[\., ]|\d)+$/i, 'num': /^\d+$/, 'class': /^([1-9]|1[01])$/, 'letter': /^[А-Я]$/};
-    return value.match(re[i]);
+    let re = {
+    'username': /^[а-я-]+$/i,
+    'name'    : /^([a-zа-яё-]|[\.,?! ]|\d)+$/i,
+    'num'     : /^\d+$/,
+    'class'   : /^([1-9]|1[01])$/,
+    'letter'  : /^[А-Я]$/,
+    'comment' : /^([a-zа-яё-]|[\.,?!\(\) ]|[\d\n])+$/i};
+
+    let space = /(^\S.*\S$)|(^.$)/s;
+
+    return Boolean( value.match(re[i]) ) & Boolean( value.match(space) );
 }
 
 function parseURL() { // Парсер ссылки на страницу
