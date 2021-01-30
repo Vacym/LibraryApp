@@ -121,7 +121,7 @@ class Table { // Класс для работы с библиотекой
 
     UPDATE(id, values) { // Обновляем значения столбца на значения из словаря values
         let data = this.SELECT();
-        for (item in values) {
+        for (let item in values) {
             data[item]['users'][id] = values[item];
         }
 

@@ -61,8 +61,8 @@ window.onload = function() {
                 groups.push(j);
             }
 
-            for (IN of groups) {
-                books.INSERT([name.value, author.value, genre.value, comment.value, IN, null, null, MaxGroupID]);
+            for (let IN of groups) {
+                books.INSERT([name.value.trim(), author.value.trim(), genre.value.trim(), comment.value.trim(), IN, null, null, MaxGroupID]);
             }
             successS(`search_book.html?group=${MaxGroupID}`, 'Группа успешно добавлена!');
         } else {
@@ -71,8 +71,8 @@ window.onload = function() {
                 return;
             }
 
-            let id = books.INSERT([name.value, author.value, genre.value, comment.value, parseInt(bookID.value), null, null, null]);
+            let id = books.INSERT([name.value.trim(), author.value.trim(), genre.value.trim(), comment.value.trim(), parseInt(bookID.value), null, null, null]);
             successS(`books.html?id=${id}`, 'Книга успешно добавлена!');
         }
-    }
-}
+    };
+};

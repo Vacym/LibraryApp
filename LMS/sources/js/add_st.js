@@ -21,7 +21,7 @@ window.onload = function() {
             return;
         }
 
-        let id = users.INSERT([firstname.value, surname.value, lastname.value, classNum.value, classLtr.value]);
+        let id = users.INSERT([firstname.value.trim(), surname.value.trim(), lastname.value.trim(), classNum.value.trim(), classLtr.value.trim()]);
         successS(`account.html?id=${id}`, 'Ученик успешно добавлен!');
-    }
-}
+    };
+};
