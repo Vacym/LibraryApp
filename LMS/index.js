@@ -11,6 +11,8 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    backgroundColor: '#2e2c29',
+    icon: path.join(__dirname, 'book.png'),
     webPreferences: {
       nodeIntegration: true,
     }
@@ -18,7 +20,8 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  mainWindow.setMenuBarVisibility(false)
+  mainWindow.setMenuBarVisibility(false);
+  // mainWindow.removeMenu();
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();

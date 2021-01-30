@@ -82,7 +82,7 @@
                                                 <div class="alert_message">Вы уверены, что хотите удалить профиль?</div>
                                                 <div class="sure">
                                                     <div class="but_window_space">
-                                                        <a class="but_window" href="account.html?id=${GET['id']}&choose=delete">Удалить</a>
+                                                        <a class="but_window" href="books.html?id=${GET['id']}&choose=delete">Удалить</a>
                                                     </div>
                                                     <div class="but_window_space">
                                                         <div class="but_window" id="cancel">Отменить</div>
@@ -98,7 +98,7 @@
                             </nav>
                             <form action="" method="POST">
                                 <div class="line">
-                                    <input type="text" name="id" id="id" value="${book['inventoryno']}" class="necessary_input good_input" autocomplete="off">
+                                    <input type="number" name="id" id="id" value="${book['inventoryno']}" class="necessary_input good_input" autocomplete="off">
                                     <label for="id">ID</label>
                                 </div>
                                 <div class="line">
@@ -123,11 +123,11 @@
                             </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
 
             document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
-                let name    = document.querySelector("input[name=name]").value.trim(); // Название
-                let genre   = document.querySelector("input[name=genre]").value.trim(); // Жанр
-                let author  = document.querySelector("input[name=author]").value.trim(); // Автор
-                let bookID  = document.querySelector("input[name=id]").value.trim(); // Инвентарный номер книги
-                let comment = document.querySelector("textarea[name=comment]").value.trim(); // Комментарий к книге
+                let name    = document.querySelector("input[name=name]").value; // Название
+                let genre   = document.querySelector("input[name=genre]").value; // Жанр
+                let author  = document.querySelector("input[name=author]").value; // Автор
+                let bookID  = document.querySelector("input[name=id]").value; // Инвентарный номер книги
+                let comment = document.querySelector("textarea[name=comment]").value; // Комментарий к книге
 
                 // Проверяем правильность введенных данных
                 let _name    = valid('name', name);

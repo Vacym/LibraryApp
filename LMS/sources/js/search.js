@@ -189,7 +189,7 @@ function send() { // Упакувывает и создает массив пр�
         }
 
         if (data[i]['firstname']) {
-            let href = (GET['im']) ? `get.html?bk=${GET['im']}&us=`: 'account.html?id=';
+            let href = (GET['im']) ? `change.html?type=get&bk=${GET['im']}&us=`: 'account.html?id=';
             
             data[i]['fullclass'] = data[i]['class'] + data[i]['letter'];
             data[i]['username'] = data[i]['surname'] + ' ' + data[i]['firstname'] + ' ' + data[i]['lastname'];
@@ -215,9 +215,9 @@ function send() { // Упакувывает и создает массив пр�
                 let href = "books.html?id=";
 
                 if (GET['im'] && GET['del']) { 
-                    href = `give.html?us=${GET['im']}&bk=`;
+                    href = `change.html?type=give&us=${GET['im']}&bk=`;
                 } else if (GET['im']) { 
-                    href = `get.html?us=${GET['im']}&bk=`;
+                    href = `change.html?type=get&us=${GET['im']}&bk=`;
                 }
 
                 if (GET['im'] && !GET['del'] && data[i]['userid'] !== null) {
