@@ -7,11 +7,14 @@ function validation_text(element) {
     let id = element.id;
     let param = id;
 
-    switch (id) {
-        case 'letter':    element.value = element.value.toUpperCase(); break;
-        case 'id':        case 'quantity':                 param = 'num'; break;
-        case 'author':    case 'genre':                    param = 'name'; break;
-        case 'firstname': case 'surname': case 'lastname': param = 'username'; break;
+    if (id == "letter") {
+        element.value = element.value.toUpperCase();
+    } else if (id == "id" || id == "quantity" || element.name.includes("book_id_")) {
+        param = 'num';
+    } else if (id == "surname" || id == "firstname" || id == "lastname" || id == "letter" || id == "author" || id == "genre") {
+        param = 'name';
+    } else if (id == "surname" || id == "firstname" || id == "lastname") {
+        param = 'username';
     }
 
     if (element.value.match(/^\s/)){ // Если первый символ - пробельный
@@ -23,9 +26,9 @@ function validation_text(element) {
     let static = "bad";
 
     //если ничего не введено
-    if (element.value == "") { static = "empty" } else if (is_valid) { static = "good" }
+    if (element.value == "") { static = "empty"; } else if (is_valid) { static = "good"; }
 
-    change_border(element, static)
+    change_border(element, static);
 }
 
 function change_border(element, type, check = true) {
@@ -126,7 +129,7 @@ function valid(i, value) { // Проверяет на правильность �
         'letter'  : /^[А-Я]$/,
         'comment' : /^([a-zа-яё-]|[\.,?!\(\) ]|[\d\n])+$/i,
     };
-
+    
     return value.match(re[i]);
 }
 
