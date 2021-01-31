@@ -1,7 +1,7 @@
 // version 1.0 release
 
 window.onload = function() {
-    if (!isBook) {
+    if (!isBook) { // Создание ученика
         let firstname = document.querySelector("input[name=firstname]");
         let surname   = document.querySelector("input[name=surname]");
         let lastname  = document.querySelector("input[name=lastname]");
@@ -31,7 +31,7 @@ window.onload = function() {
             let id = table.INSERT([firstname.value, surname.value, lastname.value, classNum.value, classLtr.value]);
             successS(`acc.html?type=user&id=${id}`, 'Ученик успешно добавлен!');
         }
-    } else {
+    } else { // Создание книги
         let name    = document.querySelector("input[name=name]");
         let genre   = document.querySelector("input[name=genre]");
         let count   = document.querySelector("input[name=quantity]");
@@ -223,8 +223,8 @@ function ready() {
     document.querySelector("#auto_id" ).addEventListener("change", () => control_inputs());
 }
 
-let isBook = parseURL()['type'] == 'book';
+let isBook = parseURL()['type'] == 'book'; // Проверяет, является ли страница книжной
 
-if (isBook) {
+if (isBook) { // Если эта книга...
     document.addEventListener("DOMContentLoaded", ready)
 }

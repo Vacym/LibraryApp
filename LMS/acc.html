@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Читательский билет</title>
+    <title>Безысходность</title>
 
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="sources/style/account.css">
@@ -37,40 +37,6 @@
         let GET = parseURL(); // Сюда сохраняем данные из ссылки на страницу
         let isBook = (GET['type'] == 'book');
 
-        if (isBook) {
-            document.querySelector('.head_information').innerHTML = `
-                <tr>
-                    <td class="td_head">ID: </td>
-                    <td class="td_value"></td>
-                </tr>
-                <tr>
-                    <td class="td_head">Название: </td>
-                    <td class="td_value"></td>
-                </tr>
-                <tr>
-                    <td class="td_head">Автор: </td>
-                    <td class="td_value"></td>
-                </tr>
-                <tr>
-                    <td class="td_head">Жанр: </td>
-                    <td class="td_value"></td>
-                </tr>
-                <tr>
-                    <td class="td_head">Описание: </td>
-                    <td class="td_value"></td>
-                </tr>`;
-        } else {
-            document.querySelector('.head_information').innerHTML = `
-                <tr>
-                    <td class="td_head">ФИО: </td>
-                    <td class="td_value"></td>
-                </tr>
-                <tr>
-                    <td class="td_head">Класс: </td>
-                    <td class="td_value"></td>
-                </tr>`;
-        }
-
         let users = new Table('users'); // Создаем таблицу для работы с учениками
         let books = new Table('books'); // Создаем таблицу для работы с книгами
 
@@ -84,10 +50,89 @@
             user      = users.equal(users.translate(), 'id', userBooks['userid'])[0]; // Сохраняем в переменную значения ученика, которому принадлежит эта книга
         }
 
-        let type = (isBook) ? 'book' : 'user';
+        let type  = (isBook) ? 'book' : 'user';
         let title = (isBook) ? 'Редактировать книгу' : 'Редактировать профиль';
 
-        if (GET['choose'] == 'edit') { // Страница редактирования
+        let innerHTML = '';
+        let _arr = (isBook) ? userBooks: user; // Инициализиуем переменную для создания массива под определенную страницу
+
+        if (user) {
+            _arr['fullname']  = `${user['surname']} ${user['firstname']} ${user['lastname']}`;
+            _arr['fullclass'] = `${user['class']}${user['letter']}`;
+        }
+
+        if (GET['choose'] != 'edit') {
+            setTitle('Личный кабинет');
+
+            let arr = (isBook) ? {'ID': 'inventoryno', 'Название': 'name', 'Автор': 'author', 'Жанр': 'genre', 'Описание': 'comment'} : // Книга
+                                {'ФИО': 'fullname', 'Класс': 'fullclass'}; // Ученик
+
+            for (let item in arr) { // Конструируем блоки
+                innerHTML += `<tr>
+                                <td class="td_head">${item}: </td>
+                                <td class="td_value">${_arr[arr[item]]}</td>
+                            </tr>`;
+            }
+            document.querySelector('.head_information').innerHTML = innerHTML;
+            document.querySelector('#edit').href = `acc.html?type=${type}&id=${GET['id']}&choose=edit`; //////////////////////////////////
+
+            let information = document.querySelector('.information'); // Инициализируем блок с информацией, чтоб потом туда все поставить
+            let nav = document.getElementById('btn'); // Иниуиализируем переменную чтоб в дальнейшем изменить ссылки с кнопками
+
+            let accBlock = document.createElement('table');
+
+            if (isBook) { // Если страница книжная
+                accBlock.className = 'books';
+
+                if (user) {
+                    accBlock.innerHTML = `<tr>
+                                            <th class="td_head">Ученик</th>
+                                            <th class="td_value">${_arr['fullname']} 
+                                                <span class="class">${_arr['fullclass']}</span>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td class="td_head">Дата выдачи: </td>
+                                            <td class="td_value">${userBooks['dateofissue']}</td>
+                                        </tr>`;
+
+                    nav.innerHTML = `<a href="change.html?type=give&bk=${userBooks['id']}&us=${user['id']}" class="but" id="delate_book"></a>`
+                } else {
+                    accBlock.innerHTML = '<tr><th class="td_value">Свободна</th></tr>';
+                    nav.innerHTML = `<a href="search.html?type=users&im=${GET['id']}" class="but" id="add_book"></a>`
+                }
+            } else { // Если ученик
+                accBlock.className = 'books'; // Назваем блок классом books
+
+                accBlock.innerHTML = '<tr>\
+                                            <th class="td_head">Книга</th>\
+                                            <th class="td_value">Дата выдачи</th>\
+                                        </tr>';
+
+                nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}" class="but" id="add_book"></a>`; // Создаем кнопку с ссылкой на взятие книг в поиске
+
+                if (!userBooks.length) { // Если книг у ученика нет
+                    accBlock.innerHTML += `<tr>
+                                                <td class="td_head">Нет книг</td>
+                                                <td class="td_value">-</td>
+                                            </tr>`;
+                } else if (userBooks.length == 1) { // Если есть, добавить кнопку с ссылкой на открепление своей книги
+                    nav.innerHTML += `<a href="change.html?type=give&us=${GET['id']}&bk=${userBooks[0]['id']}" class="but" id="delate_book"></a>`;
+                } else {
+                    nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}&del=1" class="but" id="delate_book"></a>`;
+                }
+
+                for (let book of userBooks) { // Перебираем каждую книгу ученика и создаем под нее блок
+                    accBlock.innerHTML += `<tr>
+                                                <td class="td_head">${book['name']}</td>
+                                                <td class="td_value">${book['dateofissue']}</td>
+                                            </tr>`;
+                }
+            }
+            information.append(accBlock); // Добавляем наш созданный блок в главный блок
+
+        } else { // Страница редактирования
+            setTitle('Редактирование');
 
             document.body.innerHTML += `<div class="dark" id="w_save">
                                             <div class="alert_window">
@@ -113,37 +158,31 @@
                                             </div>
                                         </div>`; // Добавляем блок для вывода всплывающего окна удаления/редактирования ученика
 
-            if (!isBook) {
-                document.getElementsByClassName('box')[0].innerHTML = `
-                                <h1>${title}</h1>
-                                <nav>
-                                    <div class="but" id="del" message="w_del"></div>
-                                </nav>
-                                <form action="" method="POST">
-                                    <div class="line">
-                                        <input type="text" name="surname" id="surname" value="${user['surname']}" class="necessary_input good_input">
-                                        <label for="surname">Фамилия</label>
-                                    </div>
-                                    <div class="line">
-                                        <input type="text" name="firstname" id="firstname" value="${user['firstname']}" class="necessary_input good_input">
-                                        <label for="firstname">Имя</label>
-                                    </div>
-                                    <div class="line">
-                                        <input type="text" name="lastname" id="lastname" value="${user['lastname']}" class="good_input">
-                                        <label for="lastname">Отчество</label>
-                                    </div>
-                                    <div class="line">
-                                        <input type="number" name="class" id="class" value="${user['class']}" class="necessary_input good_input" min="1" max="11">
-                                        <label for="class">Класс</label>
-                                    </div>
-                                    <div class="line">
-                                        <input type="text" name="letter" id="letter" value="${user['letter']}" class="necessary_input good_input" maxlength="1">
-                                        <label for="letter">Буква</label>
-                                    </div>
-                                    <div>
-                                        <input type="button" id="submit" value="Сохранить" class="good_input" message="w_save">
-                                    </div>
-                                </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
+            innerHTML = `<h1>${title}</h1><nav><div class="but" id="del" message="w_del"></div></nav>`;
+
+            let arr = (isBook) ? {'id': 'ID', 'name': 'Название', 'author': 'Автор', 'genre': 'Жанр', 'comment': 'Комментарий'}:
+                                 {'surname' : 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс', 'letter': 'Буква'};
+
+            for (let item in arr) {
+                innerHTML += '<div class="line">';
+                if (item == 'comment') innerHTML += `<textarea type="text" name="comment" id="comment" class="good_input">${_arr[item]}</textarea>`;
+                else                   innerHTML += `<input type="text" name="${item}" id="${item}" value="${_arr[item]}" class="necessary_input good_input">`;
+                innerHTML += `<label for="${item}">${arr[item]}</label></div>`;
+            }
+
+            innerHTML += '<div><input type="button" id="submit" value="Сохранить" class="good_input" message="w_save"></div';
+
+            let box = document.querySelector('.box');
+            box.innerHTML = innerHTML;
+
+            if (!isBook) { // Если ученик
+                box.querySelector('#lastname').className = 'good_input'; // Отчетсво писать необязательно
+                box.querySelector('#letter').maxLength = 1; // Длина Буквы класса не превышает одной
+
+                let inputClass = box.querySelector('#class');
+                inputClass.type = 'number'; // тип номера класса - число
+                inputClass.min = 1; // Минимум - 0
+                inputClass.max = 11; // Максимум - 11
 
                 document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
                     let firstname = document.querySelector("input[name=firstname]"); // Имя 
@@ -183,37 +222,9 @@
                     
                     success(`acc.html?type=${type}&id=${GET['id']}`, 'Ученик успешно изменен!');
                 }
-            } else {
-                document.getElementsByClassName('box')[0].innerHTML = `
-                            <h1>Редактировать книгу</h1>
-                            <nav>
-                                <div class="but" id="del" message="w_del"></div>
-                            </nav>
-                            <form action="" method="POST">
-                                <div class="line">
-                                    <input type="number" name="id" id="id" value="${userBooks['inventoryno']}" class="necessary_input good_input" autocomplete="off">
-                                    <label for="id">ID</label>
-                                </div>
-                                <div class="line">
-                                    <input type="text" name="name" id="name" value="${userBooks['name']}" class="necessary_input good_input" autocomplete="off">
-                                    <label for="name">Название</label>
-                                </div>
-                                <div class="line">
-                                    <input type="text" name="author" id="author" value="${userBooks['author']}" class="necessary_input good_input" autocomplete="off">
-                                    <label for="author">Автор</label>
-                                </div>
-                                <div class="line">
-                                    <input type="text" name="genre" id="genre" value="${userBooks['genre']}" autocomplete="off" class="good_input">
-                                    <label for="genre">Жанр</label>
-                                </div>
-                                <div class="line">
-                                    <textarea type="text" name="comment" id="comment" autocomplete="off" class="good_input" style="height: 68px;">${userBooks['comment']}</textarea>
-                                    <label for="comment">Комментарий</label>
-                                </div>
-                                <div>
-                                    <input type="button" id="submit" value="Сохранить" class="good_input" message="w_save">
-                                </div>
-                            </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
+            } else { // Если книга
+                box.querySelector('#genre').className = 'good_input';
+                box.querySelector('#id').type = 'number';
 
                 document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
                     let name    = document.querySelector("input[name=name]"); // Название
@@ -239,8 +250,8 @@
                         return;
                     }
 
-                    if (bookID != userBooks['inventoryno'] && books.isSameID(bookID)) { // Если выбрана занятая книга, также вернуть ошибку
-                        error(`Книга под номером '${bookID}' уже существует!`);
+                    if (bookID.value != userBooks['inventoryno'] && books.isSameID(bookID.value)) { // Если выбрана занятая книга, также вернуть ошибку
+                        error(`Книга под номером '${bookID.value}' уже существует!`);
                         return;
                     }
 
@@ -285,82 +296,6 @@
 
                     window.location = 'index.html'; // Переадресовать на главную страницу (это надо будет исправить!!!)
                 }
-            }
-
-        } else { // Главная страница ученика
-            let tableValues = document.getElementsByClassName('td_value'); // Создаем переменную для работы с
-
-            if (isBook) {
-                tableValues[0].innerHTML = userBooks['inventoryno']; // ID
-                tableValues[1].innerHTML = userBooks['name']; // Название книги
-                tableValues[2].innerHTML = userBooks['author']; // Автор
-                tableValues[3].innerHTML = userBooks['genre']; // Жанр
-                tableValues[4].innerHTML = userBooks['comment']; // Комментарий
-            } else {
-                tableValues[0].innerHTML = `${user['surname']} ${user['firstname']} ${user['lastname']}`; // Полное имя
-                tableValues[1].innerHTML = `${user['class']}${user['letter']}`; // Класс, Буква
-            }
-
-            let a = document.getElementsByClassName('but'); // Сменяем текущую ссылку на ссылку для редактирования
-            a[2].href = `acc.html?type=${type}&id=${GET['id']}&choose=edit`;
-
-            let information = document.querySelector('.information'); // Инициализируем блок с информацией, чтоб потом туда все поставить
-            let nav = document.getElementById('btn'); // Иниуиализируем переменную чтоб в дальнейшем изменить ссылки с кнопками
-
-            if (isBook) {
-                let userBlock = document.createElement('table');
-
-                userBlock.className = 'books';
-
-                if (user) {
-                    userBlock.innerHTML = `<tr>
-                                                <th class="td_head">Ученик</th>
-                                                <th class="td_value">${user['surname']} ${user['firstname']} ${user['lastname']} 
-                                                    <span class="class">${user['class']}${user['letter']}</span>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <td class="td_head">Дата выдачи: </td>
-                                                <td class="td_value">${userBooks['dateofissue']}</td>
-                                            </tr>`;
-
-                    nav.innerHTML = `<a href="change.html?type=give&bk=${userBooks['id']}&us=${user['id']}" class="but" id="delate_book"></a>`
-                } else {
-                    userBlock.innerHTML = '<tr><th class="td_value">Свободна</th></tr>';
-                    nav.innerHTML = `<a href="search.html?type=users&im=${GET['id']}" class="but" id="add_book"></a>`
-                }
-
-                information.append(userBlock); // Добавляем наш созданный блок в главный блок
-            } else {
-                let booksBlock = document.createElement('table'); // Создаем блок-таблицу где будем выводить все данные учащегося
-                
-                booksBlock.className = 'books'; // Назваем блок классом books
-                booksBlock.innerHTML = '<tr>\
-                                        <th class="td_head">Книга</th>\
-                                        <th class="td_value">Дата выдачи</th>\
-                                    </tr>';
-
-                nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}" class="but" id="add_book"></a>`; // Создаем кнопку с ссылкой на взятие книг в поиске
-
-                if (!userBooks.length) { // Если книг у ученика нет
-                    booksBlock.innerHTML += `<tr>
-                                                <td class="td_head">Нет книг</td>
-                                                <td class="td_value">-</td>
-                                            </tr>`;
-                } else if (userBooks.length == 1) { // Если есть, добавить кнопку с ссылкой на открепление своей книги
-                    nav.innerHTML += `<a href="change.html?type=give&us=${GET['id']}&bk=${userBooks[0]['id']}" class="but" id="delate_book"></a>`;
-                } else {
-                    nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}&del=1" class="but" id="delate_book"></a>`;
-                }
-
-                for (let book of userBooks) { // Перебираем каждую книгу ученика и создаем под нее блок
-                    booksBlock.innerHTML += `<tr>
-                                                <td class="td_head">${book['name']}</td>
-                                                <td class="td_value">${book['dateofissue']}</td>
-                                            </tr>`;
-                }
-
-                information.append(booksBlock); // Добавляем наш созданный блок в главный блок
             }
         }
     </script>

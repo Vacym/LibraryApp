@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <script> // Скрипт отвечает за запуск работы с таблицей
+    <script>
     	const GET = parseURL();
         const isUsers = (GET['type'] == 'users');
 
@@ -52,9 +52,7 @@
         const books = new Table('books');
 
         var db = isUsers ? users.get(): books.get();
-    </script>
 
-    <script> // Скрипт отвечает за дописывание текста в коде
         let Body = document.body;
         let header = document.createElement('h2');
 
@@ -66,11 +64,7 @@
                 header.innerHTML = `Поиск книг по группе &#171;${name}&#187;`; // Print name of group
             }
         } else {
-        	if (isUsers) {
-        		header.innerHTML = 'Поиск учеников';
-        	} else {
-            	header.innerHTML = 'Поиск книг';
-            }
+            header.innerHTML = (isUsers) ? 'Поиск учеников': 'Поиск книг';
         }
 
         let div = document.createElement('div');
@@ -108,7 +102,7 @@
         var list_table = document.querySelector('.search_result'); // Сохраняем блок с результатами
         send();
 
-        document.querySelector('#link').onclick = function() { // If user touch delete user button
+        document.querySelector('#link').onclick = function() { // Если пользователь решил удалить книги/учеников
             let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
 
             if (!isUsers) {
@@ -174,6 +168,27 @@
             else                                                                     i = 2;
 
             document.querySelector('#result').innerHTML = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
+        }
+
+        document.querySelector('#edit').onclick = function() {
+            let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked");
+            let count = checkboxes.length;
+
+            if (count != 1) {
+                console.log('Выбрано больше одной книги/ученика, а именно -', count, '.\nНе волнуйся, в дальнейшем это будет возможно'); return;
+            }
+
+            let ID = parseInt(checkboxes[0].id);
+
+            if (isUsers) {
+                window.location = `acc.html?type=user&id=${ID}&choose=edit`; // Это надо будет исправить
+            } else {
+                if (ID < 0) { // Если эта группа
+                    console.log('Окно редактирования группы, пока что не работает')
+                } else {
+                    window.location = `acc.html?type=book&id=${ID}&choose=edit`; // Это надо будет исправить
+                }
+            }
         }
 
         document.querySelector('#input').addEventListener('input', function (e) {

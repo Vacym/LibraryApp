@@ -155,3 +155,7 @@ function successS(url, msg) { // Выводит успешное сообщен�
     }
     full_check();
 }
+
+function setTitle(title) {
+    document.title = title;
+}
