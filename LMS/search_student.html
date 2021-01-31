@@ -1,7 +1,7 @@
 <!-- version 1.0 release -->
-<!-- Пример использования -->
 
 <!DOCTYPE html>
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -10,12 +10,14 @@
     <link rel="stylesheet" type="text/css" href="sources/style/button.css">
     <link rel="stylesheet" type="text/css" href="sources/style/search.css">
     <link rel="stylesheet" type="text/css" href="sources/style/message.css">
+
+    <script src="sources/js/nesql.js"></script>
     <script src="sources/js/search.js"></script>
     <script src="sources/js/message.js"></script>
 </head>
 
 <body>
-    <div class="toolbar">
+    <div class="toolbar"> <!-- Toolbar -->
         <div id="summ_checked">Выделено: <span></span></div>
         <div class="toolbar_buttons">
             <div class="but" id="remove"></div>
@@ -24,62 +26,16 @@
         </div>
     </div>
 
-    <a class="but" id="home" href="index.html"></a>
-
-    <h2>Поиск Учеников</h2>
-    <div class="find_input">
-        <form action="#" method="get">
-            <input type="search" name="q" id="input" autocomplete="off" autofocus value="">
-            <select name="order">
-                <option selected>Фамилия</option>
-                <option>Имя</option>
-                <option>Отчество</option>
-                <option>Класс</option>
-            </select>
-            <button type="submit" id="submit" onclick="search_click()"></button>
-        </form>
-    </div>
-    <div class="search_result">
-        <a class="valid result" href="account.html">
-            <div class="left_part">
-                <div class="choice">
-                    <input type="checkbox" id="12">
-                    <label for="12"></label>
-                </div>
-                <div class="book">
-                    <span class="name_book">Что делать?</span>
-                    <span class="autor_book">Чернышевский Николай Гаврилович</span>
-                    <span class="date">27.11.20</span>
-                </div>
-                <!-- <div class="book">
-                    <span class="name_book">книгга 2</span>
-                    <span class="autor_book">автор 2</span>
-                    <span class="date">20.11.20</span>
-                </div>
-                <div class="book">
-                    <span class="name_book">K nigga three</span>
-                    <span class="autor_book">Author three</span>
-                    <span class="date">46.09.20</span>
-                </div> -->
-            </div>
-            <div class="right_part">
-                <div class="information">10 A</div>
-                <div class="FCS"> Горбатюк Павел Викторович</div>
-            </div>
-        </a>
-        <div id="more_result">Больше результатов</div>
-    </div>
-
-    <a id="up" class="but hidden"></a>
+    <a class="but" id="home" href="index.html"></a> <!-- Button home -->
+    <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
+	<a id="up" class="but hidden"></a> <!-- Button Up -->
 
     <div class="dark" id="delete">
         <div class="alert_window">
-            <div class="alert_message" id="result">
-                Будет удалено 34 ученика<br>Продолжить?
-            </div>
+            <div class="alert_message" id="result"></div>
             <div class="sure">
                 <div class="but_window_space">
-                    <a class="but_window" href="" id="link">Удалить</a>
+                    <div class="but_window" id="link">Удалить</div>
                 </div>
                 <div class="but_window_space">
                     <div class="but_window" id="cancel">Отменить</div>
@@ -87,6 +43,94 @@
             </div>
         </div>
     </div>
+
+    <script> // Скрипт отвечает за запуск работы с таблицей
+        var isUsers = true;
+        var GET = parseURL();
+
+        const users = new Table('users');
+        const books = new Table('books');
+        const db = users.get();
+    </script>
+
+    <h2>Поиск учеников</h2>
+
+    <script> // Скрипт отвечает за дописывание текста в коде
+        let Body = document.body;
+        let header = document.createElement('h2');
+
+        let div = document.createElement('div');
+        div.className = 'find_input';
+
+        let text = `<form action="" method="GET">
+                            <input type='search' name='q' value='${GET['q']}' id='input' autocomplete='off' autofocus>
+                            <select name="order">`;
+
+        let arr = {'surname': 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс'};
+
+        for (let item in arr) {
+            if (item == GET['order']) { 
+                text += `<option value='${item}' selected>${arr[item]}</option>`;
+            } else {
+                text += `<option value='${item}'>${arr[item]}</option>`;
+            }
+        }
+        text += '</select>';
+
+        if (GET['im']) text += "<input type='hidden' name='im' value='$im'>"; // If librarian wants to connect user with book
+
+        text += '<button type="submit" id="submit"></button></form></div>';
+
+        div.innerHTML = text;
+        Body.append(header);
+        Body.append(div);
+    </script>
+
+    <div class="search_result"></div>
+
+    <script>
+        var list_table = document.querySelector('.search_result'); // Div for all books
+        send(page); // Call Ajax funciton
+
+        document.querySelector('#link').onclick = function() { // If user touch delete user button
+            let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
+
+            for (let item of checkboxes) {
+                users.DELETE(item.id);
+
+                let userBooks = books.equal(books.translate(), 'userid', item.id);
+
+                if (userBooks) {
+                    let values = {
+                        'userid': null,
+                        'dateofissue': null
+                    };
+
+                    let ID;
+
+                    for (let value of userBooks) {
+                        ID = books.getIndexFromID(value.id);
+                        books.UPDATE(ID, values);
+                    }
+                }
+
+            }
+            result("Ученики успешно удалены!");
+        }
+
+        document.querySelector('#del').onclick = function() {
+            let count = document.querySelectorAll(".choice input[type='checkbox']:checked").length
+
+            valid_1 = ['Будут удалены', 'Будет удалено', 'Будет удален'];
+            valid_2 = ['иков', 'ика', 'ик'];
+
+            if (count%10 >= 5 || count%10 == 0 || count%100 > 10 && count%100 <= 20) i = 0;
+            else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
+            else                                                                     i = 2;
+
+            document.querySelector('#result').innerHTML = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
+        }
+    </script>
 </body>
 
 </html>

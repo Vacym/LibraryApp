@@ -1,0 +1,211 @@
+<!-- version 1.0 release -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Книга</title>
+	
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="sources/style/account.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
+
+    <script type="text/javascript" src="sources/js/nesql.js"></script>
+    <script type="text/javascript" src="sources/js/add.js"></script>
+    <script type="text/javascript" src="sources/js/message.js"></script>
+</head>
+
+<body>
+    <a class="but" id="home" href="index.html"></a> <!-- Button home -->
+    <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
+
+	<div class="box">
+		<div class="head">
+			<nav>
+				<a class="but" id="edit"></a>
+			</nav>
+			<table class="head_information">
+				<tbody>
+					<tr>
+						<td class="td_head">ID: </td>
+						<td class="td_value"></td>
+					</tr>
+					<tr>
+						<td class="td_head">Название: </td>
+						<td class="td_value"></td>
+					</tr>
+					<tr>
+						<td class="td_head">Автор: </td>
+						<td class="td_value"></td>
+					</tr>
+					<tr>
+						<td class="td_head">Жанр: </td>
+						<td class="td_value"></td>
+					</tr>
+					<tr>
+						<td class="td_head">Описание: </td>
+						<td class="td_value"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="information">
+			<nav id="btn"></nav>
+		</div>
+	</div>
+
+    <script>
+        let GET = parseURL(); // Сюда сохраняем данные из ссылки на страницу
+
+        let users = new Table('users'); // Создаем таблицу для работы с учениками
+        let books = new Table('books'); // Создаем таблицу для работы с книгами
+
+        let book = books.equal(books.translate(), 'id', GET['id'])[0]; // Сохраняем в переменную значения книги по ID
+        let user  = users.equal(users.translate(), 'id', book['userid'])[0]; // Сохраняем в переменную значения ученика, которому принадлежит эта книга
+
+        if (GET['choose'] == 'edit') { // Страница редактирования книги
+
+            document.body.innerHTML += `<div class="dark" id="w_save">
+                                            <div class="alert_window">
+                                                <div class="alert_message" id="result">Подождите...</div>
+                                                <div class="sure">
+                                                    <div class="but_window_space">
+                                                        <a class="but_window" id="cancel">Ок</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="dark" id="w_del">
+                                            <div class="alert_window">
+                                                <div class="alert_message">Вы уверены, что хотите удалить профиль?</div>
+                                                <div class="sure">
+                                                    <div class="but_window_space">
+                                                        <a class="but_window" href="books.html?id=${GET['id']}&choose=delete">Удалить</a>
+                                                    </div>
+                                                    <div class="but_window_space">
+                                                        <div class="but_window" id="cancel">Отменить</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`; // Добавляем блок для вывода всплывающего окна удаления/редактирования книги
+
+            document.getElementsByClassName('box')[0].innerHTML = `
+                            <h1>Редактировать книгу</h1>
+                            <nav>
+                                <div href="#" class="but" id="del" message="w_del"></div>
+                            </nav>
+                            <form action="" method="POST">
+                                <div class="line">
+                                    <input type="number" name="id" id="id" value="${book['inventoryno']}" class="necessary_input good_input" autocomplete="off">
+                                    <label for="id">ID</label>
+                                </div>
+                                <div class="line">
+                                    <input type="text" name="name" id="name" value="${book['name']}" class="necessary_input good_input" autocomplete="off">
+                                    <label for="name">Название</label>
+                                </div>
+                                <div class="line">
+                                    <input type="text" name="author" id="author" value="${book['author']}" class="necessary_input good_input" autocomplete="off">
+                                    <label for="author">Автор</label>
+                                </div>
+                                <div class="line">
+                                    <input type="text" name="genre" id="genre" value="${book['genre']}" autocomplete="off" class="good_input">
+                                    <label for="genre">Жанр</label>
+                                </div>
+                                <div class="line">
+                                    <textarea type="text" name="comment" id="comment" autocomplete="off" class="good_input" style="height: 68px;">${book['comment']}</textarea>
+                                    <label for="comment">Комментарий</label>
+                                </div>
+                                <div>
+                                    <input type="button" id="submit" value="Сохранить" class="good_input" message="w_save">
+                                </div>
+                            </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
+
+            document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
+                let name    = document.querySelector("input[name=name]").value.trim(); // Название
+                let genre   = document.querySelector("input[name=genre]").value.trim(); // Жанр
+                let author  = document.querySelector("input[name=author]").value.trim(); // Автор
+                let bookID  = document.querySelector("input[name=id]").value.trim(); // Инвентарный номер книги
+                let comment = document.querySelector("textarea[name=comment]").value.trim(); // Комментарий к книге
+
+                // Проверяем правильность введенных данных
+                let _name    = valid('name', name);
+                let _author  = valid('name', author);
+                let _genre   = valid('name', genre) || genre == '';
+                let _comment = valid('name', comment) || comment == '';
+                let _bookID  = valid('num', bookID);
+
+                if (!_name || !_genre || !_author || !_bookID || !_comment) { // Если хотя бы один параметр неверен, вернуть ошибку
+                    error('Некоректный ввод');
+                    return;
+                }
+
+                if (bookID != book['inventoryno'] && books.isSameID(bookID)) { // Если выбрана занятая книга, также вернуть ошибку
+                    error(`Книга под номером '${bookID}' уже существует!`);
+                    return;
+                }
+
+                let params = books.SELECT(); // Сохраняем данные таблицы в переменную
+                let ID = books.getIndexFromID(book['id']); // Сохраняем индекс нужного столбца
+
+                let values = { // Создаем словарь, для изменения значений столбца
+                    'name': name,
+                    'author': author,
+                    'genre': genre,
+                    'comment': comment,
+                    'inventoryno': bookID
+                }
+
+                
+                books.UPDATE(ID, values); // Обновляем значения, того самого ученика
+
+                success(`books.html?id=${GET['id']}`, 'Книга успешна изменена!');
+            }
+
+        } else if (GET['choose'] == 'delete') { // Страница удаления книги
+            books.DELETE(book['id']); // Удаляем книгу из таблицы с id равным введенному
+
+            window.location = 'index.html'; // Переадресовать на главную страницу (это надо будет исправить!!!)
+        } else {
+            let tableValues = document.getElementsByClassName('td_value');
+
+            tableValues[0].innerHTML = book['inventoryno']; // ID
+            tableValues[1].innerHTML = book['name']; // Название книги
+            tableValues[2].innerHTML = book['author']; // Автор
+            tableValues[3].innerHTML = book['genre']; // Жанр
+            tableValues[4].innerHTML = book['comment']; // Комментарий
+
+            let a = document.getElementsByClassName('but');
+            a[2].href = `books.html?id=${GET['id']}&choose=edit`;
+
+            let information = document.querySelector('.information');
+            let userBlock = document.createElement('table');
+            let nav = document.getElementById('btn');
+
+            userBlock.className = 'books';
+
+            if (user) {
+            	userBlock.innerHTML = `<tr>
+            								<th class="td_head">Ученик</th>
+            								<th class="td_value">${user['surname']} ${user['firstname']} ${user['lastname']} 
+            									<span class="class">${user['class']}${user['letter']}</span>
+            								</th>
+            							</tr>
+            							<tr>
+            								<td class="td_head">Дата выдачи: </td>
+            								<td class="td_value">${book['dateofissue']}</td>
+            							</tr>`;
+
+                nav.innerHTML = `<a href="give.html?bk=${book['id']}&us=${user['id']}" class="but" id="delate_book"></a>`
+       		} else {
+       			userBlock.innerHTML = '<tr><th class="td_value">Свободна</th></tr>';
+                nav.innerHTML = `<a href="search.html?type=users&im=${GET['id']}" class="but" id="add_book"></a>`
+       		}
+
+            information.append(userBlock);
+        }
+    </script>
+</body>
+	
+</html>

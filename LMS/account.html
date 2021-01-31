@@ -1,5 +1,4 @@
 <!-- version 1.0 release -->
-<!-- Пример использования -->
 
 <!DOCTYPE html>
 <html>
@@ -7,54 +6,208 @@
 <head>
     <meta charset="UTF-8">
     <title>Читательский билет</title>
-    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
+
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="sources/style/account.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
+    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
+
+    <script type="text/javascript" src="sources/js/nesql.js"></script>
+    <script type="text/javascript" src="sources/js/add.js"></script>
+    <script type="text/javascript" src="sources/js/message.js"></script>
 </head>
 
 <body>
-    <a class="but" id="home" href="/"></a>
+    <a class="but" id="home" href="index.html"></a> <!-- Button home -->
+    <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
 
     <div class="box">
         <div class="head">
             <nav>
-                <a href="account_student_setting.html" class="but" id="edit">
-                </a>
+                <a href="" class="but" id="edit"></a>
             </nav>
             <table class="head_information">
                 <tr>
                     <td class="td_head">ФИО: </td>
-                    <td class="td_value">Иоганн Себастьян Бах</td>
+                    <td class="td_value"></td>
                 </tr>
                 <tr>
                     <td class="td_head">Класс: </td>
-                    <td class="td_value">9А</td>
+                    <td class="td_value"></td>
                 </tr>
             </table>
         </div>
         <div class="information">
-            <nav>
-                <a href="get.html" class="but" id="add_book">
-                </a>
-                <a href="give.html" class="but" id="delate_book">
-                </a>
-            </nav>
-            <table class="books">
-                <tr>
-                    <th class="td_head">Книга</th>
-                    <th class="td_value">Дата выдачи</th>
-                </tr>
-                <tr>
-                    <td class="td_head">Что делать?</td>
-                    <td class="td_value">08.10.20</td>
-                </tr>
-                <!-- <tr>
-                    <td class="td_head">Книга2</td>
-                    <td class="td_value">Дата2</td>
-                </tr> -->
-            </table>
+            <nav id="btn"></nav>
         </div>
-
     </div>
+
+    <script>
+        let GET = parseURL(); // Сюда сохраняем данные из ссылки на страницу
+
+        let users = new Table('users'); // Создаем таблицу для работы с учениками
+        let books = new Table('books'); // Создаем таблицу для работы с книгами
+
+        let user  = users.equal(users.translate(), 'id', GET['id'])[0]; // Сохраняем в переменную значения ученика по ID
+        let userBooks = books.equal(books.translate(), 'userid', GET['id']); // Сохраняем в переменную значения книг, принадлежащих ученику
+
+        if (GET['choose'] == 'edit') { // Страница редактирования ученика
+
+            document.body.innerHTML += `<div class="dark" id="w_save">
+                                            <div class="alert_window">
+                                                <div class="alert_message" id="result">Подождите...</div>
+                                                <div class="sure">
+                                                    <div class="but_window_space">
+                                                        <a class="but_window" id="cancel">Ок</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <div class="dark" id="w_del">
+                                            <div class="alert_window">
+                                                <div class="alert_message">Вы уверены, что хотите удалить профиль?</div>
+                                                <div class="sure">
+                                                    <div class="but_window_space">
+                                                        <a class="but_window" href="account.html?id=${GET['id']}&choose=delete">Удалить</a>
+                                                    </div>
+                                                    <div class="but_window_space">
+                                                        <div class="but_window" id="cancel">Отменить</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`; // Добавляем блок для вывода всплывающего окна удаления/редактирования ученика
+
+
+            document.getElementsByClassName('box')[0].innerHTML = `
+                            <h1>Редактировать профиль</h1>
+                            <nav>
+                                <div class="but" id="del" message="w_del"></div>
+                            </nav>
+                            <form action="" method="POST">
+                                <div class="line">
+                                    <input type="text" name="surname" id="surname" value="${user['surname']}" class="necessary_input good_input">
+                                    <label for="surname">Фамилия</label>
+                                </div>
+                                <div class="line">
+                                    <input type="text" name="firstname" id="firstname" value="${user['firstname']}" class="necessary_input good_input">
+                                    <label for="firstname">Имя</label>
+                                </div>
+                                <div class="line">
+                                    <input type="text" name="lastname" id="lastname" value="${user['lastname']}" class="good_input">
+                                    <label for="lastname">Отчество</label>
+                                </div>
+                                <div class="line">
+                                    <input type="number" name="class" id="class" value="${user['class']}" class="necessary_input good_input" min="1" max="11">
+                                    <label for="class">Класс</label>
+                                </div>
+                                <div class="line">
+                                    <input type="text" name="letter" id="letter" value="${user['letter']}" class="necessary_input good_input" maxlength="1">
+                                    <label for="letter">Буква</label>
+                                </div>
+                                <div>
+                                    <input type="button" id="submit" value="Сохранить" class="good_input" message="w_save">
+                                </div>
+                            </form>`; // Создаем ячейки в которые будем вводить данные для ректирования
+
+            document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
+                let firstname = document.querySelector("input[name=firstname]"); // Имя 
+                let surname   = document.querySelector("input[name=surname]"); // Фамилия
+                let lastname  = document.querySelector("input[name=lastname]"); // Отчество (если есть)
+                let classNum  = document.querySelector("input[name=class]"); // Класс (Число)
+                let classLtr  = document.querySelector("input[name=letter]"); // Класс (Буква)
+
+                firstname.value = firstname.value.trim();
+                surname.value = surname.value.trim();
+                lastname.value = lastname.value.trim();
+
+                // Проверяем правильность введенных данных
+                let _firstname = valid('username', firstname.value);
+                let _surname   = valid('username', surname.value);
+                let _lastname  = valid('username', lastname.value) || lastname.value == '';
+                let _classNum  = valid('class', classNum.value);
+                let _classLtr  = valid('letter', classLtr.value);
+
+                if (!_firstname || !_surname || !_lastname || !_classNum || !_classLtr) { // Если хотя бы один параметр неверен, вернуть ошибку
+                    error('Некоректный ввод');
+                    return;
+                }
+
+                let params = users.SELECT(); // Сохраняем данные таблицы в переменную
+                let ID = users.getIndexFromID(user['id']); // Сохраняем индекс нужного столбца
+
+                let values = { // Создаем словарь, для изменения значений столбца
+                    'firstname': firstname.value,
+                    'surname': surname.value,
+                    'lastname': lastname.value,
+                    'class': classNum.value,
+                    'letter': classLtr.value
+                }
+
+                users.UPDATE(ID, values); // Обновляем значения, того самого ученика
+                
+                success(`account.html?id=${GET['id']}`, 'Ученик успешно изменен!');
+            }
+
+        } else if (GET['choose'] == 'delete') { // Страница удаления книги
+            users.DELETE(user['id']); // Удаляем ученика из таблицы с id равным введенному
+
+            if (userBooks) {
+                let values = {
+                    'userid': null,
+                    'dateofissue': null
+                };
+
+                let ID;
+                for (let value of userBooks) {
+                    ID = books.getIndexFromID(value.id);
+                    books.UPDATE(ID, values);
+                }
+            }
+
+            window.location = 'index.html'; // Переадресовать на главную страницу (это надо будет исправить!!!)
+
+        } else { // Главная страница ученика
+            let tableValues = document.getElementsByClassName('td_value'); // Создаем переменную для работы с 
+
+            tableValues[0].innerHTML = `${user['surname']} ${user['firstname']} ${user['lastname']}`; // Полное имя
+            tableValues[1].innerHTML = `${user['class']}${user['letter']}`; // Класс, Буква
+
+            let a = document.getElementsByClassName('but'); // Сменяем текущую ссылку на ссылку для редактирования
+            a[2].href = `account.html?id=${GET['id']}&choose=edit`;
+
+            let information = document.querySelector('.information'); // Инициализируем блок с информацией, чтоб потом туда все поставить
+            let booksBlock = document.createElement('table'); // Создаем блок-таблицу где будем выводить все данные учащегося
+            let nav = document.getElementById('btn'); // Иниуиализируем переменную чтоб в дальнейшем изменить ссылки с кнопками
+
+            booksBlock.className = 'books'; // Назваем блок классом books
+            booksBlock.innerHTML = '<tr>\
+                                        <th class="td_head">Книга</th>\
+                                        <th class="td_value">Дата выдачи</th>\
+                                    </tr>';
+
+            nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}" class="but" id="add_book"></a>`; // Создаем кнопку с ссылкой на взятие книг в поиске
+
+            if (!userBooks.length) { // Если книг у ученика нет
+                booksBlock.innerHTML += `<tr>
+                                            <td class="td_head">Нет книг</td>
+                                            <td class="td_value">-</td>
+                                        </tr>`;
+            } else if (userBooks.length == 1) { // Если есть, добавить кнопку с ссылкой на открепление своей книги
+                nav.innerHTML += `<a href="change.html?type=give&us=${GET['id']}&bk=${userBooks[0]['id']}" class="but" id="delate_book"></a>`;
+            } else {
+                nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}&del=1" class="but" id="delate_book"></a>`;
+            }
+
+            for (let book of userBooks) { // Перебираем каждую книгу ученика и создаем под нее блок
+                booksBlock.innerHTML += `<tr>
+                                            <td class="td_head">${book['name']}</td>
+                                            <td class="td_value">${book['dateofissue']}</td>
+                                        </tr>`;
+            }
+
+            information.append(booksBlock); // Добавляем наш созданный блок в главный блок
+        }
+    </script>
 </body>
 
 </html>
