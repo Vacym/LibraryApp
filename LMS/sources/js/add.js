@@ -7,14 +7,11 @@ function validation_text(element) {
     let id = element.id;
     let param = id;
 
-    if (id == "letter") {
-        element.value = element.value.toUpperCase();
-    } else if (id == "id" || id == "quantity" || element.name.includes("book_id_")) {
-        param = 'num';
-    } else if (id == "surname" || id == "firstname" || id == "lastname" || id == "letter" || id == "author" || id == "genre") {
-        param = 'name';
-    } else if (id == "surname" || id == "firstname" || id == "lastname") {
-        param = 'username';
+    switch (id) {
+        case 'letter':    element.value = element.value.toUpperCase(); break;
+        case 'id':        case 'quantity':                 param = 'num'; break;
+        case 'author':    case 'genre':                    param = 'name'; break;
+        case 'firstname': case 'surname': case 'lastname': param = 'username'; break;
     }
 
     if (element.value.match(/^\s/)){ // Если первый символ - пробельный
