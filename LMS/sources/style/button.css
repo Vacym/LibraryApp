@@ -5,11 +5,6 @@
     font-style: normal;
 }
 
-a {
-    text-decoration: none;
-    color: white;
-}
-
 
 /* общие свойства кнопок ▼ */
 
@@ -39,10 +34,18 @@ a {
 }
 
 
+.navigation{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 50;
+    transition: .25s;
+}
+
 /* Кнопка "домой" */
 
 #home {
-    position: fixed;
+    margin-bottom: 5px;
     z-index: 60;
     transition: .25s;
 }
@@ -54,9 +57,7 @@ a {
 /* Кнопка "назад" */
 
 #back {
-    position: fixed;
     z-index: 59;
-    margin-top: 50px;
     transition: .25s;
 }
 

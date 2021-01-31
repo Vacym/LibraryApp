@@ -1,13 +1,5 @@
 /* version 1.0 release */
 
-html {
-    background: url("../files/book.jpg");
-    color: wheat;
-    -webkit-background-size: cover;
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: sans-serif;
-}
 
 a {
     background-color: black;

@@ -1,22 +1,9 @@
 /* version 1.0 release */
 
-html {
-    height: 100%;
-    font-family: sans-serif;
-    color: white;
-    background: url("../files/book.jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position-x: center;
-}
 
 
 /* Общие настройки */
 
-a {
-    text-decoration: none;
-    color: white;
-}
 
 .but.disabled,
 .but.but.disabled::before {
