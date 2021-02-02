@@ -76,9 +76,9 @@ class Table { // Класс для работы с библиотекой
         let result = [];
 
         for (let item of data) {
-            if (value == 'class' && (item['class']+item['letter']).toLowerCase().startsWith(query)) {
+            if (value == 'class' && (item['class']+item['letter']).toLowerCase().includes(query)) {
                 result.push(item);
-            } else if (String(item[value]).toLowerCase().startsWith(query)) {
+            } else if (String(item[value]).toLowerCase().includes(query)) {
                 result.push(item);
             }
         }
@@ -199,7 +199,7 @@ class Table { // Класс для работы с библиотекой
             let groups = [];
 
             for (let item of data) {
-                if (item['groupid'] > 0) {
+                if (GET['order'] != 'inventoryno' && item['groupid'] > 0) {
                     if (!groups.includes(item['groupid'])) {
                         result.push(item);
                         groups.push(item['groupid']);

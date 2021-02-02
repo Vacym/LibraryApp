@@ -65,7 +65,7 @@
             let name = books.equal(data,'groupid',GET['group'])[0]['name'];
 
             if (name) {
-                header.innerHTML = `Поиск книг по группе &#171;${name}&#187;`; // Print name of group
+                header.innerHTML = `Поиск книг по группе «${name}»`; // Print name of group
             }
         } else {
             header.innerHTML = (isUsers) ? 'Поиск учеников': 'Поиск книг';
@@ -80,7 +80,7 @@
         let arr = {'surname': 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс'};
 
         if (!isUsers) {
-            arr = {'name': 'Название', 'author': 'Автор', 'inventoryno': 'ID', 'genre': 'Жанр', 'dateofissue': 'Дата'};
+            arr = {'name': 'Название', 'author': 'Автор', 'inventoryno': 'ID', 'genre': 'Жанр'};
         }
 
         for (let item in arr) {

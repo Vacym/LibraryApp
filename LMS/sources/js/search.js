@@ -252,7 +252,7 @@ function parseURL() { // Парсер ссылки на страницу
     if (params['type'] == 'users') {
         params['order'] = (['firstname', 'lastname', 'class', 'letter'].includes(params['order'])) ? params['order']: 'surname';
     } else {
-        params['order'] = (['author', 'genre', 'inventoryno', 'dateofissue'].includes(params['order']) ) ? params['order']: 'name';
+        params['order'] = (['author', 'genre', 'inventoryno'].includes(params['order']) ) ? params['order']: 'name';
     }
     return params
 }
