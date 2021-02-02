@@ -1,7 +1,7 @@
 @font-face {
-    font-family: 'FontAwesome';
-    src: url('../files/fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('sources/files/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
-    font-weight: normal;
+    src: url("../files/fonts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"), url("sources/files/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format("svg");
+    font-family: "FontAwesome";
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -10,20 +10,20 @@
 
 .but {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #fff;
     width: 45px;
     height: 45px;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid white;
-    opacity: .5;
-    transition: opacity .15s linear;
+    opacity: 0.5;
+    transition: opacity 0.15s linear;
 }
 
 .but::before {
     display: flex;
-    font-family: FontAwesome;
-    color: white;
+    font-family: "FontAwesome";
     font-size: 25px;
+    color: fff;
 }
 
 .but:hover,
@@ -34,20 +34,20 @@
 }
 
 
-.navigation{
-    display: flex;
-    flex-direction: column;
+.navigation {
     position: fixed;
     z-index: 50;
-    transition: .25s;
+    display: flex;
+    flex-direction: column;
+    transition: 0.25s;
 }
 
 /* Кнопка "домой" */
 
 #home {
-    margin-bottom: 5px;
     z-index: 60;
-    transition: .25s;
+    margin-bottom: 5px;
+    transition: 0.25s;
 }
 
 #home::before {
@@ -58,7 +58,7 @@
 
 #back {
     z-index: 59;
-    transition: .25s;
+    transition: 0.25s;
 }
 
 #back::before {

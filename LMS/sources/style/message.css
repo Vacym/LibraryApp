@@ -1,15 +1,15 @@
 /* version 1.0 release */
 
 .dark {
-    background-color: rgba(90, 90, 90, 0);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 90;
+    display: none;
     width: 100%;
     height: 100%;
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 90;
-    transition: .25s;
+    background-color: rgba(90, 90, 90, 0);
+    transition: 0.25s;
 }
 
 .dark.fading {
@@ -18,32 +18,32 @@
 
 .alert_window {
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, 0%);
+    top: 50%;
     z-index: 100;
-    width: 50%;
-    min-width: min-content;
-    height: min-content;
-    border: 2px solid white;
+    border: 2px solid #fff;
     padding: 15px;
+    width: 50%;
+    height: min-content;
+    min-width: min-content;
     font-size: 20px;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.9);
     opacity: 0;
-    transition: .25s;
+    transform: translate(-50%, 0%);
+    transition: 0.25s;
 }
 
 .alert_message {
     display: inline-block;
-    padding: 2px;
     margin: 4px;
+    padding: 2px;
     font-size: 110%;
 }
 
 .dark.show {
     display: initial;
-    background-color: rgba(90, 90, 90, .5);
+    background-color: rgba(90, 90, 90, 0.5);
 }
 
 .show .alert_window {
@@ -59,21 +59,21 @@
 
 .but_window {
     display: inline-block;
+    margin: 10px;
     border: 1px solid #777;
     padding: 0 12px;
-    margin: 10px;
-    color: white;
-    background: black;
-    font-size: 16pt;
+    font-size: 21px;
+    color: #fff;
+    background: #000;
+    transition: background-color, border 0.15s;
     cursor: pointer;
-    transition: background-color, border .15s;
 }
 
 .but_window:hover,
 .but_window:focus {
-    background: #222;
-    border: 1px solid white;
     outline: none;
+    border: 1px solid #fff;
+    background: #222;
     cursor: pointer;
 }
 

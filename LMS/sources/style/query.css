@@ -2,27 +2,28 @@
 
 .box {
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    top: 50%;
     width: 75%;
-    background-color: rgba(0, 0, 0, .8);
-    /*background-color: rgba(120, 120, 120, .7);*/
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: translate(-50%, -50%);
+
+    /* background-color: rgba(120, 120, 120, .7); */
 }
 
 
 /* ФИО */
 
 .head {
-    border: 1px solid #888;
     margin: auto;
+    border: 1px solid #888;
     height: 20%;
-    color: white;
     font-size: 30px;
+    color: #fff;
 }
 
 table {
-    padding: 5px 0px 5px 5px;
+    padding: 5px 0 5px 5px;
     width: 100%;
 }
 
@@ -36,9 +37,10 @@ table td {
 }
 
 table .td_edit {
-    /*background-color: red;*/
+    padding: 0;
+
+    /* background-color: red; */
     width: 41px;
-    padding: 0px;
     transform: translateX(2px);
 }
 
@@ -47,21 +49,21 @@ table .td_edit {
 }
 
 .little {
-    font-size: 60%;
-    font-style: italic;
     margin: 4px;
+    font-style: italic;
+    font-size: 60%;
 }
 
 
 /* Книги */
 
 .information {
-    border: 1px solid #888;
     margin: auto;
-    min-height: 93px;
-    color: white;
-    font-size: 30px;
+    border: 1px solid #888;
     border-spacing: 10px;
+    min-height: 93px;
+    font-size: 30px;
+    color: #fff;
 }
 
 nav {
@@ -88,13 +90,13 @@ nav {
 /* inputs */
 
 h1 {
-    background: rgba(0, 0, 0, 0);
     margin: 30px auto;
     padding: 0;
-    text-align: center;
-    color: #fff;
     font-size: 30px;
+    text-align: center;
     text-transform: uppercase;
+    color: #fff;
+    background: rgba(0, 0, 0, 0);
 }
 
 .line {
@@ -107,18 +109,17 @@ h1 {
 input,
 button,
 textarea {
+    outline: none;
+    border: 1px solid #fff;
     padding: 10px;
     width: calc(100% - 252px);
     min-width: 200px;
-    resize: none;
-    color: #fff;
-    font-size: 20px;
-    background: none;
-    outline: none;
-    border: 1px solid #fff;
     box-sizing: border-box;
-    background: rgba(0, 0, 0, .7);
-    transition: border .3s;
+    font-size: 20px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    transition: border 0.3s;
+    resize: none;
 }
 
 input.bad_input,
@@ -137,13 +138,13 @@ textarea:focus {
 }
 
 #submit {
-    width: 100%;
     margin-top: 20px;
-    color: #fff;
-    font-weight: bold;
-    background: #0fc3f5;
     border: none;
-    transition: .3s;
+    width: 100%;
+    font-weight: 700;
+    color: #fff;
+    background: #0fc3f5;
+    transition: 0.3s;
 }
 
 #submit:enabled:hover,
@@ -158,10 +159,10 @@ textarea:focus {
 
 label {
     display: inline-block;
+    vertical-align: middle;
+    margin-left: 5%;
     width: 100px;
     height: 20px;
-    vertical-align: middle;
     font-style: oblique;
     font-size: 20px;
-    margin-left: 5%;
 }

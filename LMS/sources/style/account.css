@@ -7,10 +7,10 @@
 
 .but.disabled,
 .but.but.disabled::before {
-    pointer-events: none;
-    cursor: default;
-    color: #888;
     border-color: #888;
+    color: #888;
+    cursor: default;
+    pointer-events: none;
 }
 
 
@@ -18,28 +18,28 @@
 
 .box {
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    top: 50%;
     width: 75%;
     min-width: min-content;
-    background-color: rgba(0, 0, 0, .8);
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: translate(-50%, -50%);
 }
 
 
 /* Статическая информация */
 
 .head {
-    height: 20%;
     margin: auto;
-    font-size: 30px;
-    color: white;
     border: 1px solid #888;
+    height: 20%;
+    font-size: 30px;
+    color: #fff;
 }
 
 table {
-    width: calc(100% - 46px);
     padding: 5px;
+    width: calc(100% - 46px);
 }
 
 table td,
@@ -60,13 +60,13 @@ table td {
 /* Изменяемая информация */
 
 .information {
-    height: min-content;
-    min-height: 93px;
     margin: auto;
-    font-size: 30px;
-    color: white;
     border: 1px solid #888;
     border-spacing: 10px;
+    height: min-content;
+    min-height: 93px;
+    font-size: 30px;
+    color: #fff;
 }
 
 nav {
@@ -78,7 +78,7 @@ nav {
 /* кнопки */
 
 .but {
-    transition: .15s linear;
+    transition: 0.15s linear;
 }
 
 .but:hover,
@@ -110,11 +110,12 @@ nav {
 
 #del::before {
     content: "\f014";
-    /*content: "\f1f8";*/
+
+    /* content: "\f1f8"; */
 }
 
 
-/* inputs for edit*/
+/* inputs for edit */
 
 h1 {
     margin: 30px auto;
@@ -136,17 +137,17 @@ h1 {
 input,
 button,
 textarea {
+    outline: none;
+    border: 1px solid #fff;
+    padding: 10px;
     width: calc(100% - 252px);
     min-width: 200px;
-    padding: 10px;
-    resize: none;
     box-sizing: border-box;
     font-size: 20px;
     color: #fff;
-    background: rgba(0, 0, 0, .7);
-    border: 1px solid #fff;
-    outline: none;
-    transition: border.3s;
+    background: rgba(0, 0, 0, 0.7);
+    transition: border 0.3s;
+    resize: none;
 }
 
 input.bad_input,
@@ -165,13 +166,13 @@ textarea:focus {
 }
 
 #submit {
-    width: 100%;
     margin-top: 20px;
-    font-weight: bold;
+    border: none;
+    width: 100%;
+    font-weight: 700;
     color: #fff;
     background: #0fc3f5;
-    border: none;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 #submit:enabled:hover,
@@ -186,10 +187,10 @@ textarea:focus {
 
 label {
     display: inline-block;
+    vertical-align: middle;
+    margin-left: 5%;
     width: 100px;
     height: 20px;
-    margin-left: 5%;
-    vertical-align: middle;
     font-style: oblique;
     font-size: 20px;
 }
