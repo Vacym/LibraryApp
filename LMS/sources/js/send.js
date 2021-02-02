@@ -63,8 +63,14 @@ window.onload = function() {
             }
 
             if (is_group) {
-                if (count.value > 500) {
+                if (!_count) {
+                    send('Ошибка в вводе количества книг!');
+                    return;
+                } else if (count.value > 500) {
                     send('Невозможно создать группу с более 500 книгами!');
+                    return;
+                } else if (count.value < 2) {
+                    send(`Группа книг не может состоять из менее 2-х книг!`);
                     return;
                 }
 
@@ -75,15 +81,15 @@ window.onload = function() {
 
                 for (i = 0; i < count.value; i++){
                     if (isAutoID) {
-                        j = parseInt(bookID.value) + i;
+                        j = Number(bookID.value) + i;
                     } else if (i==0 && !booksID[0].value) {
-                        j = parseInt(bookID.value);
+                        j = Number(bookID.value);
                     } else {
-                        j = parseInt(booksID[i].value);
+                        j = Number(booksID[i].value);
                         if (!j) j = groups[i-1] + 1;
                     }
-                    if (isNaN(j)) {
-                        send(`В ${i}-ой книге допущена ошибка в написании числа`);
+                    if (isNaN(j) || !Number.isInteger(j)) {
+                        send(`В ${i+1}-ой книге допущена ошибка в написании числа`);
                         return;
                     }
                     else if (table.isSameID(j)) {
@@ -148,7 +154,6 @@ function control_inputs(q_inputs) {
         cont_input_book.lastElementChild.remove();
     }
     height_illusion("i");
-
 }
 
 function show_group(checkbox, changeable, need_check = true, illusion = true) {

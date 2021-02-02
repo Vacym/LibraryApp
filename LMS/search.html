@@ -140,7 +140,7 @@
             result("Ученики успешно удалены!");
         }
 
-        document.querySelector('#del').onclick = function() {
+        document.querySelector('#del').onclick = function() { // Запускается, когда пользователь нажимает на кнопку удалить
             let count = document.querySelectorAll(".choice input[type='checkbox']:checked").length;
 
             if (!isUsers) {
@@ -174,12 +174,13 @@
             document.querySelector('#result').innerHTML = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
         }
 
-        document.querySelector('#edit').onclick = function() {
+        document.querySelector('#edit').onclick = function() { // Запускается когда пользователь нажимает на карандашик
             let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked");
             let count = checkboxes.length;
 
             if (count != 1) {
-                console.log('Выбрано больше одной книги/ученика, а именно -', count, '.\nНе волнуйся, в дальнейшем это будет возможно'); return;
+                console.log('Пока что невозможно редактирование нескольких книг!');
+                return;
             }
 
             let ID = parseInt(checkboxes[0].id);
@@ -188,22 +189,21 @@
                 window.location = `acc.html?type=user&id=${ID}&choose=edit`; // Это надо будет исправить
             } else {
                 if (ID < 0) { // Если эта группа
-                    console.log('Окно редактирования группы, пока что не работает')
+                    window.location = `acc.html?type=group&id=${-ID}&choose=edit`; // Это надо будет исправить
                 } else {
                     window.location = `acc.html?type=book&id=${ID}&choose=edit`; // Это надо будет исправить
                 }
             }
         }
 
-        document.querySelector('#input').addEventListener('input', function (e) {
-            changeDB(e.target.value)
+        document.querySelector('#input').addEventListener('input', function (e) { // Обновляет результаты поиска при написании кода
+            GET['q'] = e.target.value;
+            changeDB(GET['q']);
         })
 
-        document.querySelector("select").addEventListener('change', function (e) {
+        document.querySelector("select").addEventListener('change', function (e) { // Обновляет результаты поиска при изменении категории 
             GET['order'] = e.target.value; // Призваиваем списку новое значение
-            document.querySelector('#input').value = ''; // Стираем то что написал пользователь
-
-            changeDB(); // Меняем результаты поиска
+            changeDB(GET['q']); // Меняем результаты поиска
         })
 
         function changeDB(query) { // Меняем результаты поиска

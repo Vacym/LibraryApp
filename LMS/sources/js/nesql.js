@@ -3,6 +3,7 @@ var fs = require("fs"); // Подключаем библиотеку для ра
 class Table { // Класс для работы с библиотекой
     constructor(name) {
         this.name = name + '.json';
+        this.table = this.SELECT();
     }
 
     CREATE() { // Создает таблицу
@@ -38,14 +39,19 @@ class Table { // Класс для работы с библиотекой
         }
     }
 
-    SELECT(value) { // Возвращает таблицу с данными
+    SELECT() { // Возвращает таблицу с данными
         try {
-            return JSON.parse(fs.readFileSync(this.name, 'utf8'));
+            if (this.table) {
+                return this.table;
+            } else {
+                console.log('%cНу привет, мой друг! 👋', " font-size:x-large")
+                return JSON.parse(fs.readFileSync(this.name, 'utf8'));
+            }
         } catch (err) {
             console.log('ОШИБКА ЧТЕНИЯ ТАБЛИЦЫ', err);
             
             this.CREATE();
-            return this.SELECT(value);
+            return this.SELECT();
         }
     }
 
@@ -140,7 +146,7 @@ class Table { // Класс для работы с библиотекой
                 all++;
             }
         }
-        return `${busy}/${all}`;
+        return [busy, all];
     }
 
     INSERT(values) {
@@ -221,7 +227,6 @@ class Table { // Класс для работы с библиотекой
             fs.writeFileSync(this.name, JSON.stringify(params));
         } catch (err) {
             console.log('ОШИБКА ИЗМЕНЕНИЯ ТАБЛИЦЫ', err);
-            this.CREATE();
         }
     }
 

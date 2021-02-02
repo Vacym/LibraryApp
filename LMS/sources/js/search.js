@@ -50,39 +50,39 @@ class Toolbar_control {
 
     //Движение тулбара
     move_control() {
-        let show_tool = false
-        let counter = 0
+        let show_tool = false;
+        let counter = 0;
         for (let i = 0; i < this.inputs.length; i++) {
             if (this.inputs[i].checked) {
-                this.inputs[i].parentNode.parentNode.parentNode.classList.add("selected")
-                show_tool = true
-                counter += 1
+                this.inputs[i].parentNode.parentNode.parentNode.classList.add("selected");
+                show_tool = true;
+                counter += 1;
             }
             else{
-                this.inputs[i].parentNode.parentNode.parentNode.classList.remove("selected")
+                this.inputs[i].parentNode.parentNode.parentNode.classList.remove("selected");
             }
         }
-        this.dedicated.innerHTML = counter.toString()
-        this.toolbar_show(show_tool)
+        this.dedicated.innerHTML = counter.toString();
+        this.toolbar_show(show_tool);
     }
 
     //Переключение видимости
     toolbar_show(show) {
         if (show) {
-            this.box_element.classList.add("selecting")
-            this.toolbar.classList.add("show")
+            this.box_element.classList.add("selecting");
+            this.toolbar.classList.add("show");
         } else {
-            this.box_element.classList.remove("selecting")
-            this.toolbar.classList.remove("show")
+            this.box_element.classList.remove("selecting");
+            this.toolbar.classList.remove("show");
         }
     }
 
-    //Отменя выделения для всех элементов
+    //Отмена выделения для всех элементов
     remove() {
         for (let i = 0; i < this.inputs.length; i++) {
-            this.inputs[i].checked = 0
+            this.inputs[i].checked = false;
         }
-        this.move_control()
+        this.move_control();
     }
 
 }
@@ -133,8 +133,8 @@ function create_block(data) { // Создает блок с книгой/гру�
 
     } else if (data['groupid'] > 0) { // If group
         
-        a.className = "result valid group"; // Add parameter class
-        a.href = data['href'] // Add parameter href
+        a.className = data['class']; // Add parameter class
+        if (data['href']) a.href = data['href']; // Add parameter href
 
         var innerHTML = `<div class="left_part">\
                             <div class="choice">\
@@ -185,7 +185,7 @@ function send() { // Упакувывает и создает массив пр�
 
     for (let i = 0; i < data.length; i++) {
         if (!data[i]['id']) {
-            break
+            break;
         }
 
         if (data[i]['firstname']) {
@@ -197,13 +197,18 @@ function send() { // Упакувывает и создает массив пр�
             data[i]['href'] = href + data[i]['id'];
 
         } else {
-            data[i]['groupid'] = GET['group'] || GET['del'] || (GET['order'] == 'inventoryno' && GET['q']) ? 0: data[i]['groupid'];
+            data[i]['groupid'] = GET['group'] || GET['del'] || GET['order'] == 'inventoryno' ? false : data[i]['groupid'];
 
             if (data[i]['groupid']) {
                 let count = books.COUNT(books.translate(), 'groupid', data[i]['groupid']);
 
-                data[i]['inventoryno'] = count;
-                data[i]['href'] = `search.html?type=books&q=${GET['q']}&im=${GET['im']}&del=${GET['del']}&order=${GET['order']}&group=${data[i]['groupid']}`;
+                data[i]['class'] = 'result group';
+                if (count[0] != count[1]) { // Если все книги в группе заняты
+                    data[i]['class'] += ' valid';
+                    data[i]['href'] = `search.html?type=books&q=${GET['q']}&im=${GET['im']}&del=${GET['del']}&order=${GET['order']}&group=${data[i]['groupid']}`;
+                }
+
+                data[i]['inventoryno'] = `${count[0]}/${count[1]}`;
 
             } else {
                 if (data[i]['userid']) {
@@ -222,7 +227,6 @@ function send() { // Упакувывает и создает массив пр�
 
                 if (GET['im'] && !GET['del'] && data[i]['userid'] !== null) {
                     data[i]['class'] = 'result';
-                    data[i]['href'] = '';
                 } else { 
                     data[i]['class'] = 'result valid';
                     data[i]['href'] = href + data[i]['id'];
