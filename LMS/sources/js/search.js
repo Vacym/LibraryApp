@@ -104,7 +104,6 @@ function ready_search() {
 document.addEventListener('scroll', send_control); // Event for listen your scroll in site
 document.addEventListener("DOMContentLoaded", () => { tool = ready_search(); });
 
-
 // Код Djacon
 var page = 0; // Так сказать, значение, с которого идет отсчет о 20 новых книгах / учениках
 var allowLoading = true; // Check, if request is free
@@ -205,13 +204,13 @@ function send() { // Упакувывает и создает массив пр�
             data[i]['href'] = href + data[i]['id'];
 
         } else {
-            data[i]['groupid'] = GET['group'] || GET['del'] || GET['order'] == 'inventoryno' ? false : data[i]['groupid'];
+            data[i]['groupid'] = (GET['group'] || GET['del'] || GET['order'] == 'inventoryno') ? false : data[i]['groupid'];
 
             if (data[i]['groupid']) {
                 let count = books.COUNT(books.translate(), 'groupid', data[i]['groupid']);
 
                 data[i]['class'] = 'result group';
-                if (count[0] != count[1]) { // Если все книги в группе заняты
+                if (!(GET['im'] && !GET['del'] && count[0] == count[1])) { // Если все книги в группе незаняты
                     data[i]['class'] += ' valid';
                     data[i]['href'] = `search.html?type=books&q=${GET['q']}&im=${GET['im']}&del=${GET['del']}&order=${GET['order']}&group=${data[i]['groupid']}`;
                 }

@@ -12,7 +12,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     backgroundColor: '#2e2c29',
-    icon: path.join(__dirname, 'book.png'),
+    // icon: path.join(__dirname, 'book.ico'),
     webPreferences: {
       nodeIntegration: true,
     }
