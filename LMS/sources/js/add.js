@@ -29,7 +29,7 @@ function validation_text(element) {
 }
 
 function change_border(element, type, check = true) {
-    var default_value = element.classList;
+    let default_value = element.classList;
 
     if (type == "bad") {
         //если был хорошим
@@ -59,7 +59,7 @@ function change_border(element, type, check = true) {
 }
 
 function button_control() {
-    var all_good = full_validation();
+    let all_good = full_validation();
     if (all_good) {
         document.querySelector("#submit").removeAttribute("disabled");
     } else {
@@ -76,15 +76,15 @@ function full_check() {
 }
 
 function full_validation() {
-    var bads = document.querySelectorAll('input[type="text"].bad_input, input[type="number"].bad_input, textarea.bad_input');
+    let bads = document.querySelectorAll('input[type="text"].bad_input, input[type="number"].bad_input, textarea.bad_input');
 
     if (bads.length > 0) {
         change_border(document.querySelector("#submit"), "bad", false);
         return false;
     }
 
-    var required = document.querySelectorAll('.necessary_input');
-    for (var x = 0; x < required.length; x++) {
+    let required = document.querySelectorAll('.necessary_input');
+    for (let x = 0; x < required.length; x++) {
         if (!required[x].classList.contains("good_input")) {
             change_border(document.querySelector("#submit"), "empty", false);
             return false;
@@ -94,7 +94,7 @@ function full_validation() {
     return true;
 }
 
-function ready() {
+function ready_add() {
     function textarea_size(e) {
 
         e.style.height = 'auto';
@@ -114,7 +114,7 @@ function ready() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", ready);
+document.addEventListener("DOMContentLoaded", ready_add);
 
 // Код Djacon
 function valid(i, value) { // Проверяет на правильность введенных данных

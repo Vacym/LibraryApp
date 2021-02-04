@@ -247,6 +247,10 @@ select:focus {
 /* group */
 
 .group {
+    box-shadow: 5px 5px #777;
+}
+
+.group.valid {
     box-shadow: 5px 5px #e3e3e3;
 }
 

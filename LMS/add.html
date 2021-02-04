@@ -7,24 +7,26 @@
     <meta charset="UTF-8">
     <title></title>
 
-    <link rel="stylesheet" type="text/css" href="sources/style/main.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/add.css">
+    <link rel="stylesheet" href="sources/style/main.css">
+    <link rel="stylesheet" href="sources/style/button.css">
+    <link rel="stylesheet" href="sources/style/message.css">
+    <link rel="stylesheet" href="sources/style/add.css">
 
-    <script type="text/javascript" src="sources/js/nesql.js"></script>
-    <script type="text/javascript" src="sources/js/add.js"></script>
-    <script type="text/javascript" src="sources/js/send.js"></script>
-    <script type="text/javascript" src="sources/js/message.js"></script>
+    <script src="sources/js/nesql.js"></script>
+    <script src="sources/js/add.js"></script>
+    <script src="sources/js/send.js"></script>
+    <script src="sources/js/message.js"></script>
 </head>
 
 <body>
-    <div class="navigation">
+    <nav class="navigation">
         <a class="but" id="home" href="index.html"></a> <!-- Button home -->
         <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
-    </div>
+    </nav>
 
-    <form></form>
+    <main>
+        <form></form>
+    </main>
 
     <script>
         if (!isBook) {

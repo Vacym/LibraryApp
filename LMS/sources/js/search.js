@@ -18,33 +18,33 @@ function scroll_control() {
             }
         }
         // Можно настроить
-        let fps = 60
-        let need_time = 150 //в милисекундах
+        let fps = 60;
+        let need_time = 150; //в милисекундах
 
-        let iterations = (window.pageYOffset / (need_time / 1000) / fps)
-        scrolling()
+        let iterations = (window.pageYOffset / (need_time / 1000) / fps);
+        scrolling();
     }
 
     let but_up = document.querySelector('#up');
-    window.addEventListener('scroll', check_scroll)
-    but_up.addEventListener('click', go_top)
+    window.addEventListener('scroll', check_scroll);
+    but_up.addEventListener('click', go_top);
 }
 
 class Toolbar_control {
     constructor() {
-        this.toolbar = document.querySelector(".toolbar") //Определяем тулбар
-        this.dedicated = document.querySelector("#summ_checked>span") //Определяем число с количеством выделенных элементов
-        this.box_element = document.querySelector(".search_result") //Определяем блок со всеми элементами
-        this.append_listener_for_new_change()
-        document.querySelector("#remove").onclick = () => this.remove()
+        this.toolbar = document.querySelector(".toolbar"); //Определяем тулбар
+        this.dedicated = document.querySelector("#summ_checked>span"); //Определяем число с количеством выделенных элементов
+        this.box_element = document.querySelector(".search_result"); //Определяем блок со всеми элементами
+        this.append_listener_for_new_change();
+        document.querySelector("#remove").onclick = () => this.remove();
     }
 
     //Добавление прослушивания для новых элементов (которые создаются при прокрутке страницы)
     append_listener_for_new_change(how_mach) {
-        this.inputs = document.querySelectorAll(".choice input[type='checkbox']")
-        if (!how_mach) { how_mach = this.inputs.length }
+        this.inputs = document.querySelectorAll(".choice input[type='checkbox']");
+        if (!how_mach) { how_mach = this.inputs.length; }
         for (let i = this.inputs.length - how_mach; i < this.inputs.length; i++) {
-            this.inputs[i].addEventListener("change", () => this.move_control())
+            this.inputs[i].addEventListener("change", () => this.move_control());
         }
     }
 
@@ -52,6 +52,8 @@ class Toolbar_control {
     move_control() {
         let show_tool = false;
         let counter = 0;
+        let edit = document.querySelector(".toolbar #edit");
+
         for (let i = 0; i < this.inputs.length; i++) {
             if (this.inputs[i].checked) {
                 this.inputs[i].parentNode.parentNode.parentNode.classList.add("selected");
@@ -62,6 +64,12 @@ class Toolbar_control {
                 this.inputs[i].parentNode.parentNode.parentNode.classList.remove("selected");
             }
         }
+        if(counter > 1){
+            edit.classList.add("deactiv");
+        }else{
+            edit.classList.remove("deactiv");
+        }
+
         this.dedicated.innerHTML = counter.toString();
         this.toolbar_show(show_tool);
     }
@@ -88,13 +96,13 @@ class Toolbar_control {
 }
 
 function ready_search() {
-    scroll_control()
-    let tool = new Toolbar_control()
-    return tool
+    scroll_control();
+    let tool = new Toolbar_control();
+    return tool;
 }
 
-document.addEventListener('scroll', ready); // Event for listen your scroll in site
-document.addEventListener("DOMContentLoaded", () => { tool = ready_search() })
+document.addEventListener('scroll', send_control); // Event for listen your scroll in site
+document.addEventListener("DOMContentLoaded", () => { tool = ready_search(); });
 
 
 // Код Djacon
@@ -285,7 +293,7 @@ function result(data) {
     cancel_button.onclick = () => { window.location = ''; }
 }
 
-function ready() { // Функция, которая вызывает другую функцию когда пользователь доходит до конца страницы
+function send_control() { // Функция, которая вызывает другую функцию когда пользователь доходит до конца страницы
     if (!is_end_of_table && (site.scrollTop + site.clientHeight) * 1.04 >= site.scrollHeight) {
         send();
     }

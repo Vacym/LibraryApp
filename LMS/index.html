@@ -5,18 +5,41 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Главная</title>
+    <title>Главное меню</title>
 
-    <link rel="stylesheet" type="text/css" href="sources/style/main.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/index.css">
+    <link rel="stylesheet" href="sources/style/main.css">
+    <link rel="stylesheet" href="sources/style/index.css">
 </head>
 
 <body>
-    <nav class="nav">
-        <a href="search.html?type=users">Найти ученика</a>
-        <a href="search.html?type=books">Найти книгу</a>
-        <a href="add.html?type=user">Добавить ученика</a>
-        <a href="add.html?type=book">Добавить книгу</a>
-    </nav>
+    <main>
+        <div class="nav">
+            <div class="nav_part">
+                <a href="search.html?type=users">Найти ученика</a>
+                <a href="search.html?type=books">Найти книгу</a>
+            </div>
+            <div class="nav_part">
+                <a href="add.html?type=user">Добавить ученика</a>
+                <a href="add.html?type=book">Добавить книгу</a>
+            </div>
+        </div>
+    </main>
 </body>
+<script>
+    let nav_parts = document.querySelectorAll(".nav_part")
+
+    function window_resize(){
+        if (window.innerWidth < 500){
+            for (let x = 0; x < nav_parts.length; x++){
+                nav_parts[x].classList.add("wrapper")
+            }
+        }else{
+            for (let x = 0; x < nav_parts.length; x++){
+                nav_parts[x].classList.remove("wrapper")
+            }
+        }
+    }
+    window_resize()
+    window.addEventListener('resize', window_resize)
+</script>
 </html>

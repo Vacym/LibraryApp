@@ -30,7 +30,7 @@ window.onload = function() {
 
             let id = table.INSERT([firstname.value, surname.value, lastname.value, classNum.value, classLtr.value]);
             successS(`acc.html?type=user&id=${id}`, 'Ученик успешно добавлен!');
-        }
+        };
     } else { // Создание книги
         let name    = document.querySelector("input[name=name]");
         let genre   = document.querySelector("input[name=genre]");
@@ -103,7 +103,7 @@ window.onload = function() {
                     groups.push(j);
                 }
 
-                for (IN of groups) {
+                for (let IN of groups) {
                     table.INSERT([name.value, author.value, genre.value, comment.value, IN, null, null, MaxGroupID]);
                 }
                 successS(`search.html?type=books&group=${MaxGroupID}`, 'Группа успешно добавлена!');
@@ -116,9 +116,9 @@ window.onload = function() {
                 let id = table.INSERT([name.value, author.value, genre.value, comment.value, parseInt(bookID.value), null, null, null]);
                 successS(`acc.html?type=book&id=${id}`, 'Книга успешно добавлена!');
             }
-        }
+        };
     }
-}
+};
 
 // Код Koe-kto
 function control_inputs(q_inputs) {
@@ -231,5 +231,5 @@ function ready() {
 let isBook = parseURL()['type'] == 'book'; // Проверяет, является ли страница книжной
 
 if (isBook) { // Если эта книга...
-    document.addEventListener("DOMContentLoaded", ready)
+    document.addEventListener("DOMContentLoaded", ready);
 }

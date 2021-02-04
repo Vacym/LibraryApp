@@ -2,10 +2,13 @@
 
 
 a {
+    display: block;
+    flex-grow: 1;
     margin: 10px;
     border: 2px solid #fff;
     padding: 10px;
     width: 100%;
+    min-width: 200px;
     font-weight: 600;
     text-align: center;
     text-decoration: none;
@@ -15,15 +18,32 @@ a {
     transition: opacity 0.2s linear;
 }
 
-a:hover {
+a:hover,
+a:focus {
     opacity: 0.9;
     cursor: pointer;
 }
 
 .nav {
     display: flex;
-    font-size: 2vw;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
     text-transform: uppercase;
 
     /* white-space: nowrap; */
+}
+
+.nav_part {
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 1px;
+    align-content: stretch;
+    min-width: min-content;
+}
+
+.wrapper {
+    flex-wrap: wrap;
 }

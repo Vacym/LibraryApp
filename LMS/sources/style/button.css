@@ -23,7 +23,7 @@
     display: flex;
     font-family: "FontAwesome";
     font-size: 25px;
-    color: fff;
+    color: #fff;
 }
 
 .but:hover,
@@ -63,4 +63,12 @@
 
 #back::before {
     content: "\f060";
+}
+
+.but.deactiv {
+    opacity: 0.25;
+}
+
+.but.deactiv:hover {
+    cursor: initial;
 }

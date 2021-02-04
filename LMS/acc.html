@@ -7,33 +7,34 @@
     <meta charset="UTF-8">
     <title></title>
 
-    <link rel="stylesheet" type="text/css" href="sources/style/main.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/account.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
+    <link rel="stylesheet" href="sources/style/main.css">
+    <link rel="stylesheet" href="sources/style/account.css">
+    <link rel="stylesheet" href="sources/style/message.css">
+    <link rel="stylesheet" href="sources/style/button.css">
 
-    <script type="text/javascript" src="sources/js/nesql.js"></script>
-    <script type="text/javascript" src="sources/js/add.js"></script>
-    <script type="text/javascript" src="sources/js/message.js"></script>
+    <script src="sources/js/nesql.js"></script>
+    <script src="sources/js/add.js"></script>
+    <script src="sources/js/message.js"></script>
 </head>
 
 <body>
-    <div class="navigation">
+    <nav class="navigation">
         <a class="but" id="home" href="index.html"></a> <!-- Button home -->
         <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
-    </div>
-
-    <div class="box">
-        <div class="head">
-            <nav>
-                <a class="but" id="edit"></a>
-            </nav>
-            <table class="head_information"></table>
+    </nav>
+    <main>
+        <div class="box">
+            <div class="head">
+                <div class="but_nav">
+                    <a class="but" id="edit"></a>
+                </div>
+                <table class="head_information"></table>
+            </div>
+            <div class="information">
+                <div class="but_nav" id="btn"></div>
+            </div>
         </div>
-        <div class="information">
-            <nav id="btn"></nav>
-        </div>
-    </div>
+    </main>
 
     <script>
         let GET = parseURL(); // Сюда сохраняем данные из ссылки на страницу
@@ -166,7 +167,7 @@
                                             </div>
                                         </div>`; // Добавляем блок для вывода всплывающего окна удаления/редактирования ученика
 
-            innerHTML = `<h1>${title}</h1><nav><div class="but" id="del" message="w_del"></div></nav>`;
+            innerHTML = `<h1>${title}</h1><div class="but_nav"><div class="but" id="del" message="w_del"></div></div>`;
 
             let arr = (isBook) ? {'id': 'ID', 'name': 'Название', 'author': 'Автор', 'genre': 'Жанр', 'comment': 'Комментарий'}:
                                  {'surname' : 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс', 'letter': 'Буква'};
@@ -209,7 +210,7 @@
                 inputClass.min = 1; // Минимум - 0
                 inputClass.max = 11; // Максимум - 11
 
-                document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Созранить`
+                document.getElementById('submit').onclick = function () { // Создаем функцию, которая будет выполнятся при нажатии на кнопку `Сохранить`
                     let firstname = document.querySelector("input[name=firstname]"); // Имя 
                     let surname   = document.querySelector("input[name=surname]"); // Фамилия
                     let lastname  = document.querySelector("input[name=lastname]"); // Отчество (если есть)
@@ -269,7 +270,7 @@
                     let _name    = valid('name', name.value);
                     let _author  = valid('name', author.value);
                     let _genre   = valid('name', genre.value) || genre.value == '';
-                    let _comment = valid('name', comment.value) || comment.value == '';
+                    let _comment = valid('comment', comment.value) || comment.value == '';
                     let _bookID  = (isBook == 2) ? valid('num', bookID.value) : 1;
 
                     if (!_name || !_genre || !_author || !_bookID || !_comment) { // Если хотя бы один параметр неверен, вернуть ошибку

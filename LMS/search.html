@@ -7,10 +7,10 @@
     <meta charset="UTF-8">
     <title>Поиск</title>
 
-    <link rel="stylesheet" type="text/css" href="sources/style/main.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/button.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/search.css">
-    <link rel="stylesheet" type="text/css" href="sources/style/message.css">
+    <link rel="stylesheet" href="sources/style/main.css">
+    <link rel="stylesheet" href="sources/style/button.css">
+    <link rel="stylesheet" href="sources/style/search.css">
+    <link rel="stylesheet" href="sources/style/message.css">
 
     <script src="sources/js/nesql.js"></script>
     <script src="sources/js/search.js"></script>
@@ -27,26 +27,28 @@
         </div>
     </div>
 
-    <div class="navigation">
+    <nav class="navigation">
         <a class="but" id="home" href="index.html"></a> <!-- Button home -->
         <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
-    </div>
+    </nav>
 
-	<a id="up" class="but hidden"></a> <!-- Button Up -->
+    <main>
+        <a id="up" class="but hidden"></a> <!-- Button Up -->
 
-    <div class="dark" id="delete">
-        <div class="alert_window">
-            <div class="alert_message" id="result"></div>
-            <div class="sure">
-                <div class="but_window_space">
-                    <div class="but_window" id="link">Удалить</div>
-                </div>
-                <div class="but_window_space">
-                    <div class="but_window" id="cancel">Отменить</div>
+        <div class="dark" id="delete">
+            <div class="alert_window">
+                <div class="alert_message" id="result"></div>
+                <div class="sure">
+                    <div class="but_window_space">
+                        <div class="but_window" id="link">Удалить</div>
+                    </div>
+                    <div class="but_window_space">
+                        <div class="but_window" id="cancel">Отменить</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
     	const GET = parseURL();
