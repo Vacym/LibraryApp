@@ -2,40 +2,42 @@ var fs = require("fs"); // Подключаем библиотеку для ра
 
 class Table { // Класс для работы с библиотекой
     constructor(name) {
-        this.name = name + '.json';
+        this.name = name;
+        this.src = `C:/NeDB/${name}.json`;
         this.table = this.SELECT();
     }
 
     CREATE() { // Создает таблицу
+        let params = {
+            'users': {
+                'id':           {'options': ['num',  -1], 'users': []}, 
+                'firstname':    {'options': ['text', 50], 'users': []}, 
+                'surname':      {'options': ['text', 50], 'users': []}, 
+                'lastname':     {'options': ['text', 50], 'users': []},
+                'class':        {'options': ['num', 50], 'users': []},
+                'letter':       {'options': ['text', 50], 'users': []},
+            },
+            'books': {
+                'id':           {'options': ['num',  -1], 'users': []}, 
+                'name':         {'options': ['text', 50], 'users': []}, 
+                'author':       {'options': ['text', 50], 'users': []}, 
+                'genre':        {'options': ['text', 50], 'users': []},
+                'comment':      {'options': ['text', 50], 'users': []},
+                'inventoryno':  {'options': ['num', 50], 'users': []},
+                'userid':       {'options': ['num', 50], 'users': []},
+                'dateofissue':  {'options': ['date', 50], 'users': []},
+                'groupid':      {'options': ['num', 50], 'users': []},
+            }}
         try {
-            let params;
-            if (this.name == 'users.json') {
-                params = {
-                    'id':           {'options': ['num',  -1], 'users': []}, 
-                    'firstname':    {'options': ['text', 50], 'users': []}, 
-                    'surname':      {'options': ['text', 50], 'users': []}, 
-                    'lastname':     {'options': ['text', 50], 'users': []},
-                    'class':        {'options': ['num', 50], 'users': []},
-                    'letter':       {'options': ['text', 50], 'users': []},
-                };
-            } else if (this.name == 'books.json') {
-                params = {
-                    'id':           {'options': ['num',  -1], 'users': []}, 
-                    'name':         {'options': ['text', 50], 'users': []}, 
-                    'author':       {'options': ['text', 50], 'users': []}, 
-                    'genre':        {'options': ['text', 50], 'users': []},
-                    'comment':      {'options': ['text', 50], 'users': []},
-                    'inventoryno':  {'options': ['num', 50], 'users': []},
-                    'userid':       {'options': ['num', 50], 'users': []},
-                    'dateofissue':  {'options': ['date', 50], 'users': []},
-                    'groupid':      {'options': ['num', 50], 'users': []},
-                };
-            }
-
-            fs.writeFileSync(this.name, JSON.stringify(params));
-
+            fs.writeFileSync(this.src, JSON.stringify(params[this.name]));
         } catch (err) {
             console.log('ОШИБКА СОЗДАНИЯ ТАБЛИЦЫ', err);
+            if (err.code == 'ENOENT') {
+                console.log(`%cСоздаем Мини-СУБД`, "font-size:x-large")
+                fs.mkdirSync("C:/NeDB");
+                fs.writeFileSync('C:/NeDB/users.json', JSON.stringify(params['users']));
+                fs.writeFileSync('C:/NeDB/books.json', JSON.stringify(params['books']));
+            }
         }
     }
 
@@ -44,14 +46,12 @@ class Table { // Класс для работы с библиотекой
             if (this.table) {
                 return this.table;
             } else {
-                console.log(`%cИнициализирована ${this.name}!`, " font-size:x-large")
-                return JSON.parse(fs.readFileSync(this.name, 'utf8'));
+                console.log(`%cИнициализирована ${this.name}`, " font-size:x-large")
+                return JSON.parse(fs.readFileSync(this.src, 'utf8'));
             }
         } catch (err) {
             console.log('ОШИБКА ЧТЕНИЯ ТАБЛИЦЫ', err);
-            
             this.CREATE();
-            return this.SELECT();
         }
     }
 
@@ -224,7 +224,7 @@ class Table { // Класс для работы с библиотекой
 
     write(params) { // Переписывает данные таблицы на свои
         try {
-            fs.writeFileSync(this.name, JSON.stringify(params));
+            fs.writeFileSync(this.src, JSON.stringify(params));
         } catch (err) {
             console.log('ОШИБКА ИЗМЕНЕНИЯ ТАБЛИЦЫ', err);
         }

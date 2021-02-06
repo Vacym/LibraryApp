@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, autoUpdater, dialog } = require('electron');
 const path = require('path');
 
 if (require('electron-squirrel-startup')) { // Обрабатывает создание/удаление ярлыков в Windows при установке/удалении.
