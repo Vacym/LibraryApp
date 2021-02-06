@@ -44,7 +44,7 @@ class Table { // Класс для работы с библиотекой
             if (this.table) {
                 return this.table;
             } else {
-                console.log('%cНу привет, мой друг! 👋', " font-size:x-large")
+                console.log(`%cИнициализирована ${this.name}!`, " font-size:x-large")
                 return JSON.parse(fs.readFileSync(this.name, 'utf8'));
             }
         } catch (err) {

@@ -1,9 +1,11 @@
 // version 1.0 release
 
 function validation_text(element) {
+    console.log('произошло изменение')
     if (element.currentTarget) {
         element = element.currentTarget;
     }
+
     let id = element.id;
     let param = id;
 
@@ -14,10 +16,7 @@ function validation_text(element) {
         case 'firstname': case 'surname': case 'lastname': param = 'username'; break;
     }
 
-    if (element.value.match(/^\s/)){ // Если первый символ - пробельный
-        element.value = element.value.trim();
-        element.setSelectionRange(0, 0);
-    }
+    element.value = element.value.trim(); // Убираем лишние пробелы
 
     let is_valid = valid(param, element.value);
     let static = "bad";
@@ -96,21 +95,21 @@ function full_validation() {
 
 function ready_add() {
     function textarea_size(e) {
-
         e.style.height = 'auto';
         e.style.height = e.scrollHeight + 2 + "px";
     }
 
-    var text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-        // запуск прослушивания событий для текстовых полей
-    for (let x = 0; x < text_inputs.length; x++) {
-        text_inputs[x].addEventListener("input", validation_text);
-        validation_text(text_inputs[x]);
+    let text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+    // Запуск прослушивания событий для текстовых полей
+    for (let input of text_inputs) {
+        input.addEventListener("change", validation_text);
+        validation_text(input);
     }
-    textarea_list = document.querySelectorAll('textarea');
-    for (let x = 0; x < textarea_list.length; x++) {
-        textarea_list[x].addEventListener('input', function(e) { textarea_size(e.target); });
-        textarea_size(textarea_list[x]);
+
+    let textarea = document.querySelector('textarea');
+    if (textarea) {
+        textarea.addEventListener('input', (e) => { textarea_size(e.target); });
+        textarea_size(textarea);
     }
 }
 

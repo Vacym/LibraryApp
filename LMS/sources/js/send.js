@@ -145,7 +145,7 @@ function control_inputs(q_inputs) {
         let input_book = document.createElement('div');
         input_book.className = "line";
         input_book.innerHTML = `<span>${x}. </span>
-    <input type="number" name="book_id_${x}" placeholder="ID ${x}" min="0" autocomplete="off">`;
+    <input type="number" name="book_id_${x}" placeholder="ID ${x}" min="0">`;
         cont_input_book.append(input_book);
     }
 
