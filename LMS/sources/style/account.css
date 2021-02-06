@@ -130,13 +130,14 @@ h1 {
 .line {
     display: flex;
     align-items: center;
-    margin: 15px 40px;
+    margin: 15px 46px;
     text-align: left;
 }
 
-input,
-button,
-textarea {
+.line input,
+.line button,
+.line textarea,
+#submit {
     outline: none;
     border: 1px solid #fff;
     padding: 10px;

@@ -84,3 +84,84 @@
 .mes_dis {
     display: none;
 }
+
+
+
+/* Новые уведомления */
+
+
+.message {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 100;
+    border: 2px solid #fff;
+    padding: 15px;
+    width: 50%;
+    height: min-content;
+    min-width: min-content;
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+
+    /* opacity: 0; */
+    transform: translate(-50%, 0%);
+    transition: 0.25s;
+}
+
+.message::backdrop {
+    background-color: rgba(20, 20, 20, 0.5);
+}
+
+.modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 30px 10px;
+}
+
+.modal-footer button {
+    display: inline-block;
+    flex-grow: 1;
+    flex-basis: 10px;
+    margin: 10px;
+    border: 1px solid #777;
+    padding: 5px 12px;
+    width: min-content;
+    min-width: min-content;
+    max-width: 200px;
+    font-size: 21px;
+    color: #fff;
+    background: #000;
+    transition: background-color, border 0.15s;
+    cursor: pointer;
+}
+
+.modal-footer button:hover,
+.modal-footer button:focus {
+    outline: none;
+    border: 1px solid #fff;
+    background: #222;
+    cursor: pointer;
+}
+
+.modal-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: 0;
+    padding: 12px;
+    font-size: 40px;
+    line-height: 0.6;
+    color: #bbb;
+    background-color: transparent;
+    transition: color 0.2s;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+}

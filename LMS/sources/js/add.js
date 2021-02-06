@@ -1,7 +1,6 @@
 // version 1.0 release
 
 function validation_text(element) {
-    console.log('произошло изменение')
     if (element.currentTarget) {
         element = element.currentTarget;
     }
@@ -15,8 +14,11 @@ function validation_text(element) {
         case 'author':    case 'genre':                    param = 'name'; break;
         case 'firstname': case 'surname': case 'lastname': param = 'username'; break;
     }
-
-    element.value = element.value.trim(); // Убираем лишние пробелы
+    
+    if (element.value.match(/^\s/)){ // Если первый символ - пробельный
+        element.value = element.value.trim();
+        element.setSelectionRange(0, 0);
+    }
 
     let is_valid = valid(param, element.value);
     let static = "bad";
@@ -102,7 +104,7 @@ function ready_add() {
     let text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
     // Запуск прослушивания событий для текстовых полей
     for (let input of text_inputs) {
-        input.addEventListener("change", validation_text);
+        input.addEventListener("input", validation_text);
         validation_text(input);
     }
 

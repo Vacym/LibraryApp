@@ -35,6 +35,7 @@
             </div>
         </div>
     </main>
+    <messages></messages>
 
     <script>
         let GET = parseURL(); // Сюда сохраняем данные из ссылки на страницу
@@ -152,22 +153,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                       <div class="dark" id="w_del">
-                                            <div class="alert_window">
-                                                <div class="alert_message">Вы уверены, что хотите удалить профиль?</div>
-                                                <div class="sure">
-                                                    <div class="but_window_space">
-                                                        <a class="but_window" id="delete">Удалить</a>
-                                                    </div>
-                                                    <div class="but_window_space">
-                                                        <div class="but_window" id="cancel">Отменить</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`; // Добавляем блок для вывода всплывающего окна удаления/редактирования ученика
+                                        </div>`; // Добавляем блок для вывода всплывающего окна редактирования ученика
 
-            innerHTML = `<h1>${title}</h1><div class="but_nav"><div class="but" id="del" message="w_del"></div></div>`;
+            innerHTML = `<h1>${title}</h1><div class="but_nav"><div class="but" id="del"></div></div>`;
 
             let arr = (isBook) ? {'id': 'ID', 'name': 'Название', 'author': 'Автор', 'genre': 'Жанр', 'comment': 'Комментарий'}:
                                  {'surname' : 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс', 'letter': 'Буква'};
@@ -331,7 +319,10 @@
                 }
             }
 
-            document.querySelector('#delete').onclick = function () {
+            let message_delete = new Message(["Удалить", "Отменить"], "Удаление", "Вы уверены, что хотите удалить профиль?", {activate: "#del", cancel: 1, type: "conf"})
+            message_delete.create_message()
+
+            message_delete.link_buttons[0].onclick = function () {
                 if (isBook) {
                     books.DELETE(userBooks['id']); // Удаляем книгу из таблицы с id равным введенному
 
