@@ -187,7 +187,7 @@
             tool.append_listener_for_new_change()
         }
 
-        msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
+        let msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
         msgDelete.create_message();
 
         msgDelete.link_buttons[0].onclick = () => { // Если пользователь решил удалить книги/учеников
@@ -197,8 +197,8 @@
                 for (let item of checkboxes) {
                     books.DELETE(item.id);
                 }
-                result("Книги успешно удалены!");
-                return;
+                // result("Книги успешно удалены!");
+                window.location = '';
             }
 
             for (let item of checkboxes) {
@@ -221,12 +221,8 @@
                 }
 
             }
-            result("Ученики успешно удалены!");
-        }
-
-        const result = (text) => {
-            msgDelete.set_body = text;
-            msgDelete.link_buttons[0].onclick = () => { window.location = '' }
+            // msgDelete.set_body = "Ученики успешно удалены!"
+            window.location = '';
         }
     </script>
 </body>

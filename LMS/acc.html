@@ -143,17 +143,6 @@
             let title = 'Редактировать ' + ( (isBook == 2) ? 'книгу' : (isBook == 1) ? 'группу' : 'профиль' );
             setTitle(title);
 
-            document.body.innerHTML += `<div class="dark" id="w_save">
-                                            <div class="alert_window">
-                                                <div class="alert_message" id="result">Подождите...</div>
-                                                <div class="sure">
-                                                    <div class="but_window_space">
-                                                        <a class="but_window" id="cancel">Ок</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`; // Добавляем блок для вывода всплывающего окна редактирования ученика
-
             innerHTML = `<h1>${title}</h1><div class="but_nav"><div class="but" id="del"></div></div>`;
 
             let arr = (isBook) ? {'inventoryno': 'ID', 'name': 'Название', 'author': 'Автор', 'genre': 'Жанр', 'comment': 'Комментарий'}:

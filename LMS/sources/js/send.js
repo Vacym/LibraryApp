@@ -1,6 +1,6 @@
 // version 1.0 release
 
-window.onload = function() {
+window.onload = function () {
     if (!isBook) { // Создание ученика
         let firstname = document.querySelector("input[name=firstname]");
         let surname   = document.querySelector("input[name=surname]");
@@ -24,12 +24,12 @@ window.onload = function() {
             let _classLtr  = valid('letter', classLtr.value);
 
             if (!_firstname || !_surname || !_lastname || !_classNum || !_classLtr) {
-                send('Некоректный ввод!');
+                error('Некоректный ввод!');
                 return;
             }
 
             let id = table.INSERT([firstname.value, surname.value, lastname.value, classNum.value, classLtr.value]);
-            successS(`acc.html?type=user&id=${id}`, 'Ученик успешно добавлен!');
+            success(`acc.html?type=user&id=${id}`, 'Ученик успешно добавлен!');
         };
     } else { // Создание книги
         let name    = document.querySelector("input[name=name]");
@@ -58,19 +58,19 @@ window.onload = function() {
             let _count   = valid('num', count.value);
 
             if (!_name || !_genre || !_author || !_bookID || !_comment) {
-                send('Некоректный ввод');
+                error('Некоректный ввод');
                 return;
             }
 
             if (is_group) {
                 if (!_count) {
-                    send('Ошибка в вводе количества книг!');
+                    error('Ошибка в вводе количества книг!');
                     return;
                 } else if (count.value > 500) {
-                    send('Невозможно создать группу с более 500 книгами!');
+                    error('Невозможно создать группу с более 500 книгами!');
                     return;
                 } else if (count.value < 2) {
-                    send(`Группа книг не может состоять из менее 2-х книг!`);
+                    error(`Группа книг не может состоять из менее 2-х книг!`);
                     return;
                 }
 
@@ -89,15 +89,15 @@ window.onload = function() {
                         if (!j) j = groups[i-1] + 1;
                     }
                     if (isNaN(j) || !Number.isInteger(j)) {
-                        send(`В ${i+1}-ой книге допущена ошибка в написании числа`);
+                        error(`В ${i+1}-ой книге допущена ошибка в написании числа`);
                         return;
                     }
                     else if (table.isSameID(j)) {
-                        send(`Книга под номером '${j}' уже существует!`);
+                        error(`Книга под номером '${j}' уже существует!`);
                         return;
                     }
                     else if (groups.includes(j)) {
-                        send(`Книга под номером '${j}' уже записана в эту группу!`);
+                        error(`Книга под номером '${j}' уже записана в эту группу!`);
                         return;
                     }
                     groups.push(j);
@@ -106,20 +106,19 @@ window.onload = function() {
                 for (let IN of groups) {
                     table.INSERT([name.value, author.value, genre.value, comment.value, IN, null, null, MaxGroupID]);
                 }
-                successS(`search.html?type=books&group=${MaxGroupID}`, 'Группа успешно добавлена!');
+                success(`search.html?type=books&group=${MaxGroupID}`, 'Группа успешно добавлена!');
             } else {
                 if (table.isSameID(bookID.value)) {
-                    send(`Книга под номером '${bookID.value}' уже существует!`);
+                    error(`Книга под номером '${bookID.value}' уже существует!`);
                     return;
                 }
 
                 let id = table.INSERT([name.value, author.value, genre.value, comment.value, parseInt(bookID.value), null, null, null]);
-                successS(`acc.html?type=book&id=${id}`, 'Книга успешно добавлена!');
+                success(`acc.html?type=book&id=${id}`, 'Книга успешно добавлена!');
             }
         };
     }
-};
-
+}
 // Код Koe-kto
 function control_inputs(q_inputs) {
     //Определяем открыто ли это окно
