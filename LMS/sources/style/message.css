@@ -91,7 +91,7 @@
 
 
 .message {
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     z-index: 100;
@@ -104,13 +104,22 @@
     text-align: center;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.9);
-
-    /* opacity: 0; */
+    opacity: 0;
     transform: translate(-50%, 0%);
     transition: 0.25s;
 }
 
 .message::backdrop {
+    background-color: rgba(20, 20, 20, 0);
+    transition: 0.25s;
+}
+
+.message.show {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+.message.show::backdrop {
     background-color: rgba(20, 20, 20, 0.5);
 }
 

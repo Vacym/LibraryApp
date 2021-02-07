@@ -5,6 +5,7 @@
     left: 50%;
     top: 50%;
     width: 75%;
+    min-width: min-content;
     background-color: rgba(0, 0, 0, 0.8);
     transform: translate(-50%, -50%);
 
@@ -106,9 +107,9 @@ h1 {
     text-align: left;
 }
 
-input,
-button,
-textarea {
+.box input,
+.box button,
+.box textarea {
     outline: none;
     border: 1px solid #fff;
     padding: 10px;

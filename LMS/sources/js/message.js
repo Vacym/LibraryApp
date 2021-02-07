@@ -3,13 +3,14 @@
 // const { dialog } = require("electron");
 
 class Message {
-    constructor(buttons, head, body, {activate = null, cancel = -1, type = "notice"} ){
+    constructor(buttons, head, body, {activate = null, cancel = -1, type = "notice", esc = true} ){
         this.buttons  = buttons; // Список кнопок
         this.head     = head; // Заголовок
         this.body     = body; // Описание
-        this.type     = type; // Тип уведомления
         this.activate = activate; // Кнопка для активации
         this.cancel   = cancel; // Индекс кнопки для закрытия уведомления
+        this.type     = type; // Тип уведомления
+        this.esc      = esc; // Будет ли работаеть закрытие с помощью esc
     }
 
     class_create(){ // Создаём класс для уведомления в зависимости от типа
@@ -27,7 +28,7 @@ class Message {
             document.querySelector(this.activate).addEventListener("click", () => this.show_message());
         }
 
-        if (this.cancel != -1) {    // close - должен быть индекс кнопки в переданном списке
+        if (this.cancel != -1) {  // close - должен быть индекс кнопки в переданном списке
             this.link_buttons[this.cancel].addEventListener("click", () => this.close_message());
         }
 
@@ -43,7 +44,6 @@ class Message {
             space = document.createElement("messages");
             document.body.append(space);
         }
-        console.log(space);
 
         // Генерируем наш dialog
         let dialog = document.createElement("dialog");
@@ -77,12 +77,33 @@ class Message {
 
     }
 
+    esc_control(){ // Контроль нажатия клавиши Esc для плавного закрытия уведомления
+        if (this.dialog.open){
+            let self_mes = this;
+
+            this.dialog.onkeydown = (e) => {
+                if (e.code == "Escape") {
+                    e.preventDefault();
+                    if (self_mes.esc){ self_mes.close_message(); }
+                }
+            };
+        } else {
+            this.dialog.onkeydown = null;
+        }
+    }
+
     show_message(){ // Показать уведомление
         this.dialog.showModal();
+        this.dialog.classList.add("show");
+        this.esc_control();
     }
 
     close_message(){ // Закрыть уведомление
-        this.dialog.close();
+        this.dialog.classList.remove("show");
+        setTimeout(() => {
+            this.dialog.close();
+            this.esc_control();
+        }, 250);
     }
 
     // Геттеры
@@ -120,22 +141,8 @@ class Message {
 
 
 function message_ready() {
-
-    // mes_del = new Message(["Удалить", "Отменить"], "Удаление", "Вы уверены, что хотите удалить профиль?", {activate: "#del", cancel: 1, type: "conf"});
-    // console.log(mes_del);
-    // mes_del.create_message();
-
-    // let button_list = document.querySelectorAll("[message]")
-    // let button_class_list = []
-    // for (let x = 0; x < button_list.length; x++) {
-    //     button_class_list.push(new But_message(button_list[x]))
-    // }
-    // but_del = document.querySelector('#del')
-    // dil = document.querySelector('#demo-modal')
-    // but_del.addEventListener("click", () => dil.showModal())
-    // dil.showModal()
+    
 }
-
 document.addEventListener("DOMContentLoaded", message_ready);
 
 // Код Djacon

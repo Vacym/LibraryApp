@@ -118,7 +118,7 @@ window.onload = function () {
             }
         };
     }
-}
+};
 // Код Koe-kto
 function control_inputs(q_inputs) {
     //Определяем открыто ли это окно
