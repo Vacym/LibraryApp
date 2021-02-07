@@ -109,6 +109,15 @@
                 
                 success(`acc.html?type=user&id=${GET['us']}`, `Книга успешно ${choose}!`);
             }
+
+            let msgSuccess = new Message(['Ок'], 'Успешно', 'Изменение прошло успешно', {type: 'conf'}) 
+            msgSuccess.create_message();
+
+            const success = (url, text) => {
+                msgSuccess.set_body = text;
+                msgSuccess.link_buttons[0].onclick = () => { window.location = url; }
+                msgSuccess.show_message();
+            }
         }
     </script>
 </body>

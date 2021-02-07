@@ -283,15 +283,6 @@ function add(data) { // Добавляет книги/учеников на ст
     }
 }
 
-function result(data) {
-    document.querySelector('.alert_message').innerHTML = data;
-    document.querySelector(".but_window_space").remove();
-
-    cancel_button = document.getElementById("cancel");
-    cancel_button.innerHTML = 'Ок';
-    cancel_button.onclick = () => { window.location = ''; }
-}
-
 function send_control() { // Функция, которая вызывает другую функцию когда пользователь доходит до конца страницы
     if (!is_end_of_table && (site.scrollTop + site.clientHeight) * 1.04 >= site.scrollHeight) {
         send();

@@ -108,40 +108,6 @@
         var list_table = document.querySelector('.search_result'); // Сохраняем блок с результатами
         send();
 
-        document.querySelector('#link').onclick = function() { // Если пользователь решил удалить книги/учеников
-            let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
-
-            if (!isUsers) {
-                for (let item of checkboxes) {
-                    books.DELETE(item.id);
-                }
-                result("Книги успешно удалены!");
-                return;
-            }
-
-            for (let item of checkboxes) {
-                users.DELETE(item.id);
-
-                let userBooks = books.equal(books.translate(), 'userid', item.id);
-
-                if (userBooks) {
-                    let values = {
-                        'userid': null,
-                        'dateofissue': null
-                    };
-
-                    let ID;
-
-                    for (let value of userBooks) {
-                        ID = books.getIndexFromID(value.id);
-                        books.UPDATE(ID, values);
-                    }
-                }
-
-            }
-            result("Ученики успешно удалены!");
-        }
-
         document.querySelector('#del').onclick = function() { // Запускается, когда пользователь нажимает на кнопку удалить
             let count = document.querySelectorAll(".choice input[type='checkbox']:checked").length;
 
@@ -162,7 +128,8 @@
                 let a = get_i(count_books); // index of count_books
                 let b = get_i(count_group); // index of count_groups
 
-                document.querySelector('#result').innerHTML = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
+                msgDelete.set_body = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
+                msgDelete.show_message();
                 return
             }
 
@@ -173,7 +140,8 @@
             else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
             else                                                                     i = 2;
 
-            document.querySelector('#result').innerHTML = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
+            msgDelete.set_body = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
+            msgDelete.show_message();
         }
 
         document.querySelector('#edit').onclick = function() { // Запускается когда пользователь нажимает на карандашик
@@ -217,6 +185,48 @@
             page = 0;
             send(); // Выводим результаты на экран
             tool.append_listener_for_new_change()
+        }
+
+        msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
+        msgDelete.create_message();
+
+        msgDelete.link_buttons[0].onclick = () => { // Если пользователь решил удалить книги/учеников
+            let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
+
+            if (!isUsers) {
+                for (let item of checkboxes) {
+                    books.DELETE(item.id);
+                }
+                result("Книги успешно удалены!");
+                return;
+            }
+
+            for (let item of checkboxes) {
+                users.DELETE(item.id);
+
+                let userBooks = books.equal(books.translate(), 'userid', item.id);
+
+                if (userBooks) {
+                    let values = {
+                        'userid': null,
+                        'dateofissue': null
+                    };
+
+                    let ID;
+
+                    for (let value of userBooks) {
+                        ID = books.getIndexFromID(value.id);
+                        books.UPDATE(ID, values);
+                    }
+                }
+
+            }
+            result("Ученики успешно удалены!");
+        }
+
+        const result = (text) => {
+            msgDelete.set_body = text;
+            msgDelete.link_buttons[0].onclick = () => { window.location = '' }
         }
     </script>
 </body>

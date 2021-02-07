@@ -10,9 +10,6 @@ class Message {
         this.type     = type; // Тип уведомления
         this.activate = activate; // Кнопка для активации
         this.cancel   = cancel; // Индекс кнопки для закрытия уведомления
-
-
-    
     }
 
     class_create(){ // Создаём класс для уведомления в зависимости от типа
@@ -142,15 +139,6 @@ function message_ready() {
 document.addEventListener("DOMContentLoaded", message_ready);
 
 // Код Djacon
-function success(url, msg) { // Функция добавляем ссылку кнопке и заменяет текст
-    document.querySelector('#result').innerHTML = msg;
-    document.querySelector('#cancel').setAttribute('href', url);
-}
-
-function error(msg) { // Здесь должна будет быть функция для вывода на экран окна ошибки
-    document.querySelector('#result').innerHTML = msg;
-}
-
 function sendErr() {
     document.body.innerHTML = `<a class="but" id="home" href="index.html"></a>
                                 <a class="but" id="back" onclick="history.back()"></a>
