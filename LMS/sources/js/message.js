@@ -10,7 +10,7 @@ class Message {
         this.activate = activate; // Кнопка для активации
         this.cancel   = cancel; // Индекс кнопки для закрытия уведомления
         this.type     = type; // Тип уведомления
-        this.esc      = esc; // Будет ли работаеть закрытие с помощью esc
+        this.esc      = esc; // Возможность закрытия уведомления
     }
 
     class_create(){ // Создаём класс для уведомления в зависимости от типа
@@ -31,8 +31,9 @@ class Message {
         if (this.cancel != -1) {  // close - должен быть индекс кнопки в переданном списке
             this.link_buttons[this.cancel].addEventListener("click", () => this.close_message());
         }
-
-        this.link_close.addEventListener("click", () => this.close_message()); // Закрытие на кнопку крестика
+        if (this.esc){ // Закрытие на кнопку крестика
+            this.link_close.addEventListener("click", () => this.close_message());
+        }
     }
 
     create_message(){ // Создаем и добавляем уведомление на страницу
@@ -64,7 +65,9 @@ class Message {
             }
             inner += `</footer>`;
         }
-        inner += `<button class="modal-close" type="button" tabindex="-1">&times;</button>`; // крестик
+        if (this.esc){ // Если уведомление можно закрыть
+            inner += `<button class="modal-close" type="button" tabindex="-1">&times;</button>`; // крестик
+        }
 
 
         dialog.innerHTML = inner;
@@ -81,14 +84,14 @@ class Message {
         if (this.dialog.open){
             let self_mes = this;
 
-            this.dialog.onkeydown = (e) => {
+            document.querySelector('body').onkeydown = (e) => {
                 if (e.code == "Escape") {
                     e.preventDefault();
                     if (self_mes.esc){ self_mes.close_message(); }
                 }
             };
         } else {
-            this.dialog.onkeydown = null;
+            document.querySelector('body').onkeydown = null;
         }
     }
 
