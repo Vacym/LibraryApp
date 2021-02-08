@@ -336,7 +336,7 @@
             }
 
             let msgError = new Message(['Ок'], "Ошибка", "Произошла ошибка", {cancel:0, type: "conf"});
-            let msgSuccess = new Message(['Перейти в личный кабинет', 'Ок'], 'Успешно', 'Изменение прошло успешно', {cancel:1, type: 'conf'}) 
+            let msgSuccess = new Message(['Ок'], 'Успешно', 'Изменение прошло успешно', {type: 'conf', esc: false}) 
             msgSuccess.create_message();
             msgError.create_message();
 

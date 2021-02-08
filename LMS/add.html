@@ -109,26 +109,18 @@
             msgSuccess.set_body = text;
             msgSuccess.link_buttons[0].onclick = () => { window.location = url; }
             msgSuccess.show_message();
+
+            inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+            for (let x = 0; x < inputs.length; x++) {
+                inputs[x].value = '';
+            }
+            full_check();
         }
        	const error = (text) => {
             msgError.set_body = text;
             msgError.show_message();
         }
    	</script>
-
-    <div class="dark" id="create">
-        <div class="alert_window">
-            <div class="alert_message" id="result">Пожалуйста, подождите!</div>
-            <div class="sure">
-                <div class="but_window_space">
-                    <a class="but_window" href="" id="link">Перейти в личный кабинет</a>
-                </div>
-                <div class="but_window_space">
-                    <div class="but_window" id="cancel">Ок</div>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>
