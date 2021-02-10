@@ -80,6 +80,11 @@ class Message {
 
     }
 
+    remove_message(){
+        this.dialog.remove();
+
+    }
+
     esc_control(){ // Контроль нажатия клавиши Esc для плавного закрытия уведомления
         if (this.dialog.open){
             let self_mes = this;
