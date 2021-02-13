@@ -208,6 +208,7 @@ function message_control(){
 }
 
 function ready_search() {
+    definition_variables();
     create_input();
     message_control();
     listener_control();
@@ -217,6 +218,13 @@ function ready_search() {
     let tool = new Toolbar_control();
     return tool;
 }
+
+
+document.addEventListener("contentLoaded", (event) => {
+    if (event.detail.need_scripts.includes("search.js")){
+        tool = ready_search();
+    }
+});
 
 document.addEventListener('scroll', send_control); // Event for listen your scroll in site
 document.addEventListener("DOMContentLoaded", () => { tool = ready_search(); });
@@ -472,10 +480,13 @@ function changeDB(query) { // Меняем результаты поиска
     tool.append_listener_for_new_change();
 }
 
+function definition_variables(){
+    GET = parseURL();
+    isUsers = (GET.type == 'users');
 
-const GET = parseURL();
-const isUsers = (GET.type == 'users');
+    db = isUsers ? users.get(): books.get();
+}
 
-const users = new Table('users');
-const books = new Table('books');
-let db = isUsers ? users.get(): books.get();
+let GET;
+let isUsers;
+let db;

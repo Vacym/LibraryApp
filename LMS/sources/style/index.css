@@ -1,14 +1,16 @@
 /* version 1.0 release */
 
 
-a {
+.nav a {
     display: block;
+    flex: 45%;
     flex-grow: 1;
     margin: 10px;
     border: 2px solid #fff;
     padding: 10px;
     width: 100%;
     min-width: 200px;
+    max-width: calc(25% - 45px);
     font-weight: 600;
     text-align: center;
     text-decoration: none;
@@ -18,8 +20,8 @@ a {
     transition: opacity 0.2s linear;
 }
 
-a:hover,
-a:focus {
+.nav a:hover,
+.nav a:focus {
     opacity: 0.9;
     cursor: pointer;
 }
@@ -37,10 +39,6 @@ a:focus {
     /* white-space: nowrap; */
 }
 
-.nav a {
-    flex: 45%;
-    max-width: calc(25% - 45px);
-}
 
 @media (max-width: 1000px) and (min-width: 621px) {
     .nav a {

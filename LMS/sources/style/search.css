@@ -4,8 +4,9 @@ body {
     text-align: center;
 }
 
-body > h2 {
+main > h2 {
     margin-top: 0;
+    padding-top: 20px;
 }
 
 .find_input {
