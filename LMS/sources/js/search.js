@@ -490,3 +490,5 @@ function definition_variables(){
 let GET;
 let isUsers;
 let db;
+let users = new Table('users');
+let books = new Table('books');
