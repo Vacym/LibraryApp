@@ -32,45 +32,58 @@ function scroll_control() {
 
 class Toolbar_control {
     constructor() {
+        this.inputs = []; // Массив с checkbox'ами
         this.toolbar = document.querySelector(".toolbar"); //Определяем тулбар
         this.dedicated = document.querySelector("#summ_checked>span"); //Определяем число с количеством выделенных элементов
         this.box_element = document.querySelector(".search_result"); //Определяем блок со всеми элементами
-        this.append_listener_for_new_change();
-        document.querySelector("#remove").onclick = () => this.remove();
+
+        let observer = new MutationObserver( (m) => this.append_listener_for_new_change(m) );
+        observer.observe(this.box_element, {childList: true}); // Прослушка на добавление блоков
+
+        document.querySelector("#remove").onclick = () => this.remove(); // Кнопка отключения всех галочек
     }
 
     //Добавление прослушивания для новых элементов (которые создаются при прокрутке страницы)
-    append_listener_for_new_change(how_mach) {
-        this.inputs = document.querySelectorAll(".choice input[type='checkbox']");
-        if (!how_mach) { how_mach = this.inputs.length; }
-        for (let i = this.inputs.length - how_mach; i < this.inputs.length; i++) {
-            this.inputs[i].addEventListener("change", () => this.move_control());
+    append_listener_for_new_change(mutations) {
+        for(let mutation of mutations){
+            for (let node of mutation.addedNodes){ // Каждый элеиент из добавленных
+                this.inputs.push(node); //Добавляем в список
+                // И начинаем прослушивать
+                node.querySelector(".choice input[type='checkbox']").addEventListener("change", () => this.move_control());
+            }
+            for (let node of mutation.removedNodes){ // Каждый элемент из удлённых
+                this.inputs.splice(this.inputs.indexOf(node), 1); // Удаляем из списка
+            }
         }
+        // console.log("Попытка сделать красоту", this.inputs)
+        // this.move_control();
     }
 
     //Движение тулбара
     move_control() {
-        let show_tool = false;
         let counter = 0;
-        let edit = document.querySelector(".toolbar #edit");
+        let edit = this.toolbar.querySelector("#edit");
 
-        for (let i = 0; i < this.inputs.length; i++) {
-            if (this.inputs[i].checked) {
-                this.inputs[i].parentNode.parentNode.parentNode.classList.add("selected");
-                show_tool = true;
-                counter += 1;
+        for (let input of this.inputs) {
+            if (input.querySelector(".choice input[type='checkbox']").checked) { // Если галочка поставлена
+                input.classList.add("selected"); // указывем это
+                counter += 1; // И считаем
             }
-            else{
-                this.inputs[i].parentNode.parentNode.parentNode.classList.remove("selected");
+            else { // Если галочки нет
+                input.classList.remove("selected"); // Удаляем ненужный класс
             }
         }
+
+        let show_tool = false;
+        if (counter > 0) show_tool = true;
+
         if(counter > 1){
             edit.classList.add("deactiv");
         }else{
             edit.classList.remove("deactiv");
         }
 
-        this.dedicated.innerHTML = counter.toString();
+        this.dedicated.innerHTML = counter.toString(); // Устанавливаем количество выделенных элементов
         this.toolbar_show(show_tool);
     }
 
@@ -87,8 +100,8 @@ class Toolbar_control {
 
     //Отмена выделения для всех элементов
     remove() {
-        for (let i = 0; i < this.inputs.length; i++) {
-            this.inputs[i].checked = false;
+        for (let input of this.inputs) {
+            input.querySelector(".choice input[type='checkbox']").checked = false;
         }
         this.move_control();
     }
@@ -210,24 +223,22 @@ function message_control(){
 function ready_search() {
     definition_variables();
     create_input();
+    let tool = new Toolbar_control();
     message_control();
     listener_control();
     scroll_control();
     send();
-
-    let tool = new Toolbar_control();
-    return tool;
 }
 
 
 document.addEventListener("contentLoaded", (event) => {
     if (event.detail.need_scripts.includes("search.js")){
-        tool = ready_search();
+        ready_search();
     }
 });
 
 document.addEventListener('scroll', send_control); // Event for listen your scroll in site
-document.addEventListener("DOMContentLoaded", () => { tool = ready_search(); });
+document.addEventListener("DOMContentLoaded", () => { ready_search(); });
 
 // Код Djacon
 var page = 0; // Так сказать, значение, с которого идет отсчет о 20 новых книгах / учениках
@@ -448,7 +459,6 @@ function add(data) { // Добавляет книги/учеников на ст
         for (let i = 0; i < data.length; i++) {
             create_block(data[i], list_table);
         }
-        if (page != 0) tool.append_listener_for_new_change();
 
         page += 20;
 
@@ -477,7 +487,6 @@ function changeDB(query) { // Меняем результаты поиска
     is_end_of_table = false;
     page = 0;
     send(); // Выводим результаты на экран
-    tool.append_listener_for_new_change();
 }
 
 function definition_variables(){
