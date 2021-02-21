@@ -136,6 +136,13 @@ select:focus {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+.notification {
+    border: 3px solid #933;
+    border-radius: 10px;
+    font-size: 40px;
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
 .personal_information {
     display: flex;
     margin-bottom: 16px;

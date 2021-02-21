@@ -82,7 +82,6 @@ class Message {
 
     remove_message(){
         this.dialog.remove();
-
     }
 
     esc_control(){ // Контроль нажатия клавиши Esc для плавного закрытия уведомления
@@ -101,6 +100,7 @@ class Message {
     }
 
     show_message(){ // Показать уведомление
+        if (this.dialog.open){return false;}
         this.dialog.showModal();
         this.dialog.classList.add("show");
         this.esc_control();

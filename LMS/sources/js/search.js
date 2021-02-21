@@ -30,6 +30,17 @@ function scroll_control() {
     but_up.addEventListener('click', go_top);
 }
 
+function checkChoiseClick(e){
+    if (e.which == 1 && e.ctrlKey && e.isTrusted){ // Если правая кнопка мыши и удерживается ctrl
+        e.preventDefault(); // Блокируем поведение по умолчанию
+        
+        for (var result of e.path) if (result.classList.contains("result")) break; // Находим материнский блок
+
+        result.querySelector(".choice input[type='checkbox']").click(); // Имитируем клик на checkbox
+    }
+}
+
+
 class Toolbar_control {
     constructor() {
         this.inputs = []; // Массив с checkbox'ами
@@ -47,22 +58,25 @@ class Toolbar_control {
     append_listener_for_new_change(mutations) {
         for(let mutation of mutations){
             for (let node of mutation.addedNodes){ // Каждый элеиент из добавленных
+                if (node.classList.contains("notification")) continue; // Если это уведомление, пропускаем
                 this.inputs.push(node); //Добавляем в список
                 // И начинаем прослушивать
                 node.querySelector(".choice input[type='checkbox']").addEventListener("change", () => this.move_control());
+                node.addEventListener("click", checkChoiseClick);
             }
             for (let node of mutation.removedNodes){ // Каждый элемент из удлённых
+                if (node.classList.contains("notification")) continue;
+                node.removeEventListener("click", checkChoiseClick); // Удаляем прослушку
                 this.inputs.splice(this.inputs.indexOf(node), 1); // Удаляем из списка
             }
         }
-        // console.log("Попытка сделать красоту", this.inputs)
-        // this.move_control();
+        this.move_control();
     }
 
     //Движение тулбара
     move_control() {
         let counter = 0;
-        let edit = this.toolbar.querySelector("#edit");
+        let edit = this.toolbar.querySelector("#edit"); // Кнопка редактирования
 
         for (let input of this.inputs) {
             if (input.querySelector(".choice input[type='checkbox']").checked) { // Если галочка поставлена
@@ -75,10 +89,10 @@ class Toolbar_control {
         }
 
         let show_tool = false;
-        if (counter > 0) show_tool = true;
+        if (counter > 0) show_tool = true; // Если что-то выбрано, показывем панель
 
-        if(counter > 1){
-            edit.classList.add("deactiv");
+        if(counter > 1){ // Если выбрано больше одного
+            edit.classList.add("deactiv"); // Отключаем редактирование
         }else{
             edit.classList.remove("deactiv");
         }
@@ -148,9 +162,21 @@ function message_control(){
     var msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
     msgDelete.create_message();
 
-    document.querySelector('#del').onclick = function() { // Запускается, когда пользователь нажимает на кнопку удалить
-        let count = document.querySelectorAll(".choice input[type='checkbox']:checked").length;
+    document.querySelector('#del').onclick = deleteBlocks;
+    document.addEventListener("keydown", (e) => { if (e.key == "Delete") deleteBlocks(); });
 
+    function deleteBlocks(){  // Запускается, когда пользователь нажимает на кнопку удалить или на клавишу delete
+        let count = document.querySelectorAll(".choice input[type='checkbox']:checked").length;
+        if (count < 1) return;
+
+        function get_i(count) {
+            let i;
+            if (count%10 >= 5 || count%10 == 0 || count%100 > 10 && count%100 <= 20) i = 0;
+            else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
+            else                                                                     i = 2;
+            return i;
+        }
+    
         if (!isUsers) {
             let count_group = document.querySelectorAll(".group .choice input[type='checkbox']:checked").length;
             let count_books = count - count_group;
@@ -159,12 +185,6 @@ function message_control(){
             let valid_2 = ['г', 'ги', 'га'];
             let valid_3 = ['п', 'пы', 'па'];
 
-            function get_i(count) {
-                if (count%10 >= 5 || count%10 == 0 || count%100 > 10 && count%100 <= 20) i = 0;
-                else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
-                else                                                                     i = 2;
-                return i;
-            }
             let a = get_i(count_books); // index of count_books
             let b = get_i(count_group); // index of count_groups
 
@@ -176,13 +196,11 @@ function message_control(){
         let valid_1 = ['Будут удалены', 'Будет удалено', 'Будет удален'];
         let valid_2 = ['иков', 'ика', 'ик'];
 
-        if (count%10 >= 5 || count%10 == 0 || count%100 > 10 && count%100 <= 20) i = 0;
-        else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
-        else                                                                     i = 2;
+        let i = get_i(count);
 
         msgDelete.set_body = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
         msgDelete.show_message();
-    };
+    }
 
     msgDelete.link_buttons[0].onclick = () => { // Если пользователь решил удалить книги/учеников
         let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
@@ -223,10 +241,11 @@ function message_control(){
 function ready_search() {
     definition_variables();
     create_input();
-    let tool = new Toolbar_control();
+    new Toolbar_control();
     message_control();
     listener_control();
     scroll_control();
+
     send();
 }
 
@@ -463,7 +482,12 @@ function add(data) { // Добавляет книги/учеников на ст
         page += 20;
 
     } else {
-        if (page == 0) list_table.innerHTML = 'Ничего не найдено';
+        if (page == 0) {
+            let notice = document.createElement("div");
+            notice.classList.add("notification");
+            notice.innerHTML = 'Ничего не найдено';
+            list_table.append(notice);
+        }
 
         console.log('THE END');
         is_end_of_table = true;
