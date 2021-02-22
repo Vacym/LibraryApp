@@ -59,7 +59,7 @@ if (!user || !book || (book['userid'] && !isGive) || (!book['userid'] && isGive)
             }
         }
         params['userid']['users'][id] = (isGive) ? null : parseInt(GET['us']);
-        params['dateofissue']['users'][id] = new Date(document.getElementById('date').value).toLocaleDateString();
+        params['dateofissue']['users'][id] = (isGive) ? null : new Date(document.getElementById('date').value).toLocaleDateString();
 
         books.write(params);
         
