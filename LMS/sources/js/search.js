@@ -1,4 +1,4 @@
-function scroll_control() {
+function scrollControl() {
     function check_scroll() {
         let scroll = window.pageYOffset;
         let screen_height = document.documentElement.clientHeight / 4;
@@ -30,7 +30,7 @@ function scroll_control() {
     but_up.addEventListener('click', go_top);
 }
 
-function checkChoiseClick(e){
+function checkChoiceClick(e){
     if (e.which == 1 && e.ctrlKey && e.isTrusted){ // Если правая кнопка мыши и удерживается ctrl
         e.preventDefault(); // Блокируем поведение по умолчанию
         
@@ -40,8 +40,7 @@ function checkChoiseClick(e){
     }
 }
 
-
-class Toolbar_control {
+class ToolbarControl {
     constructor() {
         this.inputs = []; // Массив с checkbox'ами
         this.toolbar = document.querySelector(".toolbar"); //Определяем тулбар
@@ -62,11 +61,11 @@ class Toolbar_control {
                 this.inputs.push(node); //Добавляем в список
                 // И начинаем прослушивать
                 node.querySelector(".choice input[type='checkbox']").addEventListener("change", () => this.move_control());
-                node.addEventListener("click", checkChoiseClick);
+                node.addEventListener("click", checkChoiceClick);
             }
             for (let node of mutation.removedNodes){ // Каждый элемент из удлённых
                 if (node.classList.contains("notification")) continue;
-                node.removeEventListener("click", checkChoiseClick); // Удаляем прослушку
+                node.removeEventListener("click", checkChoiceClick); // Удаляем прослушку
                 this.inputs.splice(this.inputs.indexOf(node), 1); // Удаляем из списка
             }
         }
@@ -119,12 +118,9 @@ class Toolbar_control {
         }
         this.move_control();
     }
-
 }
 
-function listener_control(){
-
-
+function listenerControl(){
     document.querySelector('#edit').onclick = function() { // Запускается когда пользователь нажимает на карандашик
         let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked");
         let count = checkboxes.length;
@@ -147,18 +143,18 @@ function listener_control(){
         }
     };
 
-    document.querySelector('#input').addEventListener('input', function (e) { // Обновляет результаты поиска при написании кода
+    document.querySelector('#input').addEventListener('input', (e) => { // Обновляет результаты поиска при написании кода
         GET.q = e.target.value;
         changeDB(GET.q);
     });
 
-    document.querySelector("select").addEventListener('change', function (e) { // Обновляет результаты поиска при изменении категории 
+    document.querySelector("select").addEventListener('change', (e) => { // Обновляет результаты поиска при изменении категории 
         GET.order = e.target.value; // Призваиваем списку новое значение
         changeDB(GET.q); // Меняем результаты поиска
     });
 }
 
-function message_control(){
+function messageControl(){
     var msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
     msgDelete.create_message();
 
@@ -238,34 +234,33 @@ function message_control(){
     };
 }
 
-function ready_search() {
+function readySearch() {
     definition_variables();
-    create_input();
-    new Toolbar_control();
-    message_control();
-    listener_control();
-    scroll_control();
+    createInput();
+    new ToolbarControl();
+    messageControl();
+    listenerControl();
+    scrollControl();
 
     send();
 }
 
-
 document.addEventListener("contentLoaded", (event) => {
     if (event.detail.need_scripts.includes("search.js")){
-        ready_search();
+        readySearch();
     }
 });
 
-document.addEventListener('scroll', send_control); // Event for listen your scroll in site
-document.addEventListener("DOMContentLoaded", () => { ready_search(); });
+document.addEventListener('scroll', checkEndOfPage); // Прослушиваем скролл по странице
+document.addEventListener("DOMContentLoaded", () => { readySearch(); });
 
 // Код Djacon
 var page = 0; // Так сказать, значение, с которого идет отсчет о 20 новых книгах / учениках
 var allowLoading = true; // Check, if request is free
-var is_end_of_table = false; // Check, if table is finished in database
+var isEndOfTable = false; // Check, if table is finished in database
 var site = document.documentElement; // All html document
 
-function create_input(){
+function createInput(){ // Доб
     let main_place = document.querySelector("main");
     let header = document.createElement('h2');
 
@@ -311,14 +306,13 @@ function create_input(){
     sr = document.createElement("div");
     sr.className = "search_result";
     main_place.append(sr);
-
 }
 
-function create_block(data, list_table) { // Создает блок с книгой/группой книг/учеником
+function createBlock(data, list_table) { // Создает блок с книгой/группой книг/учеником
     let a = document.createElement('a');
     let innerHTML;
 
-    if (data.username) { // If user
+    if (data.username) { // Если ученик
         a.className = 'result valid';
         a.href = data.href;
 
@@ -329,11 +323,18 @@ function create_block(data, list_table) { // Создает блок с книг
                             </div>`;
 
         data.books.forEach((book) => {
+        	let date = book.dateofissue.split('.'); // Перевод из русской даты в английскую
+        	[date[0], date[1]] = [date[1], date[0]]
+        	date = date.join('.');
+
+        	let days = ((Date.now() - new Date(date).getTime())/3600000/24)|0
+        	days = (days) ? days + ' дней': 'Сегодня';
+            
             innerHTML += `\
                 <div class="book">\
                     <span class="name_book">${book.name}</span>\
                     <span class="autor_book">${book.author}</span>\
-                    <span class="date">${book.dateofissue}</span>\
+                    <span class="date">${days}</span>\
                 </div>`;
         });
 
@@ -343,10 +344,9 @@ function create_block(data, list_table) { // Создает блок с книг
                     <div class="FCS">${data.username}</div>\
                 </div>`;
 
-    } else if (data.groupid > 0) { // If group
-        
-        a.className = data['class']; // Add parameter class
-        if (data.href) a.href = data.href; // Add parameter href
+    } else if (data.groupid > 0) { // Если группа
+        a.className = data['class']; // Добавляем параметр класс
+        if (data.href) a.href = data.href; // Добавляем параметр ссылки
 
         innerHTML = `<div class="left_part">\
                             <div class="choice">\
@@ -359,14 +359,12 @@ function create_block(data, list_table) { // Создает блок с книг
                                 <span class="autor_book">${data.author}</span>\
                             </div>\
                         </div>`;
+    } else { // Если книга   
+        a.className = data['class']; // Добавляем параметр класс
+        if (data.href) a.href = data.href; // Добавляем параметр ссылки
 
-    } else { // If book
-        
-        a.className = data['class']; // Add parameter class
-        if (data.href) a.href = data.href; // Add parameter href
-
-        div_class_date = data.dateofissue ? `<div class="date">${data.dateofissue}</div>` : ''; //Init date parameter
-        span_username  = data.userid ? `<span>${data.owner}</span>` : 'Свободна'; // Init username if exist
+        div_class_date = data.dateofissue ? `<div class="date">${data.dateofissue}</div>` : ''; // Инициализируем дату
+        span_username  = data.userid ? `<span>${data.owner}</span>` : 'Свободна'; // Инициализируем читателя, если есть
 
         innerHTML = `<div class="left_part">\
                             <div class="choice">\
@@ -476,7 +474,7 @@ function add(data) { // Добавляет книги/учеников на ст
         console.log("New stack...");
 
         for (let i = 0; i < data.length; i++) {
-            create_block(data[i], list_table);
+            createBlock(data[i], list_table);
         }
 
         page += 20;
@@ -490,25 +488,23 @@ function add(data) { // Добавляет книги/учеников на ст
         }
 
         console.log('THE END');
-        is_end_of_table = true;
+        isEndOfTable = true;
     }
 }
 
-function send_control() { // Функция, которая вызывает другую функцию когда пользователь доходит до конца страницы
-    if (!is_end_of_table && (site.scrollTop + site.clientHeight) * 1.04 >= site.scrollHeight) {
+function checkEndOfPage() { // Функция, которая вызывает другую функцию когда пользователь доходит до конца страницы
+    if (!isEndOfTable && (site.scrollTop + site.clientHeight) * 1.04 >= site.scrollHeight) {
         send();
     }
 }
 
 // Часть кода, отвечающая за верхний тулбар
-
-
 function changeDB(query) { // Меняем результаты поиска
     document.querySelector('.search_result').innerHTML = ''; // Стираем значение поиска
 
-    db = (isUsers) ? users.get(query) : books.get(query); // Изменяем результаты поиска
+    db = isUsers ? users.get(query) : books.get(query); // Изменяем результаты поиска
     
-    is_end_of_table = false;
+    isEndOfTable = false;
     page = 0;
     send(); // Выводим результаты на экран
 }
@@ -520,8 +516,8 @@ function definition_variables(){
     db = isUsers ? users.get(): books.get();
 }
 
-let GET;
-let isUsers;
-let db;
-let users = new Table('users');
-let books = new Table('books');
+let db; // Массив с БД
+let GET; // Параметры страницы
+let isUsers; // Является ли это страницей ученика
+const users = new Table('users'); // Инициализируем таблицу ученика
+const books = new Table('books'); // Инициализируем таблицу книги
