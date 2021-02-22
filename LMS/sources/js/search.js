@@ -160,7 +160,7 @@ function listener_control(){
 
 function message_control(){
     var msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
-    msgDelete.create_message();
+    msgDelete.create();
 
     document.querySelector('#del').onclick = deleteBlocks;
     document.addEventListener("keydown", (e) => { if (e.key == "Delete") deleteBlocks(); });
@@ -189,7 +189,7 @@ function message_control(){
             let b = get_i(count_group); // index of count_groups
 
             msgDelete.set_body = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
-            msgDelete.show_message();
+            msgDelete.show();
             return;
         }
 
@@ -199,7 +199,7 @@ function message_control(){
         let i = get_i(count);
 
         msgDelete.set_body = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
-        msgDelete.show_message();
+        msgDelete.show();
     }
 
     msgDelete.link_buttons[0].onclick = () => { // Если пользователь решил удалить книги/учеников

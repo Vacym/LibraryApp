@@ -3,14 +3,17 @@
 // const { dialog } = require("electron");
 
 class Message {
-    constructor(buttons, head, body, {activate = null, cancel = -1, type = "notice", esc = true} ){
+    constructor(buttons, head, body, {activate = null, cancel = -1, focus = 0, type = "notice", esc = true, home = "esc"} ){
         this.buttons  = buttons; // Список кнопок
         this.head     = head; // Заголовок
         this.body     = body; // Описание
         this.activate = activate; // Кнопка для активации
         this.cancel   = cancel; // Индекс кнопки для закрытия уведомления
+        this.focus    = focus; // Индекс кнопки, которая должна находиться в фокусе
         this.type     = type; // Тип уведомления
         this.esc      = esc; // Возможность закрытия уведомления
+        this.home     = home; // Возможность перейти домой (disable)
+        if (home == "esc") this.home = this.esc;
     }
 
     class_create(){ // Создаём класс для уведомления в зависимости от типа
@@ -24,8 +27,11 @@ class Message {
     }
 
     add_listeners(){
-        if (this.activate) { // activate - должен быть css селектор на элемент
-            document.querySelector(this.activate).addEventListener("click", () => this.show_message());
+        if (this.activate) { // activate - должен быть css селектор на элемент или сам элемент
+            if (typeof(this.activate) == "string"){
+                this.activate =  document.querySelector(this.activate);
+            }
+            this.activate.addEventListener("click", () => this.show_message());
         }
 
         if (this.cancel != -1) {  // close - должен быть индекс кнопки в переданном списке
@@ -36,7 +42,7 @@ class Message {
         }
     }
 
-    create_message(){ // Создаем и добавляем уведомление на страницу
+    create(){ // Создаем и добавляем уведомление на страницу
 
         // Ищем тег <messages>
         let space = document.querySelector("messages");
@@ -71,7 +77,7 @@ class Message {
 
 
         dialog.innerHTML = inner;
-        space.append(dialog);
+        space.append(dialog); // Добавляем элемент на страницу
         
         this.dialog = dialog;
         this.add_listeners();
@@ -80,7 +86,7 @@ class Message {
 
     }
 
-    remove_message(){
+    remove(){
         this.dialog.remove();
     }
 
@@ -93,20 +99,24 @@ class Message {
                     e.preventDefault();
                     if (self_mes.esc){ self_mes.close_message(); }
                 }
+                // else if (e.key == "Home" && e.altKey){ // Если это alt + home
+                //     e.preventDefault();
+                // }
             };
         } else {
             document.querySelector('body').onkeydown = null;
         }
     }
 
-    show_message(){ // Показать уведомление
+    show(){ // Показать уведомление
         if (this.dialog.open){return false;}
         this.dialog.showModal();
+        this.link_buttons[this.focus].focus();
         this.dialog.classList.add("show");
         this.esc_control();
     }
 
-    close_message(){ // Закрыть уведомление
+    close(){ // Закрыть уведомление
         this.dialog.classList.remove("show");
         setTimeout(() => {
             this.dialog.close();
@@ -144,6 +154,17 @@ class Message {
         this.body = value;
         this.link_body.innerHTML = value;
     }
+
+    // Поддержка старых версий
+    
+
+    show_message(){ return this.show(); }
+
+    close_message(){ return this.close(); }
+
+    remove_message(){ return this.remove(); }
+
+    create_message(){ return this.create(); }
 }
 
 
