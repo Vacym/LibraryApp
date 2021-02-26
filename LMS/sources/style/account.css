@@ -87,7 +87,7 @@ table td {
 }
 
 #add_book,
-#delate_book,
+#delete_book,
 #edit {
     border-width: 0 0 1px 1px;
 }
@@ -96,7 +96,7 @@ table td {
     content: "\f067";
 }
 
-#delate_book::before {
+#delete_book::before {
     content: "\f068";
 }
 

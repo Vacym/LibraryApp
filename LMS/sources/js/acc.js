@@ -67,7 +67,7 @@ if (GET['choose'] != 'edit') { // Личный кабинет
                                     <td class="td_value">${userBooks['dateofissue']}</td>
                                 </tr>`;
 
-            nav.innerHTML = `<a href="change.html?type=give&bk=${userBooks['id']}&us=${user['id']}" class="but" id="delate_book"></a>`
+            nav.innerHTML = `<a href="change.html?type=give&bk=${userBooks['id']}&us=${user['id']}" class="but" id="delete_book"></a>`
         } else {
             accBlock.innerHTML = '<tr><th class="td_value">Свободна</th></tr>';
             nav.innerHTML = `<a href="search.html?type=users&im=${GET['id']}" class="but" id="add_book"></a>`
@@ -86,9 +86,9 @@ if (GET['choose'] != 'edit') { // Личный кабинет
                                         <td class="td_value">-</td>
                                     </tr>`;
         } else if (userBooks.length == 1) { // Если есть, добавить кнопку с ссылкой на открепление своей книги
-            nav.innerHTML += `<a href="change.html?type=give&us=${GET['id']}&bk=${userBooks[0]['id']}" class="but" id="delate_book"></a>`;
+            nav.innerHTML += `<a href="change.html?type=give&us=${GET['id']}&bk=${userBooks[0]['id']}" class="but" id="delete_book"></a>`;
         } else {
-            nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}&del=1" class="but" id="delate_book"></a>`;
+            nav.innerHTML += `<a href="search.html?type=books&im=${GET['id']}&del=1" class="but" id="delete_book"></a>`;
         }
 
         for (let book of userBooks) { // Перебираем каждую книгу ученика и создаем под нее блок
