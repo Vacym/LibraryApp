@@ -1,35 +1,25 @@
 /* version 1.0 release */
 
-html {
-    height: 100%;
-    font-family: sans-serif;
-    color: white;
-    background: url("../files/book.jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position-x: center;
-}
 
 form {
     position: absolute;
-    top: 50%;
     left: 50%;
-    z-index: 50;
+    top: 50%;
+    z-index: 40;
     display: block;
-    width: max-content;
     min-width: min-content;
-    background: rgba(0, 0, 0, .7);
+    background: rgba(0, 0, 0, 0.7);
     transform: translate(-50%, -50%);
-    transition: .25s;
+    transition: 0.25s;
 }
 
 form h1 {
     margin: 30px 100px;
     padding: 0;
-    text-align: center;
     font-size: 30px;
-    color: #fff;
+    text-align: center;
     text-transform: uppercase;
+    color: #fff;
     background: rgba(0, 0, 0, 0);
 }
 
@@ -39,16 +29,18 @@ form .line {
 }
 
 form input,
-textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 20px;
-    color: #fff;
-    background: rgba(0, 0, 0, .7);
+form textarea {
     outline: none;
     border: 1px solid #fff;
+    padding: 10px;
+    width: 100%;
+    min-width: 250px;
     box-sizing: border-box;
-    transition: .3s;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
 }
 
 form input[type="checkbox"],
@@ -68,25 +60,25 @@ textarea.good_input {
 
 form input:focus,
 textarea:focus,
-#group_checkbox:focus+label,
-.single_checkbox input[type="checkbox"]:focus+label::before {
+#group_checkbox:focus + label,
+.single_checkbox input[type="checkbox"]:focus + label::before {
     border-color: #0fc3f5;
 }
 
 form textarea {
-    max-width: 100%;
     height: auto;
+    max-width: 100%;
     max-height: 15em;
     resize: none;
 }
 
 form #submit {
     margin-top: 20px;
-    font-weight: bold;
+    border: none;
+    font-weight: 700;
     color: #fff;
     background: #0fc3f5;
-    border: none;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 form #submit:enabled:hover,
@@ -104,21 +96,23 @@ form #submit:disabled {
 
 .for_group {
     position: absolute;
-    width: 100%;
     z-index: 40;
     display: none;
+    width: 100%;
     opacity: 0;
     transform: translate(0, -100%);
-    transition: .25s;
+    transition: 0.25s;
 }
 
 .list_id {
-    position: absolute;
+    position: relative;
     z-index: 40;
     display: none;
+    overflow-y: scroll;
+    max-height: 100%;
     opacity: 0;
     transform: translate(-100%, 0);
-    transition: .25s;
+    transition: 0.25s;
 }
 
 .for_group input[type="number"],
@@ -150,14 +144,9 @@ form #submit:disabled {
 .illusion {
     position: relative;
     z-index: 30;
-    transition: .25s;
+    transition: 0.25s;
 }
 
-.list_id {
-    position: relative;
-    max-height: 100%;
-    overflow-y: scroll;
-}
 
 .all_inputs {
     display: flex;
@@ -172,8 +161,8 @@ form #submit:disabled {
 /* стилизация checkbox */
 
 input[type="checkbox"] {
-    opacity: 0;
     position: absolute;
+    opacity: 0;
 }
 
 .single_checkbox {
@@ -188,24 +177,27 @@ input[type="checkbox"] {
 
 .single_checkbox label::before {
     content: "";
+    left: 0;
+    top: 0;
     display: inline-block;
-    height: 16px;
-    width: 16px;
     border: 1px solid;
+    width: 16px;
+    height: 16px;
+    transition: border 0.15s;
 }
 
 .single_checkbox label::after {
-    top: 3px;
+    content: "";
     left: 4px;
-    content: '';
+    top: 3px;
     display: inline-block;
-    height: 6px;
-    width: 9px;
-    border-left: 2px solid;
     border-bottom: 2px solid;
+    border-left: 2px solid;
+    width: 9px;
+    height: 6px;
     opacity: 0;
     transform: rotate(-45deg);
-    transition: opacity .1s;
+    transition: opacity 0.1s;
 }
 
 .single_checkbox label::before,
@@ -213,15 +205,11 @@ input[type="checkbox"] {
     position: absolute;
 }
 
-.single_checkbox input[type="checkbox"]:checked+label::after {
+.single_checkbox input[type="checkbox"]:checked + label::after {
     opacity: 1;
 }
 
-.single_checkbox label::before {
-    top: 0px;
-    left: 0px;
-    transition: border .15s;
-}
+
 
 #quantity {
     margin-right: 10px;
@@ -230,18 +218,18 @@ input[type="checkbox"] {
 
 .group_checkbox {
     display: block;
-    width: 100%;
-    padding: 5px 0px;
-    background-color: rgba(0, 0, 0, .4);
     border: 1px solid #fff;
+    padding: 5px 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
-#group_checkbox+label:hover {
-    background-color: rgba(0, 0, 0, .7);
+#group_checkbox + label:hover {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 input[type="checkbox"],
-input[type="checkbox"]+label {
-    transition: background-color, border .15s;
+input[type="checkbox"] + label {
+    transition: background-color, border 0.15s;
     cursor: pointer;
 }

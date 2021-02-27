@@ -1,0 +1,44 @@
+<!-- version 1.0 release -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск</title>
+
+    <link rel="stylesheet" href="sources/style/main.css">
+    <link rel="stylesheet" href="sources/style/button.css">
+    <link rel="stylesheet" href="sources/style/search.css">
+    <link rel="stylesheet" href="sources/style/message.css">
+
+    <!-- <script src="sources/js/pushStateAjax.js"></script> -->
+    <script src="sources/js/main.js"></script>
+    <script src="sources/js/nesql.js"></script>
+    <script src="sources/js/message.js"></script>
+    <script src="sources/js/search.js"></script>
+    <script src="sources/js/hints.js"></script>
+</head>
+
+<body>
+	<div class="toolbar"> <!-- Toolbar -->
+		<div id="summ_checked">Выделено: <span></span></div>
+		<div class="toolbar_buttons">
+			<div class="but" id="remove"></div>
+        	<div class="but" id="edit"></div>
+        	<div class="but" id="del"></div>
+        </div>
+    </div>
+
+    <nav class="navigation">
+        <a class="but" id="home" href="index.html" tabindex="-1"></a> <!-- Button home -->
+        <a class="but" id="back" onclick="history.back()"></a> <!-- Button back -->
+    </nav>
+
+    <main>
+        <a id="up" class="but hidden"></a> <!-- Button Up -->
+    </main>
+
+</body>
+
+</html>

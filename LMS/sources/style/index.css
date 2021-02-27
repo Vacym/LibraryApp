@@ -1,36 +1,61 @@
 /* version 1.0 release */
 
-html {
-    background: url("../files/book.jpg");
-    color: wheat;
-    -webkit-background-size: cover;
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: sans-serif;
-}
 
-a {
-    background-color: black;
-    opacity: .6;
-    width: 100%;
+.nav a {
+    display: block;
+    flex: 45%;
+    flex-grow: 1;
+    margin: 10px;
+    border: 2px solid #fff;
     padding: 10px;
-    margin: 10px 10px;
+    width: 100%;
+    min-width: 200px;
+    max-width: calc(25% - 45px);
     font-weight: 600;
-    border: 2px solid white;
     text-align: center;
-    transition: opacity .2s linear;
     text-decoration: none;
-    color: white;
+    color: #fff;
+    background-color: #000;
+    opacity: 0.6;
+    transition: opacity 0.2s linear;
 }
 
-a:hover {
+.nav a:hover,
+.nav a:focus {
+    opacity: 0.9;
     cursor: pointer;
-    opacity: .9;
 }
 
 .nav {
     display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
     text-transform: uppercase;
-    font-size: 2vw;
-    /*white-space: nowrap;*/
+
+    /* white-space: nowrap; */
+}
+
+
+@media (max-width: 1000px) and (min-width: 621px) {
+    .nav a {
+        flex: 45%;
+        max-width: calc(50% - 45px);
+    }
+}
+
+@media (max-width: 620px) {
+    .nav a {
+        flex: 100%;
+        max-width: 100%;
+    }
+}
+
+
+
+.wrapper {
+    flex-wrap: wrap;
 }

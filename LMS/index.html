@@ -5,19 +5,24 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Главная</title>
+    <title>Главное меню</title>
 
-    <link rel="stylesheet" type="text/css" href="sources/style/index.css">
+    <link rel="stylesheet" href="sources/style/main.css">
+    <link rel="stylesheet" href="sources/style/index.css">
+
+    <!-- <script src="sources/js/pushStateAjax.js"></script> -->
+    <script src="sources/js/main.js"></script>
+    <script src="sources/js/nesql.js"></script>
 </head>
 
 <body>
-    <nav class="nav">
-        <a href="search_student.php">Найти ученика</a>
-        <a href="search_book.php">Найти книгу</a>
-        <a href="add_student.html">Добавить ученика</a>
-        <a href="add_book.html">Добавить книгу</a>
-    </nav>
-
+    <main>
+        <div class="nav">
+            <a href="search.html?type=users">Найти ученика</a>
+            <a href="search.html?type=books">Найти книгу</a>
+            <a href="add.html?type=user">Добавить ученика</a>
+            <a href="add.html?type=book">Добавить книгу</a>
+        </div>
+    </main>
 </body>
-
 </html>
