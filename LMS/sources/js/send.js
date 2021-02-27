@@ -1,5 +1,6 @@
 // version 1.0 release
-function control_inputs(q_inputs) {
+
+function constrolInputs(q_inputs) { //
     //Определяем открыто ли это окно
     if (document.querySelector("#auto_id").checked) { return; }
 
@@ -31,10 +32,10 @@ function control_inputs(q_inputs) {
     for (let x = 0; x < real_q_inputs - q_inputs; x++) {
         cont_input_book.lastElementChild.remove();
     }
-    height_illusion("i");
+    heightIllusion("i");
 }
 
-function show_group(checkbox, changeable, need_check = true, illusion = true) {
+function showGroup(checkbox, changeable, need_check = true, illusion = true) { //
 
     function toggle(a, b) {
         vis_box.classList.add(a);
@@ -45,7 +46,7 @@ function show_group(checkbox, changeable, need_check = true, illusion = true) {
         vis_box.classList.add("fading");
         setTimeout(() => {
             toggle("show", "fading");
-            height_illusion(mode);
+            heightIllusion(mode);
         }, 1);
     }
 
@@ -55,12 +56,12 @@ function show_group(checkbox, changeable, need_check = true, illusion = true) {
 
         if (illusion) {
             if (mode == "q") {
-                height_illusion(mode, "0px");
-                height_illusion("i", "0px", "0px");
+                heightIllusion(mode, "0px");
+                heightIllusion("i", "0px", "0px");
             } else {
-                height_illusion(mode, undefined, "0px");
+                heightIllusion(mode, undefined, "0px");
             }
-        } else { height_illusion(mode); }
+        } else { heightIllusion(mode); }
         vis_box.style.position = "";
         setTimeout(() => vis_box.classList.remove("fading"), 250);
     }
@@ -74,7 +75,7 @@ function show_group(checkbox, changeable, need_check = true, illusion = true) {
     }
 }
 
-function height_illusion(mode, height, width) {
+function heightIllusion(mode, height, width) { //
     let illusion;
     let vis_box;
     if (mode == "q") { //quantity
@@ -98,16 +99,149 @@ function height_illusion(mode, height, width) {
     illusion.style.width  = width;
 }
 
-function ready() {
-    height_illusion("i");
-    height_illusion("q");
+function ready() { //
+    heightIllusion("i");
+    heightIllusion("q");
 
-    document.querySelector("#quantity").addEventListener("change", () => control_inputs());
-    document.querySelector("#auto_id" ).addEventListener("change", () => control_inputs());
+    document.querySelector("#quantity").addEventListener("change", () => constrolInputs());
+    document.querySelector("#auto_id" ).addEventListener("change", () => constrolInputs());
 }
 
-// Код Djacon
-let isBook = parseURL()['type'] == 'book'; // Проверяет, является ли страница книжной
+function submit() { // Отправляет запрос на создание ученика/книги
+    if (!isBook) { // Если читатель
+        let firstname = document.querySelector("input[name=firstname]");
+        let surname   = document.querySelector("input[name=surname]");
+        let lastname  = document.querySelector("input[name=lastname]");
+        let classNum  = document.querySelector("input[name=class]");
+        let classLtr  = document.querySelector("input[name=letter]");
+
+        firstname.value = firstname.value.trim();
+        surname.value = surname.value.trim();
+        lastname.value = lastname.value.trim();
+        classNum.value = classNum.value.trim();
+        classLtr.value = classLtr.value.trim();
+
+        let _firstname = valid('username', firstname.value);
+        let _surname   = valid('username', surname.value);
+        let _lastname  = valid('username', lastname.value) || lastname.value == '';
+        let _classNum  = valid('class', classNum.value);
+        let _classLtr  = valid('letter', classLtr.value);
+
+        if (!_firstname || !_surname || !_lastname || !_classNum || !_classLtr) {
+            error('Некоректный ввод!');
+            return;
+        }
+
+        let id = table.INSERT([firstname.value, surname.value, lastname.value, classNum.value, classLtr.value]);
+        success(`acc.html?type=user&id=${id}`, 'Ученик успешно добавлен!');
+    } else { // Если книга
+        let name    = document.querySelector("input[name=name]");
+        let genre   = document.querySelector("input[name=genre]");
+        let count   = document.querySelector("input[name=quantity]");
+        let author  = document.querySelector("input[name=author]");
+        let bookID  = document.querySelector("input[name=id]");
+        let comment = document.querySelector("textarea[name=comment]");
+
+        let isAutoID = document.getElementById("auto_id").checked;
+        let isGroup = document.getElementById('group_checkbox').checked;
+
+        name.value = name.value.trim();
+        genre.value = genre.value.trim();
+        author.value = author.value.trim();
+        comment.value = comment.value.trim();
+
+        let _name    = valid('name', name.value);
+        let _author  = valid('name', author.value);
+        let _genre   = valid('name', genre.value) || genre.value == '';
+        let _comment = valid('comment', comment.value) || comment.value == '';
+        let _bookID  = valid('num', bookID.value);
+        let _count   = valid('num', count.value);
+
+        if (!_name || !_genre || !_author || !_bookID || !_comment) {
+            error('Некоректный ввод');
+            return;
+        }
+
+        let InvNum = bookID.value|0;
+        bookID.value = InvNum;
+
+        if (isGroup) { // Если группа книг
+            if (!_count) {
+                error('Ошибка в вводе количества книг!');
+                return;
+            } else if (count.value > 500) {
+                error('Невозможно создать группу с более 500 книгами!');
+                return;
+            } else if (count.value < 2) {
+                error(`Группа книг не может состоять из менее 2-х книг!`);
+                return;
+            }
+
+            let groups = [];
+            let MaxGroupID = table.nextGroupID;
+            let booksID  = document.querySelectorAll(".list_id input");
+            let bookNum;
+
+            for (i = 0; i < count.value; i++){
+                if (isAutoID) {
+                    bookNum = InvNum + i;
+                } else if (i==0 && !booksID[0].value) {
+                    bookNum = InvNum;
+                } else {
+                    bookNum = Number(booksID[i].value);
+                    if (!bookNum) bookNum = groups[i-1] + 1;
+                }
+                if (isNaN(bookNum) || !Number.isInteger(bookNum)) {
+                    error(`В ${i+1}-ой книге неверно введен инвентарный номер!`);
+                    return;
+                }
+                else if (table.isSameID(bookNum)) {
+                    error(`Книга под номером ${bookNum} уже существует!`);
+                    return;
+                }
+                else if (groups.includes(bookNum)) {
+                    error(`Книга под номером ${bookNum} уже записана в эту группу!`);
+                    return;
+                }
+                groups.push(bookNum);
+            }
+
+            for (let IN of groups) {
+                table.INSERT([name.value, author.value, genre.value, comment.value, IN, null, null, MaxGroupID]);
+            }
+            success(`search.html?type=books&group=${MaxGroupID}`, 'Группа успешно добавлена!');
+        } else { // Если одна книга
+            if (table.isSameID(InvNum)) {
+                error(`Книга под номером ${InvNum} уже существует!`);
+                return;
+            }
+
+            let id = table.INSERT([name.value, author.value, genre.value, comment.value, InvNum, null, null, null]);
+            success(`acc.html?type=book&id=${id}`, 'Книга успешно добавлена!');
+        }
+    }
+}
+
+function success(url, text) { // Запускается при успешном создании читателя/книги
+    msgSuccess.set_body = text;
+    msgSuccess.link_buttons[0].onclick = () => { window.location = url; }
+    msgSuccess.show_message();
+
+    inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+    for (let x = 0; x < inputs.length; x++) {
+        inputs[x].value = '';
+    }
+    fullCheck();
+}
+
+function error(text) { // Вылезает в случае ошибки
+    msgError.set_body = text;
+    msgError.show_message();
+}
+
+// Константы
+const isBook = parseURL()['type'] == 'book'; // Проверяет, является ли страница книжной
+const table = new Table((isBook) ? 'books': 'users'); // Инициализируем таблицу под одну из страниц
 
 // Вывод тела main
 if (!isBook) { // Если ученик
@@ -154,7 +288,7 @@ if (!isBook) { // Если ученик
                                                 <textarea type="text" name="comment" id="comment" placeholder="Комментарий" autocomplete="off"></textarea>
                                             </div>
                                             <div class="line">
-                                                <input type="checkbox" name="group" id="group_checkbox" onchange="show_group(this, '.for_group', true, true)" value="Создать группу книг">
+                                                <input type="checkbox" name="group" id="group_checkbox" onchange="showGroup(this, '.for_group', true, true)" value="Создать группу книг">
                                                 <label for="group_checkbox" class="group_checkbox">Создать Группу книг</label>
                                             </div>
                                             <div class="illusion" id="for_group_il">
@@ -162,7 +296,7 @@ if (!isBook) { // Если ученик
                                                     <div class="line">
                                                         <input type="number" name="quantity" id="quantity" placeholder="Количество копий" min="0" autocomplete="off">
                                                         <span class="single_checkbox">
-                                                            <input type="checkbox" name="auto_id" id="auto_id" value="auto_id" onchange="show_group(this, '.list_id', false)" checked>
+                                                            <input type="checkbox" name="auto_id" id="auto_id" value="auto_id" onchange="showGroup(this, '.list_id', false)" checked>
                                                             <label for="auto_id">Авто ID</label>
                                                         </span>
                                                     </div>
@@ -181,145 +315,11 @@ if (!isBook) { // Если ученик
     ready();
 }
 
-const submit = () => { // Отправляет запрос на создание ученика/книги
-    if (!isBook) {
-        let firstname = document.querySelector("input[name=firstname]");
-        let surname   = document.querySelector("input[name=surname]");
-        let lastname  = document.querySelector("input[name=lastname]");
-        let classNum  = document.querySelector("input[name=class]");
-        let classLtr  = document.querySelector("input[name=letter]");
-
-        firstname.value = firstname.value.trim();
-        surname.value = surname.value.trim();
-        lastname.value = lastname.value.trim();
-        classNum.value = classNum.value.trim();
-        classLtr.value = classLtr.value.trim();
-
-        let _firstname = valid('username', firstname.value);
-        let _surname   = valid('username', surname.value);
-        let _lastname  = valid('username', lastname.value) || lastname.value == '';
-        let _classNum  = valid('class', classNum.value);
-        let _classLtr  = valid('letter', classLtr.value);
-
-        if (!_firstname || !_surname || !_lastname || !_classNum || !_classLtr) {
-            error('Некоректный ввод!');
-            return;
-        }
-
-        let id = table.INSERT([firstname.value, surname.value, lastname.value, classNum.value, classLtr.value]);
-        success(`acc.html?type=user&id=${id}`, 'Ученик успешно добавлен!');
-    } else {
-        let name    = document.querySelector("input[name=name]");
-        let genre   = document.querySelector("input[name=genre]");
-        let count   = document.querySelector("input[name=quantity]");
-        let author  = document.querySelector("input[name=author]");
-        let bookID  = document.querySelector("input[name=id]");
-        let comment = document.querySelector("textarea[name=comment]");
-
-        let isAutoID = document.getElementById("auto_id").checked;
-        let is_group = document.getElementById('group_checkbox').checked;
-
-        name.value = name.value.trim();
-        genre.value = genre.value.trim();
-        author.value = author.value.trim();
-        comment.value = comment.value.trim();
-
-        let _name    = valid('name', name.value);
-        let _author  = valid('name', author.value);
-        let _genre   = valid('name', genre.value) || genre.value == '';
-        let _comment = valid('comment', comment.value) || comment.value == '';
-        let _bookID  = valid('num', bookID.value);
-        let _count   = valid('num', count.value);
-
-        if (!_name || !_genre || !_author || !_bookID || !_comment) {
-            error('Некоректный ввод');
-            return;
-        }
-
-        if (is_group) {
-            if (!_count) {
-                error('Ошибка в вводе количества книг!');
-                return;
-            } else if (count.value > 500) {
-                error('Невозможно создать группу с более 500 книгами!');
-                return;
-            } else if (count.value < 2) {
-                error(`Группа книг не может состоять из менее 2-х книг!`);
-                return;
-            }
-
-            let groups = [];
-            let MaxGroupID = table.nextGroupID;
-            let booksID  = document.querySelectorAll(".list_id input");
-            let j;
-
-            for (i = 0; i < count.value; i++){
-                if (isAutoID) {
-                    j = Number(bookID.value) + i;
-                } else if (i==0 && !booksID[0].value) {
-                    j = Number(bookID.value);
-                } else {
-                    j = Number(booksID[i].value);
-                    if (!j) j = groups[i-1] + 1;
-                }
-                if (isNaN(j) || !Number.isInteger(j)) {
-                    error(`В ${i+1}-ой книге допущена ошибка в написании числа`);
-                    return;
-                }
-                else if (table.isSameID(j)) {
-                    error(`Книга под номером ${j} уже существует!`);
-                    return;
-                }
-                else if (groups.includes(j)) {
-                    error(`Книга под номером ${j} уже записана в эту группу!`);
-                    return;
-                }
-                groups.push(j);
-            }
-
-            for (let IN of groups) {
-                table.INSERT([name.value, author.value, genre.value, comment.value, IN, null, null, MaxGroupID]);
-            }
-            success(`search.html?type=books&group=${MaxGroupID}`, 'Группа успешно добавлена!');
-        } else {
-            if (table.isSameID(bookID.value)) {
-                error(`Книга под номером ${bookID.value} уже существует!`);
-                return;
-            }
-
-            let id = table.INSERT([name.value, author.value, genre.value, comment.value, parseInt(bookID.value), null, null, null]);
-            success(`acc.html?type=book&id=${id}`, 'Книга успешно добавлена!');
-        }
-    }
-}
-
 let msgError = new Message(['Ок'], "Ошибка", "Произошла ошибка", {cancel:0, type: "conf"});
-let msgSuccess = new Message(['Перейти в личный кабинет', 'Ок'], 'Успешно', 'Изменение прошло успешно', {cancel:1, type: 'conf'});
+let msgSuccess = new Message(['Перейти в личный кабинет', 'Ок'], 'Успешно', 'Изменение прошло успешно', {cancel:1, type: 'conf', focus:1});
 
 msgSuccess.create_message();
 msgError.create_message();
 
-const table = new Table((isBook) ? 'books': 'users');
-
-const success = (url, text) => {
-    msgSuccess.set_body = text;
-    msgSuccess.link_buttons[0].onclick = () => { window.location = url; }
-    msgSuccess.show_message();
-
-    inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-    for (let x = 0; x < inputs.length; x++) {
-        inputs[x].value = '';
-    }
-    full_check();
-}
-
-const error = (text) => {
-    msgError.set_body = text;
-    msgError.show_message();
-}
-
-document.querySelector('#submit').onclick = function() {
-    submit(); // Выполняем процесс создания ученика/книги в случае валидности
-}
-
-ready_add(); // Запускает проверку полей в add.js
+document.querySelector('#submit').onclick = submit; // Выполняем процесс создания ученика/книги в случае валидности
+readyAdd(); // Запускает проверку полей в add.js

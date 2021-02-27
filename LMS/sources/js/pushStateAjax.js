@@ -1,3 +1,5 @@
+// version 1.0 release
+
 document.addEventListener('click', (e) => { // Отключаем ссылки
     let el = e.target;
     console.log(el);

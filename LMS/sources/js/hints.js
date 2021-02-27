@@ -1,3 +1,5 @@
+// version 1.0 release
+
 function addTooltip(){ // Добавление data-tooltip для элементов по умолчанию
     let types = { // Подсказки по умолчанию (если нет в html)
         "#home": "Домой",
@@ -12,7 +14,7 @@ function addTooltip(){ // Добавление data-tooltip для элемен�
     for(let selector in types){ // Перебираем каждый селектор
         let elements = document.querySelectorAll(selector);
 
-        for(let element of elements){ // перебираем каждый элемент с селектором
+        for(let element of elements){ // Перебираем каждый элемент с селектором
             if(!element.hasAttribute("data-tooltip")){ element.setAttribute("data-tooltip", types[selector]); } // Если нет data-tooltip, то добавляем его
         }
     }
@@ -41,8 +43,6 @@ function addTooltipListener(){ // Определение элементов с t
         });
     };
 }
-
-let updateTooltip = addTooltipListener();
 
 function tooltipControl(e){ // Полный контроль подсказки
     const hintOpacity = () => Number(window.getComputedStyle(hint).opacity);
@@ -129,9 +129,8 @@ function ready_hints(){
     updateTooltip();
 }
 
-document.addEventListener("DOMContentLoaded", ready_hints);
-
+const updateTooltip = addTooltipListener();
 const tooltipTime = 150; // Врема исчезания и появления подсказки
 
-
 //elem.getBoundingClientRect();
+document.addEventListener("DOMContentLoaded", ready_hints);

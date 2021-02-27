@@ -1,22 +1,20 @@
 // version 1.0 release
 
-// const { dialog } = require("electron");
-
-class Message {
+class Message { // Класс для работы с плывающими окнами
     constructor(buttons, head, body, {activate = null, cancel = -1, focus = 0, type = "notice", esc = true, home = "esc"} ){
-        this.buttons  = buttons; // Список кнопок
-        this.head     = head; // Заголовок
-        this.body     = body; // Описание
+        this.buttons  = buttons;  // Список кнопок
+        this.head     = head;     // Заголовок
+        this.body     = body;     // Описание
         this.activate = activate; // Кнопка для активации
-        this.cancel   = cancel; // Индекс кнопки для закрытия уведомления
-        this.focus    = focus; // Индекс кнопки, которая должна находиться в фокусе
-        this.type     = type; // Тип уведомления
-        this.esc      = esc; // Возможность закрытия уведомления
-        this.home     = home; // Возможность перейти домой (disable)
+        this.cancel   = cancel;   // Индекс кнопки для закрытия уведомления
+        this.focus    = focus;    // Индекс кнопки, которая должна находиться в фокусе
+        this.type     = type;     // Тип уведомления
+        this.esc      = esc;      // Возможность закрытия уведомления
+        this.home     = home;     // Возможность перейти домой (disable)
         if (home == "esc") this.home = this.esc;
     }
 
-    class_create(){ // Создаём класс для уведомления в зависимости от типа
+    classCreate(){ // Создаём класс для уведомления в зависимости от типа
         let full_class = "mes-";
 
         if (this.type == "conf")        {full_class += "confirmation";}
@@ -26,15 +24,15 @@ class Message {
         return full_class;
     }
 
-    add_listeners(){
+    addListeners(){
         if (this.activate) { // activate - должен быть css селектор на элемент или сам элемент
-            if (typeof(this.activate) == "string"){
-                this.activate =  document.querySelector(this.activate);
+            if (typeof this.activate == "string"){
+                this.activate = document.querySelector(this.activate);
             }
             this.activate.addEventListener("click", () => this.show_message());
         }
 
-        if (this.cancel != -1) {  // close - должен быть индекс кнопки в переданном списке
+        if (this.cancel != -1) { // close - должен быть индекс кнопки в переданном списке
             this.link_buttons[this.cancel].addEventListener("click", () => this.close_message());
         }
         if (this.esc){ // Закрытие на кнопку крестика
@@ -43,7 +41,6 @@ class Message {
     }
 
     create(){ // Создаем и добавляем уведомление на страницу
-
         // Ищем тег <messages>
         let space = document.querySelector("messages");
 
@@ -54,7 +51,7 @@ class Message {
 
         // Генерируем наш dialog
         let dialog = document.createElement("dialog");
-        dialog.className = `message ${this.class_create()}`;
+        dialog.className = `message ${this.classCreate()}`;
 
         let inner = '';
         
@@ -80,7 +77,7 @@ class Message {
         space.append(dialog); // Добавляем элемент на страницу
         
         this.dialog = dialog;
-        this.add_listeners();
+        this.addListeners();
 
         return dialog;
 
@@ -90,7 +87,7 @@ class Message {
         this.dialog.remove();
     }
 
-    esc_control(){ // Контроль нажатия клавиши Esc для плавного закрытия уведомления
+    escControl(){ // Контроль нажатия клавиши Esc для плавного закрытия уведомления
         if (this.dialog.open){
             let self_mes = this;
 
@@ -113,14 +110,14 @@ class Message {
         this.dialog.showModal();
         this.link_buttons[this.focus].focus();
         this.dialog.classList.add("show");
-        this.esc_control();
+        this.escControl();
     }
 
     close(){ // Закрыть уведомление
         this.dialog.classList.remove("show");
         setTimeout(() => {
             this.dialog.close();
-            this.esc_control();
+            this.escControl();
         }, 250);
     }
 
@@ -144,7 +141,6 @@ class Message {
 
     // Сеттеры
 
-
     set set_head(value){
         this.head = value;
         this.link_head.innerHTML = value;
@@ -157,7 +153,6 @@ class Message {
 
     // Поддержка старых версий
     
-
     show_message(){ return this.show(); }
 
     close_message(){ return this.close(); }
@@ -167,15 +162,7 @@ class Message {
     create_message(){ return this.create(); }
 }
 
-
-
-function message_ready() {
-    
-}
-document.addEventListener("DOMContentLoaded", message_ready);
-
-// Код Djacon
-function sendErr() {
+function sendErr() { // Вызывается при возникновении ошибки
     document.body.innerHTML = `<a class="but" id="home" href="index.html"></a>
                                 <a class="but" id="back" onclick="history.back()"></a>
                                 <h1>Упс, вас здесь быть не должно 😱!</h1>

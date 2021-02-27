@@ -1,6 +1,6 @@
-function navigation(but){ // Общий контроль кнопок
-    // console.log(but);
+// version 1.0 release
 
+function navigation(but){ // Общий контроль кнопок
     if (but.key == "Home" && but.altKey){ // Если это alt + home
         window.location = 'index.html'; // Выполняем переход на главную
 
@@ -11,6 +11,5 @@ function navigation(but){ // Общий контроль кнопок
         window.history.forward(); // Выполняем переход вперёд
     }
 }
-
 
 document.addEventListener("keydown", navigation);

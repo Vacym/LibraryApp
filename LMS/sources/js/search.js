@@ -1,79 +1,38 @@
-function scrollControl() {
-    function check_scroll() {
-        let scroll = window.pageYOffset;
-        let screen_height = document.documentElement.clientHeight / 4;
+// version 1.0 release
 
-        if (scroll > screen_height) {
-            but_up.classList.remove('hidden');
-        } else {
-            but_up.classList.add('hidden');
-        }
-    }
-
-    function go_top() {
-        function scrolling() {
-            if (window.pageYOffset > 0) {
-                window.scrollBy(0, -iterations);
-                setTimeout(scrolling, 1000 / fps);
-            }
-        }
-        // Можно настроить
-        let fps = 60;
-        let need_time = 150; //в милисекундах
-
-        let iterations = (window.pageYOffset / (need_time / 1000) / fps);
-        scrolling();
-    }
-
-    let but_up = document.querySelector('#up');
-    window.addEventListener('scroll', check_scroll);
-    but_up.addEventListener('click', go_top);
-}
-
-function checkChoiceClick(e){
-    if (e.which == 1 && e.ctrlKey && e.isTrusted){ // Если правая кнопка мыши и удерживается ctrl
-        e.preventDefault(); // Блокируем поведение по умолчанию
-        
-        for (var result of e.path) if (result.classList.contains("result")) break; // Находим материнский блок
-
-        result.querySelector(".choice input[type='checkbox']").click(); // Имитируем клик на checkbox
-    }
-}
-
-class ToolbarControl {
+class ToolbarControl { // Класс для работы с тулбаром
     constructor() {
         this.inputs = []; // Массив с checkbox'ами
         this.toolbar = document.querySelector(".toolbar"); //Определяем тулбар
         this.dedicated = document.querySelector("#summ_checked>span"); //Определяем число с количеством выделенных элементов
         this.box_element = document.querySelector(".search_result"); //Определяем блок со всеми элементами
 
-        let observer = new MutationObserver( (m) => this.append_listener_for_new_change(m) );
+        let observer = new MutationObserver( (m) => this.appendListenerForNewChange(m) );
         observer.observe(this.box_element, {childList: true}); // Прослушка на добавление блоков
 
         document.querySelector("#remove").onclick = () => this.remove(); // Кнопка отключения всех галочек
     }
 
     //Добавление прослушивания для новых элементов (которые создаются при прокрутке страницы)
-    append_listener_for_new_change(mutations) {
+    appendListenerForNewChange(mutations) {
         for(let mutation of mutations){
             for (let node of mutation.addedNodes){ // Каждый элеиент из добавленных
                 if (node.classList.contains("notification")) continue; // Если это уведомление, пропускаем
-                this.inputs.push(node); //Добавляем в список
-                // И начинаем прослушивать
-                node.querySelector(".choice input[type='checkbox']").addEventListener("change", () => this.move_control());
+                this.inputs.push(node); //Добавляем в список и начинаем прослушивать
+                node.querySelector(".choice input[type='checkbox']").addEventListener("change", () => this.moveControl());
                 node.addEventListener("click", checkChoiceClick);
             }
-            for (let node of mutation.removedNodes){ // Каждый элемент из удлённых
+            for (let node of mutation.removedNodes){ // Каждый элемент из удалённых
                 if (node.classList.contains("notification")) continue;
                 node.removeEventListener("click", checkChoiceClick); // Удаляем прослушку
                 this.inputs.splice(this.inputs.indexOf(node), 1); // Удаляем из списка
             }
         }
-        this.move_control();
+        this.moveControl();
     }
 
     //Движение тулбара
-    move_control() {
+    moveControl() {
         let counter = 0;
         let edit = this.toolbar.querySelector("#edit"); // Кнопка редактирования
 
@@ -97,11 +56,11 @@ class ToolbarControl {
         }
 
         this.dedicated.innerHTML = counter.toString(); // Устанавливаем количество выделенных элементов
-        this.toolbar_show(show_tool);
+        this.toolbarShow(show_tool);
     }
 
     //Переключение видимости
-    toolbar_show(show) {
+    toolbarShow(show) {
         if (show) {
             this.box_element.classList.add("selecting");
             this.toolbar.classList.add("show");
@@ -116,11 +75,56 @@ class ToolbarControl {
         for (let input of this.inputs) {
             input.querySelector(".choice input[type='checkbox']").checked = false;
         }
-        this.move_control();
+        this.moveControl();
     }
 }
 
-function listenerControl(){
+function scrollControl() { // Инициализируем контроль над кнопкой для скролла наверх
+    function checkScroll() {
+        let scroll = window.pageYOffset;
+        let screen_height = document.documentElement.clientHeight / 4;
+
+        if (scroll > screen_height) {
+            but_up.classList.remove('hidden');
+        } else {
+            but_up.classList.add('hidden');
+        }
+    }
+
+    function goTop() {
+        function scrolling() {
+            if (window.pageYOffset > 0) {
+                window.scrollBy(0, -iterations);
+                setTimeout(scrolling, 1000 / fps);
+            }
+        }
+        // Можно настроить
+        let fps = 60;
+        let need_time = 150; //в милисекундах
+
+        let iterations = (window.pageYOffset / (need_time / 1000) / fps);
+        scrolling();
+    }
+
+    let but_up = document.querySelector('#up');
+    window.addEventListener('scroll', checkScroll);
+    but_up.addEventListener('click', goTop);
+}
+
+function checkChoiceClick(e){ // Проверяет нажатие ctrl+click
+    if (e.which == 1 && e.ctrlKey && e.isTrusted){ // Если правая кнопка мыши и удерживается ctrl
+        e.preventDefault(); // Блокируем поведение по умолчанию
+        
+        let result;
+        for (result of e.path) {
+            if (result.classList.contains("result")) break; // Находим материнский блок
+        }
+
+        result.querySelector(".choice input[type='checkbox']").click(); // Имитируем клик на checkbox
+    }
+}
+
+function listenerControl(){ // Инициализируем прослушку различных объектов экрана
     document.querySelector('#edit').onclick = function() { // Запускается когда пользователь нажимает на карандашик
         let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked");
         let count = checkboxes.length;
@@ -130,22 +134,22 @@ function listenerControl(){
             return;
         }
 
-        let ID = parseInt(checkboxes[0].id);
+        let ID = checkboxes[0].id|0; // Сохраняем ID книги/читателя
 
-        if (isUsers) {
-            window.location = `acc.html?type=user&id=${ID}&choose=edit`; // Это надо будет исправить
+        if (isUsers) { // Если читатель
+            window.location = `acc.html?type=user&id=${ID}&choose=edit`;
         } else {
             if (ID < 0) { // Если эта группа
-                window.location = `acc.html?type=group&id=${-ID}&choose=edit`; // Это надо будет исправить
+                window.location = `acc.html?type=group&id=${-ID}&choose=edit`;
             } else {
-                window.location = `acc.html?type=book&id=${ID}&choose=edit`; // Это надо будет исправить
+                window.location = `acc.html?type=book&id=${ID}&choose=edit`;
             }
         }
     };
 
     document.querySelector('#input').addEventListener('input', (e) => { // Обновляет результаты поиска при написании кода
-        GET.q = e.target.value;
-        changeDB(GET.q);
+        GET.q = e.target.value; // Призваиваем запросу новое значение
+        changeDB(GET.q); // Меняем значение поиска исходя из запроса
     });
 
     document.querySelector("select").addEventListener('change', (e) => { // Обновляет результаты поиска при изменении категории 
@@ -154,14 +158,8 @@ function listenerControl(){
     });
 }
 
-function messageControl(){
-    var msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
-    msgDelete.create();
-
-    document.querySelector('#del').onclick = deleteBlocks;
-    document.addEventListener("keydown", (e) => { if (e.key == "Delete") deleteBlocks(); });
-
-    function deleteBlocks(){  // Запускается, когда пользователь нажимает на кнопку удалить или на клавишу delete
+function messageControl(){ // Инициализуем контроль над всплывающими окнами
+    function deleteMessage(){  // Запускается, когда пользователь нажимает на кнопку удалить или на клавишу <del>
         let count = document.querySelectorAll(".choice input[type='checkbox']:checked").length;
         if (count < 1) return;
 
@@ -173,7 +171,7 @@ function messageControl(){
             return i;
         }
     
-        if (!isUsers) {
+        if (!isUsers) { // Если книга/группа
             let count_group = document.querySelectorAll(".group .choice input[type='checkbox']:checked").length;
             let count_books = count - count_group;
 
@@ -181,8 +179,8 @@ function messageControl(){
             let valid_2 = ['г', 'ги', 'га'];
             let valid_3 = ['п', 'пы', 'па'];
 
-            let a = get_i(count_books); // index of count_books
-            let b = get_i(count_group); // index of count_groups
+            let a = get_i(count_books); // Индекс окончания для книги
+            let b = get_i(count_group); // Индекс окончания для группы
 
             msgDelete.set_body = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
             msgDelete.show();
@@ -198,117 +196,92 @@ function messageControl(){
         msgDelete.show();
     }
 
-    msgDelete.link_buttons[0].onclick = () => { // Если пользователь решил удалить книги/учеников
-        let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Get all values of checkboxes in users
+    function deleteBlock() {
+        let checkboxes = document.querySelectorAll(".choice input[type='checkbox']:checked"); // Получаем массив из ID тех, кого нужно удалить
 
-        if (!isUsers) {
+        if (!isUsers) { // Если это книга/группа книг
             for (let item of checkboxes) {
                 books.DELETE(item.id);
             }
-            // result("Книги успешно удалены!");
-            window.location = '';
-        }
+        } else { // Если читатель
+           for (let item of checkboxes) {
+                users.DELETE(item.id);
+                let userBooks = books.equal(books.translate(), 'userid', item.id);
 
-        for (let item of checkboxes) {
-            users.DELETE(item.id);
+                if (userBooks) {
+                    let values = {
+                        'userid': null,
+                        'dateofissue': null
+                    };
 
-            let userBooks = books.equal(books.translate(), 'userid', item.id);
-
-            if (userBooks) {
-                let values = {
-                    'userid': null,
-                    'dateofissue': null
-                };
-
-                let ID;
-
-                for (let value of userBooks) {
-                    ID = books.getIndexFromID(value.id);
-                    books.UPDATE(ID, values);
+                    let ID;
+                    for (let value of userBooks) {
+                        ID = books.getIndexFromID(value.id);
+                        books.UPDATE(ID, values);
+                    }
                 }
+     
             }
-
+        
         }
-        // msgDelete.set_body = "Ученики успешно удалены!"
         window.location = '';
-    };
-}
-
-function readySearch() {
-    definition_variables();
-    createInput();
-    new ToolbarControl();
-    messageControl();
-    listenerControl();
-    scrollControl();
-
-    send();
-}
-
-document.addEventListener("contentLoaded", (event) => {
-    if (event.detail.need_scripts.includes("search.js")){
-        readySearch();
     }
-});
 
-document.addEventListener('scroll', checkEndOfPage); // Прослушиваем скролл по странице
-document.addEventListener("DOMContentLoaded", () => { readySearch(); });
+    let msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
+    msgDelete.create();
+    msgDelete.link_buttons[0].onclick = deleteBlock;
 
-// Код Djacon
-var page = 0; // Так сказать, значение, с которого идет отсчет о 20 новых книгах / учениках
-var allowLoading = true; // Check, if request is free
-var isEndOfTable = false; // Check, if table is finished in database
-var site = document.documentElement; // All html document
+    document.querySelector('#del').onclick = deleteMessage;
+    document.addEventListener("keydown", (e) => { if (e.key == "Delete") deleteMessage(); });
+}
 
-function createInput(){ // Доб
-    let main_place = document.querySelector("main");
-    let header = document.createElement('h2');
+function createInput(){ // Добавляет панель поиска сверху
+    let mainBlock = document.querySelector("main"); // Блок main
+    let header = document.createElement('h2');      // Блок для заголовка
 
-    if (GET.group) {
+    if (GET.group) { // Если группа
         let data = books.translate();
-        let name = books.equal(data,'groupid',GET.group)[0].name;
+        let name = books.equal(data,'groupid',GET.group, true).name;
 
-        if (name) {
-            header.innerHTML = `Поиск книг по группе «${name}»`; // Print name of group
+        if (name) { // Если у группы есть название (и такое бывает)
+            header.innerHTML = `Поиск книг по группе «${name}»`; // Вывод названия группы на экран
         }
-    } else {
+    } else { // Если книга/читатель
         header.innerHTML = (isUsers) ? 'Поиск учеников': 'Поиск книг';
     }
 
-    let div = document.createElement('div');
+    let div = document.createElement('div'); // Блок с параметрами поиска
     div.className = 'find_input';
 
-    let text = `<input type='search' name='q' id='input' autofocus>
-                <select name="order">`;
+    let text = `<input type='search' name='q' id='input' autofocus><select name="order">`;
 
-    let arr = {'surname': 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс'};
-
-    if (!isUsers) {
-        arr = {'name': 'Название', 'author': 'Автор', 'inventoryno': 'ID', 'genre': 'Жанр'};
+    let arr = {'surname': 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс'}; // Параметры поиска
+    if (!isUsers) { // Если не читатель
+        arr = {'name': 'Название', 'author': 'Автор', 'inventoryno': 'ID', 'genre': 'Жанр'};        // Параметры поиска
     }
 
-    for (let item in arr) {
+    for (let item in arr) { // Конструируем параметры поиска
         text += `<option value='${item}'>${arr[item]}</option>`;
     }
     text += '</select>';
 
-    if (GET.group) text += `<input type='hidden' name='group' value='${GET.group}'>`;
-    if (GET.im)    text += `<input type='hidden' name='im' value='${GET.im}'>`;
-    if (GET.del)   text += "<input type='hidden' name='del' value=1>";
+    if (GET.group) text += `<input type='hidden' name='group' value='${GET.group}'>`; // Если страница группы
+    if (GET.im)    text += `<input type='hidden' name='im' value='${GET.im}'>`;       // Если страница бронирования
+    if (GET.del)   text += "<input type='hidden' name='del' value=1>";                // Если страница сдачи
 
     text += `<input type='hidden' name='type' value=${GET.type}>`;
-    text += '<button type="button" id="submit"></button></div>';
+    text += '<button type="button" id="submit" tabindex="-1"></button></div>';
 
     div.innerHTML = text;
-    main_place.append(header);
-    main_place.append(div);
+    mainBlock.append(header);
+    mainBlock.append(div);
 
-    sr = document.createElement("div");
-    sr.className = "search_result";
-    main_place.append(sr);
+    let searchResult = document.createElement("div");
+    searchResult.className = "search_result";
+    mainBlock.append(searchResult);
 }
 
-function createBlock(data, list_table) { // Создает блок с книгой/группой книг/учеником
+function createBlock(data, resultArray) { // Создает блок с книгой, читателем или группой
     let a = document.createElement('a');
     let innerHTML;
 
@@ -327,7 +300,7 @@ function createBlock(data, list_table) { // Создает блок с книг�
         	[date[0], date[1]] = [date[1], date[0]]
         	date = date.join('.');
 
-        	let days = ((Date.now() - new Date(date).getTime())/3600000/24)|0
+        	let days = 30 - ((Date.now() - new Date(date).getTime())/3600000/24)|0
         	days = (days) ? days + ' дней': 'Сегодня';
             
             innerHTML += `\
@@ -384,10 +357,10 @@ function createBlock(data, list_table) { // Создает блок с книг�
     }
 
     a.innerHTML = innerHTML;
-    list_table.append(a); // Add new block
+    resultArray.append(a); // Add new block
 }
 
-function send() { // Упакувывает и создает массив при скролле до конца страницы
+function send() { // Упаковывает и создает массив при скролле до конца страницы
     if (!allowLoading) return;
     allowLoading = false;
 
@@ -422,7 +395,7 @@ function send() { // Упакувывает и создает массив пр�
 
             } else {
                 if (data[i].userid) {
-                    let user = users.equal(users.translate(), 'id', data[i].userid)[0];
+                    let user = users.equal(users.translate(), 'id', data[i].userid, true);
 
                     data[i].owner = `${user.surname} ${user.firstname} ${user.lastname}`;
                 }
@@ -468,13 +441,13 @@ function parseURL() { // Парсер ссылки на страницу
 }
 
 function add(data) { // Добавляет книги/учеников на страницу
-    let list_table = document.querySelector('.search_result');
+    let resultArray = document.querySelector('.search_result');
 
     if (data.length != 0) {
         console.log("New stack...");
 
         for (let i = 0; i < data.length; i++) {
-            createBlock(data[i], list_table);
+            createBlock(data[i], resultArray);
         }
 
         page += 20;
@@ -484,7 +457,7 @@ function add(data) { // Добавляет книги/учеников на ст
             let notice = document.createElement("div");
             notice.classList.add("notification");
             notice.innerHTML = 'Ничего не найдено';
-            list_table.append(notice);
+            resultArray.append(notice);
         }
 
         console.log('THE END');
@@ -492,32 +465,52 @@ function add(data) { // Добавляет книги/учеников на ст
     }
 }
 
-function checkEndOfPage() { // Функция, которая вызывает другую функцию когда пользователь доходит до конца страницы
+function checkEndOfPage() { // Проверяет, дошел ли пользователь до конца страницы
     if (!isEndOfTable && (site.scrollTop + site.clientHeight) * 1.04 >= site.scrollHeight) {
         send();
     }
 }
 
-// Часть кода, отвечающая за верхний тулбар
 function changeDB(query) { // Меняем результаты поиска
-    document.querySelector('.search_result').innerHTML = ''; // Стираем значение поиска
+    document.querySelector('.search_result').innerHTML = ''; // Очищаем значения поиска
 
-    db = isUsers ? users.get(query) : books.get(query); // Изменяем результаты поиска
+    db = isUsers ? users.get(query): books.get(query); // Изменяем результаты поиска
     
     isEndOfTable = false;
     page = 0;
     send(); // Выводим результаты на экран
 }
 
-function definition_variables(){
-    GET = parseURL();
-    isUsers = (GET.type == 'users');
+function readySearch() {
+    createInput();        // Создаем панель поиска
+    new ToolbarControl(); // Создаем новый класс для работы с тулбаром
+    messageControl();     // Инициализуем контроль над всплывающими окнами
+    listenerControl();    // Инициализируем прослушку различных объектов экрана
+    scrollControl();      // Инициализируем контроль над кнопкой для скролла наверх
 
-    db = isUsers ? users.get(): books.get();
+    send();               // Конструируем первую партию книг
 }
 
-let db; // Массив с БД
-let GET; // Параметры страницы
-let isUsers; // Является ли это страницей ученика
+// Параметры для работы с скроллом в поиске
+let page = 0; // Так сказать, значение, с которого идет отсчет о 20 новых книгах / учениках
+let allowLoading = true; // Проверяет, является ли запрос открытым
+let isEndOfTable = false; // Проверяет, дошел ли пользователь до конца страницы
+
+// Константы
+const site = document.documentElement; // Весь html-документ
 const users = new Table('users'); // Инициализируем таблицу ученика
 const books = new Table('books'); // Инициализируем таблицу книги
+
+// Параметры для работы с главными компонентами страницы
+let GET = parseURL(); // Параметры страницы
+let isUsers = (GET.type == 'users'); // Является ли это страницей ученика
+let db = isUsers ? users.get(): books.get(); // Массив с БД
+
+document.addEventListener("contentLoaded", (e) => {
+    if (e.detail.need_scripts.includes("search.js")){
+        readySearch();
+    }
+});
+
+document.addEventListener('scroll', checkEndOfPage); // Прослушиваем скролл по странице
+document.addEventListener("DOMContentLoaded", () => { readySearch(); });
