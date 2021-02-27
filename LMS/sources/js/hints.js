@@ -1,5 +1,4 @@
 function addTooltip(){ // Добавление data-tooltip для элементов по умолчанию
-    console.log(new Date().getTime());
     let types = { // Подсказки по умолчанию (если нет в html)
         "#home": "Домой",
         "#back": "Назад",
@@ -7,6 +6,7 @@ function addTooltip(){ // Добавление data-tooltip для элемен�
         "#add_book": "Получить книгу",
         "#delete_book": "Сдать книгу",
         "#del" : "Удалить",
+        "#remove" : "Отменить выделение",
     };
 
     for(let selector in types){ // Перебираем каждый селектор
@@ -27,8 +27,6 @@ function addTooltipListener(){ // Определение элементов с t
         nowTooltip = Array.prototype.slice.call(nowTooltip);
 
         for(let element of nowTooltip){ // Перебираем элемненты в реальности
-            console.log(element, withTooltip.includes(element));
-
             if (!withTooltip.includes(element)){ // Если реального элемента нет в нашем массиве
                 withTooltip.push(element); // Мы его добавляем
                 element.addEventListener("mouseenter", tooltipControl); // И начинаем прослушивать
