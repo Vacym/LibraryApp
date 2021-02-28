@@ -15,13 +15,13 @@ class Message { // Класс для работы с плывающими окн
     }
 
     classCreate(){ // Создаём класс для уведомления в зависимости от типа
-        let full_class = "mes-";
+        let fullСlass = "mes-";
 
-        if (this.type == "conf")        {full_class += "confirmation";}
-        else if (this.type == "notice") {full_class += "notice";}
-        else                            {full_class += this.type;}
+        if (this.type == "conf")        {fullСlass += "confirmation";}
+        else if (this.type == "notice") {fullСlass += "notice";}
+        else                            {fullСlass += this.type;}
 
-        return full_class;
+        return fullСlass;
     }
 
     addListeners(){
@@ -29,14 +29,14 @@ class Message { // Класс для работы с плывающими окн
             if (typeof this.activate == "string"){
                 this.activate = document.querySelector(this.activate);
             }
-            this.activate.addEventListener("click", () => this.show_message());
+            this.activate.addEventListener("click", () => this.show());
         }
 
         if (this.cancel != -1) { // close - должен быть индекс кнопки в переданном списке
-            this.link_buttons[this.cancel].addEventListener("click", () => this.close_message());
+            this.linkButtons[this.cancel].addEventListener("click", () => this.close());
         }
         if (this.esc){ // Закрытие на кнопку крестика
-            this.link_close.addEventListener("click", () => this.close_message());
+            this.linkClose.addEventListener("click", () => this.close());
         }
     }
 
@@ -83,18 +83,18 @@ class Message { // Класс для работы с плывающими окн
 
     }
 
-    remove(){
+    remove(){ // Удаление этого сообщения
         this.dialog.remove();
     }
 
     escControl(){ // Контроль нажатия клавиши Esc для плавного закрытия уведомления
         if (this.dialog.open){
-            let self_mes = this;
+            let selfMes = this;
 
             document.querySelector('body').onkeydown = (e) => {
                 if (e.code == "Escape") {
                     e.preventDefault();
-                    if (self_mes.esc){ self_mes.close_message(); }
+                    if (selfMes.esc){ selfMes.close(); }
                 }
                 // else if (e.key == "Home" && e.altKey){ // Если это alt + home
                 //     e.preventDefault();
@@ -108,7 +108,7 @@ class Message { // Класс для работы с плывающими окн
     show(){ // Показать уведомление
         if (this.dialog.open){return false;}
         this.dialog.showModal();
-        this.link_buttons[this.focus].focus();
+        this.linkButtons[this.focus].focus();
         this.dialog.classList.add("show");
         this.escControl();
     }
@@ -123,43 +123,33 @@ class Message { // Класс для работы с плывающими окн
 
     // Геттеры
 
-    get link_buttons(){
+    get linkButtons(){ // Массив кнопок
         return this.dialog.querySelectorAll(".modal-footer button");
     }
-    get link_close(){
+    get linkClose(){ // Крестик закрытия
         return this.dialog.querySelector(".modal-close");
     }
-    get link_head(){
+    get linkHead(){ // Заголовок сообщения
         return this.dialog.querySelector(".modal-header");
     }
-    get link_body(){
+    get linkBody(){ // Тело сообщения
         return this.dialog.querySelector(".modal-body");
     }
-    get self(){
+    get self(){ // Блок с диалогом
         return this.dialog;
     }
 
     // Сеттеры
 
-    set set_head(value){
+    set setHead(value){ // Изменить заголовок
         this.head = value;
-        this.link_head.innerHTML = value;
+        this.linkHead.innerHTML = value;
     }
 
-    set set_body(value){
+    set setBody(value){ // Изменить тело
         this.body = value;
-        this.link_body.innerHTML = value;
+        this.linkBody.innerHTML = value;
     }
-
-    // Поддержка старых версий
-    
-    show_message(){ return this.show(); }
-
-    close_message(){ return this.close(); }
-
-    remove_message(){ return this.remove(); }
-
-    create_message(){ return this.create(); }
 }
 
 function sendErr() { // Вызывается при возникновении ошибки

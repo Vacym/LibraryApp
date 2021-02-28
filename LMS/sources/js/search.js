@@ -182,7 +182,7 @@ function messageControl(){ // Инициализуем контроль над �
             let a = get_i(count_books); // Индекс окончания для книги
             let b = get_i(count_group); // Индекс окончания для группы
 
-            msgDelete.set_body = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
+            msgDelete.setBody = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
             msgDelete.show();
             return;
         }
@@ -192,7 +192,7 @@ function messageControl(){ // Инициализуем контроль над �
 
         let i = get_i(count);
 
-        msgDelete.set_body = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
+        msgDelete.setBody = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
         msgDelete.show();
     }
 
@@ -229,7 +229,7 @@ function messageControl(){ // Инициализуем контроль над �
 
     let msgDelete = new Message(['Удалить', 'Отменить'], 'Предупреждение', 'Удаление', {cancel:1, type: 'conf'});
     msgDelete.create();
-    msgDelete.link_buttons[0].onclick = deleteBlock;
+    msgDelete.linkButtons[0].onclick = deleteBlock;
 
     document.querySelector('#del').onclick = deleteMessage;
     document.addEventListener("keydown", (e) => { if (e.key == "Delete") deleteMessage(); });
@@ -297,10 +297,10 @@ function createBlock(data, resultArray) { // Создает блок с книг
 
         data.books.forEach((book) => {
         	let date = book.dateofissue.split('.'); // Перевод из русской даты в английскую
-        	[date[0], date[1]] = [date[1], date[0]]
+        	[date[0], date[1]] = [date[1], date[0]];
         	date = date.join('.');
 
-        	let days = 30 - ((Date.now() - new Date(date).getTime())/3600000/24)|0
+        	let days = 30 - ((Date.now() - new Date(date).getTime())/3600000/24)|0;
         	days = (days) ? days + ' дней': 'Сегодня';
             
             innerHTML += `\

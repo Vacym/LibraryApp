@@ -223,9 +223,9 @@ function submit() { // Отправляет запрос на создание �
 }
 
 function success(url, text) { // Запускается при успешном создании читателя/книги
-    msgSuccess.set_body = text;
-    msgSuccess.link_buttons[0].onclick = () => { window.location = url; }
-    msgSuccess.show_message();
+    msgSuccess.setBody = text;
+    msgSuccess.linkButtons[0].onclick = () => { window.location = url; }
+    msgSuccess.show();
 
     inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
     for (let x = 0; x < inputs.length; x++) {
@@ -235,8 +235,8 @@ function success(url, text) { // Запускается при успешном 
 }
 
 function error(text) { // Вылезает в случае ошибки
-    msgError.set_body = text;
-    msgError.show_message();
+    msgError.setBody = text;
+    msgError.show();
 }
 
 // Константы
@@ -318,8 +318,8 @@ if (!isBook) { // Если ученик
 let msgError = new Message(['Ок'], "Ошибка", "Произошла ошибка", {cancel:0, type: "conf"});
 let msgSuccess = new Message(['Перейти в личный кабинет', 'Ок'], 'Успешно', 'Изменение прошло успешно', {cancel:1, type: 'conf', focus:1});
 
-msgSuccess.create_message();
-msgError.create_message();
+msgSuccess.create();
+msgError.create();
 
 document.querySelector('#submit').onclick = submit; // Выполняем процесс создания ученика/книги в случае валидности
 readyAdd(); // Запускает проверку полей в add.js

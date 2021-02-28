@@ -41,12 +41,12 @@ if (!user || !book || (book.userid && !isGive) || (!book.userid && isGive)) { //
     document.getElementById('date').valueAsDate = new Date(); // Добавляет в поле с датой сегодняшнюю дату
   
     let msgSuccess = new Message(['Ок'], 'Успешно', 'Изменение прошло успешно', {type: 'conf', esc: false}); // Инициализируем окно для вывода успеха
-    msgSuccess.create_message(); // Создаем окно
+    msgSuccess.create(); // Создаем окно
 
     function success(url, text) { // Вызывается при успешной обработке
-        msgSuccess.set_body = text;
-        msgSuccess.link_buttons[0].onclick = () => { window.location = url; }
-        msgSuccess.show_message();
+        msgSuccess.setBody = text;
+        msgSuccess.linkButtons[0].onclick = () => { window.location = url; }
+        msgSuccess.show();
     };
 
     let submit = document.querySelector('#submit'); // Инициализируем кнопку для сдачи/получения книги

@@ -252,9 +252,9 @@ if (GET.choose != 'edit') { // Личный кабинет
     }
 
     let msgDelete = new Message(["Удалить", "Отменить"], "Удаление", "Вы уверены, что хотите удалить профиль?", {activate: "#del", cancel: 1, type: "conf"});
-    msgDelete.create_message();
+    msgDelete.create();
 
-    msgDelete.link_buttons[0].onclick = function () {
+    msgDelete.linkButtons[0].onclick = function () {
         if (isBook) { // Если книга/группа
             books.DELETE((isBook == 2) ? userBooks.id: -userBooks[0].groupid); // Удаляем книгу/группу из таблицы с id равным введенному
         } else { // Если читатель
@@ -278,17 +278,17 @@ if (GET.choose != 'edit') { // Личный кабинет
 
     let msgError = new Message(['Ок'], "Ошибка", "Произошла ошибка", {cancel:0, type: "conf"});
     let msgSuccess = new Message(['Ок'], 'Успешно', 'Изменение прошло успешно', {type: 'conf', esc: false}) 
-    msgSuccess.create_message();
-    msgError.create_message();
+    msgSuccess.create();
+    msgError.create();
 
     function success(url, text) {
-        msgSuccess.set_body = text;
-        msgSuccess.link_buttons[0].onclick = () => { window.location = url; }
-        msgSuccess.show_message();
+        msgSuccess.setBody = text;
+        msgSuccess.linkButtons[0].onclick = () => { window.location = url; }
+        msgSuccess.show();
     }
     
     function error(text) {
-        msgError.set_body = text;
-        msgError.show_message();
+        msgError.setBody = text;
+        msgError.show();
     }
 }
