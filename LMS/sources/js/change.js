@@ -44,7 +44,7 @@ if (!user || !book || (book.userid && !isGive) || (!book.userid && isGive)) { //
     msgSuccess.create(); // Создаем окно
 
     function success(url, text) { // Вызывается при успешной обработке
-        msgSuccess.setBody = text;
+        msgSuccess.body = text;
         msgSuccess.linkButtons[0].onclick = () => { window.location = url; }
         msgSuccess.show();
     };

@@ -3,8 +3,8 @@
 class Message { // Класс для работы с плывающими окнами
     constructor(buttons, head, body, {activate = null, cancel = -1, focus = 0, type = "notice", esc = true, home = "esc"} ){
         this.buttons  = buttons;  // Список кнопок
-        this.head     = head;     // Заголовок
-        this.body     = body;     // Описание
+        this._head     = head;     // Заголовок
+        this._body     = body;     // Описание
         this.activate = activate; // Кнопка для активации
         this.cancel   = cancel;   // Индекс кнопки для закрытия уведомления
         this.focus    = focus;    // Индекс кнопки, которая должна находиться в фокусе
@@ -55,11 +55,11 @@ class Message { // Класс для работы с плывающими окн
 
         let inner = '';
         
-        if (this.head){ // Если есть заголовок
-            inner += `<h3 class="modal-header">${this.head}</h3>`;
+        if (this._head){ // Если есть заголовок
+            inner += `<h3 class="modal-header">${this._head}</h3>`;
         }
-        if (this.body){ // Если есть описание
-            inner += `<div class="modal-body">${this.body}</div>`;
+        if (this._body){ // Если есть описание
+            inner += `<div class="modal-body">${this._body}</div>`;
         }
         if (this.buttons){ // Если есть кнопки
             inner += `<footer class="modal-footer">`;
@@ -107,6 +107,7 @@ class Message { // Класс для работы с плывающими окн
 
     show(){ // Показать уведомление
         if (this.dialog.open){return false;}
+        this.lastFocus = document.activeElement; // Элемент, на котором был фокус
         this.dialog.showModal();
         this.linkButtons[this.focus].focus();
         this.dialog.classList.add("show");
@@ -118,6 +119,7 @@ class Message { // Класс для работы с плывающими окн
         setTimeout(() => {
             this.dialog.close();
             this.escControl();
+            this.lastFocus.focus(); // Возвращаем фокус
         }, 250);
     }
 
@@ -125,6 +127,9 @@ class Message { // Класс для работы с плывающими окн
 
     get linkButtons(){ // Массив кнопок
         return this.dialog.querySelectorAll(".modal-footer button");
+    }
+    get linkButtonsBox(){ // Область с кнопками
+        return this.dialog.querySelectorAll(".modal-footer");
     }
     get linkClose(){ // Крестик закрытия
         return this.dialog.querySelector(".modal-close");
@@ -139,15 +144,19 @@ class Message { // Класс для работы с плывающими окн
         return this.dialog;
     }
 
+    get body(){ return this._body; }
+
+    get head(){ return this._head; }
+
     // Сеттеры
 
-    set setHead(value){ // Изменить заголовок
-        this.head = value;
+    set head(value){ // Изменить заголовок
+        this._head = value;
         this.linkHead.innerHTML = value;
     }
 
-    set setBody(value){ // Изменить тело
-        this.body = value;
+    set body(value){ // Изменить тело
+        this._body = value;
         this.linkBody.innerHTML = value;
     }
 }

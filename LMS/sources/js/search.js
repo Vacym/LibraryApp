@@ -5,10 +5,10 @@ class ToolbarControl { // Класс для работы с тулбаром
         this.inputs = []; // Массив с checkbox'ами
         this.toolbar = document.querySelector(".toolbar"); //Определяем тулбар
         this.dedicated = document.querySelector("#summ_checked>span"); //Определяем число с количеством выделенных элементов
-        this.box_element = document.querySelector(".search_result"); //Определяем блок со всеми элементами
+        this.boxElement = document.querySelector(".search_result"); //Определяем блок со всеми элементами
 
         let observer = new MutationObserver( (m) => this.appendListenerForNewChange(m) );
-        observer.observe(this.box_element, {childList: true}); // Прослушка на добавление блоков
+        observer.observe(this.boxElement, {childList: true}); // Прослушка на добавление блоков
 
         document.querySelector("#remove").onclick = () => this.remove(); // Кнопка отключения всех галочек
     }
@@ -46,8 +46,8 @@ class ToolbarControl { // Класс для работы с тулбаром
             }
         }
 
-        let show_tool = false;
-        if (counter > 0) show_tool = true; // Если что-то выбрано, показывем панель
+        let showTool = false;
+        if (counter > 0) showTool = true; // Если что-то выбрано, показывем панель
 
         if(counter > 1){ // Если выбрано больше одного
             edit.classList.add("deactiv"); // Отключаем редактирование
@@ -56,16 +56,16 @@ class ToolbarControl { // Класс для работы с тулбаром
         }
 
         this.dedicated.innerHTML = counter.toString(); // Устанавливаем количество выделенных элементов
-        this.toolbarShow(show_tool);
+        this.toolbarShow(showTool);
     }
 
     //Переключение видимости
     toolbarShow(show) {
         if (show) {
-            this.box_element.classList.add("selecting");
+            this.boxElement.classList.add("selecting");
             this.toolbar.classList.add("show");
         } else {
-            this.box_element.classList.remove("selecting");
+            this.boxElement.classList.remove("selecting");
             this.toolbar.classList.remove("show");
         }
     }
@@ -82,12 +82,12 @@ class ToolbarControl { // Класс для работы с тулбаром
 function scrollControl() { // Инициализируем контроль над кнопкой для скролла наверх
     function checkScroll() {
         let scroll = window.pageYOffset;
-        let screen_height = document.documentElement.clientHeight / 4;
+        let screenHeight = document.documentElement.clientHeight / 4;
 
-        if (scroll > screen_height) {
-            but_up.classList.remove('hidden');
+        if (scroll > screenHeight) {
+            butUp.classList.remove('hidden');
         } else {
-            but_up.classList.add('hidden');
+            butUp.classList.add('hidden');
         }
     }
 
@@ -100,15 +100,15 @@ function scrollControl() { // Инициализируем контроль на
         }
         // Можно настроить
         let fps = 60;
-        let need_time = 150; //в милисекундах
+        let needTime = 150; //в милисекундах
 
-        let iterations = (window.pageYOffset / (need_time / 1000) / fps);
+        let iterations = (window.pageYOffset / (needTime / 1000) / fps);
         scrolling();
     }
 
-    let but_up = document.querySelector('#up');
+    let butUp = document.querySelector('#up');
     window.addEventListener('scroll', checkScroll);
-    but_up.addEventListener('click', goTop);
+    butUp.addEventListener('click', goTop);
 }
 
 function checkChoiceClick(e){ // Проверяет нажатие ctrl+click
@@ -184,7 +184,7 @@ function messageControl(){ // Инициализуем контроль над �
             let a = get_i(count_books); // Индекс окончания для книги
             let b = get_i(count_group); // Индекс окончания для группы
 
-            msgDelete.setBody = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
+            msgDelete.body = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
             msgDelete.show();
             return;
         }
@@ -194,7 +194,7 @@ function messageControl(){ // Инициализуем контроль над �
 
         let i = get_i(count);
 
-        msgDelete.setBody = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
+        msgDelete.body = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
         msgDelete.show();
     }
 
@@ -251,6 +251,7 @@ function createInput(){ // Добавляет панель поиска свер
     } else { // Если книга/читатель
         header.innerHTML = (isUsers) ? 'Поиск учеников': 'Поиск книг';
     }
+    header.innerHTML += `<span id="find-count">Найдено: <b>${db.length}</b></span>`;
 
     let div = document.createElement('div'); // Блок с параметрами поиска
     div.className = 'find_input';
@@ -480,6 +481,7 @@ function changeDB(query) { // Меняем результаты поиска
     page = 0;
     send(); // Выводим результаты на экран
     console.log(`Всего: ${db.length}`)
+    document.querySelector("#find-count").innerHTML = `Найдено: <b>${db.length}</b>`; // Выводит количество найденных элементов
 }
 
 function readySearch() {

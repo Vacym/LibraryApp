@@ -47,7 +47,6 @@ if (GET.choose != 'edit') { // Личный кабинет
 
     if (isBook) { // Если страница книжная
         accBlock.className = 'books';
-        console.log(_arr.fullname)
 
         if (user.length != 0) { // Если книга занята
             accBlock.innerHTML = `<tr>
@@ -159,7 +158,7 @@ if (GET.choose != 'edit') { // Личный кабинет
             }
 
             let params = users.SELECT(); // Сохраняем данные таблицы в переменную
-            let ID = users.getIndexFromID(user['id']); // Сохраняем индекс нужного столбца
+            let ID = users.getIndexFromID(user.id); // Сохраняем индекс нужного столбца
 
             let values = { // Создаем словарь, для изменения значений столбца
                 'firstname': firstname.value,
@@ -167,11 +166,11 @@ if (GET.choose != 'edit') { // Личный кабинет
                 'lastname':  lastname.value,
                 'class':     classNum.value,
                 'letter':    classLtr.value
-            }
+            };
 
             users.UPDATE(ID, values); // Обновляем значения, того самого ученика            
             success(`acc.html?type=${GET.type}&id=${GET.id}`, 'Ученик успешно изменен!');
-        }
+        };
     } else { // Если книга
         box.querySelector('#genre').className = 'good_input';
         if (isBook == 2) { // Если книга
@@ -204,17 +203,17 @@ if (GET.choose != 'edit') { // Личный кабинет
 
             if (isBook == 1) { // Если группа
                 let IDs = [];
-                let data = books.SELECT()['groupid']['users'];
+                let data = books.SELECT().groupid.users;
 
                 let values = {
                     'name':    name.value,
                     'author':  author.value,
                     'genre':   genre.value,
                     'comment': comment.value
-                }
+                };
 
                 for (let item in data) {
-                    if (data[item] == _arr['groupid']) {
+                    if (data[item] == _arr.groupid) {
                         IDs.push(parseInt(item));
                     }
                 }
@@ -229,17 +228,17 @@ if (GET.choose != 'edit') { // Личный кабинет
                     books.UPDATE(ID, values);
                 }
 
-                success(`search.html?type=books&group=${GET['id']}`, 'Группа успешно изменена!');
+                success(`search.html?type=books&group=${GET.id}`, 'Группа успешно изменена!');
                 return;
             }
 
-            if (bookID.value != userBooks['inventoryno'] && books.isSameID(bookID.value)) { // Если выбрана занятая книга, также вернуть ошибку
+            if (bookID.value != userBooks.inventoryno && books.isSameID(bookID.value)) { // Если выбрана занятая книга, также вернуть ошибку
                 error(`Книга под номером '${bookID.value}' уже существует!`);
                 return;
             }
 
             let params = books.SELECT(); // Сохраняем данные таблицы в переменную
-            let ID = books.getIndexFromID(userBooks['id']); // Сохраняем индекс нужного столбца
+            let ID = books.getIndexFromID(userBooks.id); // Сохраняем индекс нужного столбца
 
             let values = { // Создаем словарь, для изменения значений столбца
                 'name': name.value,
@@ -247,11 +246,11 @@ if (GET.choose != 'edit') { // Личный кабинет
                 'genre': genre.value,
                 'comment': comment.value,
                 'inventoryno': bookID.value
-            }
+            };
 
             books.UPDATE(ID, values); // Обновляем значения, того самого ученика
-            success(`acc.html?type=book&id=${GET['id']}`, 'Книга успешна изменена!');
-        }
+            success(`acc.html?type=book&id=${GET.id}`, 'Книга успешна изменена!');
+        };
     }
 
     words = ['профиль', 'группу', 'книгу']; // Массив с правильными словами
@@ -278,21 +277,21 @@ if (GET.choose != 'edit') { // Личный кабинет
             }
         }
         window.location = 'index.html';
-    }
+    };
 
     let msgError = new Message(['Ок'], "Ошибка", "Произошла ошибка", {cancel:0, type: "conf"});
-    let msgSuccess = new Message(['Ок'], 'Успешно', 'Изменение прошло успешно', {type: 'conf', esc: false}) 
+    let msgSuccess = new Message(['Ок'], 'Успешно', 'Изменение прошло успешно', {type: 'conf', esc: false});
     msgSuccess.create();
     msgError.create();
 
     function success(url, text) {
-        msgSuccess.setBody = text;
-        msgSuccess.linkButtons[0].onclick = () => { window.location = url; }
+        msgSuccess.body = text;
+        msgSuccess.linkButtons[0].onclick = () => { window.location = url; };
         msgSuccess.show();
     }
-    
+
     function error(text) {
-        msgError.setBody = text;
+        msgError.body = text;
         msgError.show();
     }
 }

@@ -223,7 +223,7 @@ function submit() { // Отправляет запрос на создание �
 }
 
 function success(url, text) { // Запускается при успешном создании читателя/книги
-    msgSuccess.setBody = text;
+    msgSuccess.body = text;
     msgSuccess.linkButtons[0].onclick = () => { window.location = url; }
     msgSuccess.show();
 
@@ -235,7 +235,7 @@ function success(url, text) { // Запускается при успешном 
 }
 
 function error(text) { // Вылезает в случае ошибки
-    msgError.setBody = text;
+    msgError.body = text;
     msgError.show();
 }
 

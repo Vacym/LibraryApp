@@ -89,13 +89,13 @@ function fullValidation() {
 }
 
 function readyAdd() {
-    function textareaSize(e) {
+    function textareaSize(e) { // Подстройка высоты textarea
         e.style.height = 'auto';
         e.style.height = e.scrollHeight + 2 + "px";
     }
 
-    let text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-    for (let input of text_inputs) { // Запуск прослушивания событий для текстовых полей
+    let textInputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+    for (let input of textInputs) { // Запуск прослушивания событий для текстовых полей
         input.addEventListener("input", validText);
         validText(input);
     }

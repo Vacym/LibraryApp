@@ -125,7 +125,7 @@ function tooltipControl(e){ // Полный контроль подсказки
     }
 }
 
-function ready_hints(){
+function readyHints(){
     updateTooltip();
 }
 
@@ -133,4 +133,4 @@ const updateTooltip = addTooltipListener();
 const tooltipTime = 150; // Врема исчезания и появления подсказки
 
 //elem.getBoundingClientRect();
-document.addEventListener("DOMContentLoaded", ready_hints);
+document.addEventListener("DOMContentLoaded", readyHints);

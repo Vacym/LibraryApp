@@ -5,8 +5,17 @@ body {
 }
 
 main > h2 {
+    margin: auto;
     margin-top: 0;
     padding-top: 20px;
+    max-width: calc(100% - (135px + 100% * 0.03) * 2);
+}
+
+#find-count {
+    position: absolute;
+    right: 3%;
+    font-weight: 300;
+    font-size: 18px;
 }
 
 .find_input {
@@ -137,10 +146,12 @@ select:focus {
 }
 
 .notification {
-    border: 3px solid #933;
+    border: 3px solid #aaa;
     border-radius: 10px;
+    padding: 10px;
     font-size: 40px;
-    background-color: rgba(255, 0, 0, 0.2);
+    color: #ddd;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .personal_information {
