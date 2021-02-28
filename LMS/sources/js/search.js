@@ -147,9 +147,11 @@ function listenerControl(){ // Инициализируем прослушку �
         }
     };
 
-    document.querySelector('#input').addEventListener('input', (e) => { // Обновляет результаты поиска при написании кода
-        GET.q = e.target.value; // Призваиваем запросу новое значение
-        changeDB(GET.q); // Меняем значение поиска исходя из запроса
+    document.querySelector('#input').addEventListener('input', (e) => { // Обновляет результаты поиска при написании запроса
+        if (!e.target.value.startsWith(' ')) {
+            GET.q = e.target.value; // Призваиваем запросу новое значение
+            changeDB(GET.q); // Меняем значение поиска исходя из запроса
+        }
     });
 
     document.querySelector("select").addEventListener('change', (e) => { // Обновляет результаты поиска при изменении категории 
@@ -257,7 +259,7 @@ function createInput(){ // Добавляет панель поиска свер
 
     let arr = {'surname': 'Фамилия', 'firstname': 'Имя', 'lastname': 'Отчество', 'class': 'Класс'}; // Параметры поиска
     if (!isUsers) { // Если не читатель
-        arr = {'name': 'Название', 'author': 'Автор', 'inventoryno': 'ID', 'genre': 'Жанр'};        // Параметры поиска
+        arr = {'name': 'Название', 'author': 'Автор', 'inventoryno': 'ID', 'genre': 'Жанр', 'dateofissue': 'Дата'}; // Параметры поиска
     }
 
     for (let item in arr) { // Конструируем параметры поиска
@@ -285,7 +287,7 @@ function createBlock(data, resultArray) { // Создает блок с книг
     let a = document.createElement('a');
     let innerHTML;
 
-    if (data.username) { // Если ученик
+    if (data.username) { // Если читатель
         a.className = 'result valid';
         a.href = data.href;
 
@@ -300,8 +302,8 @@ function createBlock(data, resultArray) { // Создает блок с книг
         	[date[0], date[1]] = [date[1], date[0]];
         	date = date.join('.');
 
-        	let days = 30 - ((Date.now() - new Date(date).getTime())/3600000/24)|0;
-        	days = (days) ? days + ' дней': 'Сегодня';
+        	let days = 31 - ((Date.now() - new Date(date).getTime())/3600000/24)|0;
+        	days += ' дней';
             
             innerHTML += `\
                 <div class="book">\
@@ -336,21 +338,23 @@ function createBlock(data, resultArray) { // Создает блок с книг
         a.className = data['class']; // Добавляем параметр класс
         if (data.href) a.href = data.href; // Добавляем параметр ссылки
 
-        div_class_date = data.dateofissue ? `<div class="date">${data.dateofissue}</div>` : ''; // Инициализируем дату
+        let days = 31 - books.getDays(data.dateofissue) + ' дней';
+
+        div_class_date = data.dateofissue ? `<div class="date">${days}</div>` : ''; // Инициализируем дату
         span_username  = data.userid ? `<span>${data.owner}</span>` : 'Свободна'; // Инициализируем читателя, если есть
 
-        innerHTML = `<div class="left_part">\
-                            <div class="choice">\
-                                <input type="checkbox" id="${data.id}">\
-                                <label for="${data.id}"></label>\
+        innerHTML = `<div class="left_part">
+                            <div class="choice">
+                                <input type="checkbox" id="${data.id}">
+                                <label for="${data.id}"></label>
                             </div>\
-                            <div class="FCS">\
-                                <span class="name_book">${data.name}</span>\
-                                <span class="autor_book">${data.author}</span>\
-                                ${div_class_date}\
-                            </div>\
-                        </div>\
-                        <div class="right_part">\
+                            <div class="FCS">
+                                <span class="name_book">${data.name}</span>
+                                <span class="autor_book">${data.author}</span>
+                                ${div_class_date}
+                            </div>
+                        </div>
+                        <div class="right_part">
                             <div class="information">${data.inventoryno}</div>
                             <div class="FCS">${span_username}</div>\
                         </div>`;
@@ -380,7 +384,7 @@ function send() { // Упаковывает и создает массив пр�
             data[i].href = href + data[i].id;
 
         } else {
-            data[i].groupid = (GET.group || GET.del || GET.order == 'inventoryno') ? false : data[i].groupid;
+            data[i].groupid = (GET.group || GET.del || ['inventoryno', 'dateofissue'].includes(GET.order)) ? false: data[i].groupid;
 
             if (data[i].groupid) {
                 let count = books.COUNT(books.translate(), 'groupid', data[i].groupid);
@@ -440,12 +444,10 @@ function parseURL() { // Парсер ссылки на страницу
     return params;
 }
 
-function add(data) { // Добавляет книги/учеников на страницу
+function add(data) { // Добавляет книги/читателей на страницу
     let resultArray = document.querySelector('.search_result');
 
     if (data.length != 0) {
-        console.log("New stack...");
-
         for (let i = 0; i < data.length; i++) {
             createBlock(data[i], resultArray);
         }
@@ -459,8 +461,6 @@ function add(data) { // Добавляет книги/учеников на ст
             notice.innerHTML = 'Ничего не найдено';
             resultArray.append(notice);
         }
-
-        console.log('THE END');
         isEndOfTable = true;
     }
 }
@@ -479,6 +479,7 @@ function changeDB(query) { // Меняем результаты поиска
     isEndOfTable = false;
     page = 0;
     send(); // Выводим результаты на экран
+    console.log(`Всего: ${db.length}`)
 }
 
 function readySearch() {
@@ -492,18 +493,18 @@ function readySearch() {
 }
 
 // Параметры для работы с скроллом в поиске
-let page = 0; // Так сказать, значение, с которого идет отсчет о 20 новых книгах / учениках
+let page = 0; // Так сказать, значение, с которого идет отсчет о 20 новых книгах / читателях
 let allowLoading = true; // Проверяет, является ли запрос открытым
 let isEndOfTable = false; // Проверяет, дошел ли пользователь до конца страницы
 
 // Константы
 const site = document.documentElement; // Весь html-документ
-const users = new Table('users'); // Инициализируем таблицу ученика
+const users = new Table('users'); // Инициализируем таблицу читателя
 const books = new Table('books'); // Инициализируем таблицу книги
 
 // Параметры для работы с главными компонентами страницы
 let GET = parseURL(); // Параметры страницы
-let isUsers = (GET.type == 'users'); // Является ли это страницей ученика
+let isUsers = (GET.type == 'users'); // Является ли это страницей читателя
 let db = isUsers ? users.get(): books.get(); // Массив с БД
 
 document.addEventListener("contentLoaded", (e) => {

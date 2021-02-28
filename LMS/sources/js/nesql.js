@@ -1,7 +1,5 @@
 // version 1.0 release
 
-let fs = require("fs"); // Подключаем библиотеку для работы с файловой системой
-
 class Table { // Класс для работы с Таблицей
     constructor(name) { // Инициализируем класс
         this.name = name; // Название таблицы
@@ -58,9 +56,9 @@ class Table { // Класс для работы с Таблицей
     }
 
     ORDER_BY(data, param) { // Сортировка по определенному параметру столбца
-        let choose = this.SELECT()[param].options[0];
+        let type = this.SELECT()[param].options[0];
 
-        switch (choose) {
+        switch (type) {
             case 'num':  data.sort((a,b) => a[param] - b[param]); break;
             case 'text': 
                 data.sort((a,b) => { return (a[param] < b[param]) ? -1: (a[param] > b[param]) ? 1: 0; } );
@@ -69,6 +67,7 @@ class Table { // Класс для работы с Таблицей
                     data = this.ORDER_BY(data, 'userid'); // Отсортировка по инвентарному номеру
                 }
                 break;
+            case 'date': data.sort((a,b) => this.getDays(b[param]) - this.getDays(a[param])); break;
         }
         return data;
     }
@@ -194,7 +193,7 @@ class Table { // Класс для работы с Таблицей
                     result.push(item)
                 }
             }
-        } else if (GET['group']) { // Если это страница с развернутой группой книг
+        } else if (GET.group) { // Если это страница с развернутой группой книг
             let data = this.ORDER_BY(this.translate(), 'inventoryno');
 
             for (let item of data) {
@@ -202,9 +201,16 @@ class Table { // Класс для работы с Таблицей
                     result.push(item);
                 }
             }
+        } else if (GET.order == 'dateofissue') {
+            let data = this.ORDER_BY(this.translate(), GET.order);
+
+            for (let item of data) {
+                if (item.userid) {
+                    result.push(item);
+                }
+            }
         } else { // Если это обычная страница
             let data = this.ORDER_BY(this.translate(), GET.order);
-            
             let groups = [];
 
             for (let item of data) {
@@ -221,7 +227,7 @@ class Table { // Класс для работы с Таблицей
         return this.LIKE(result, GET.order, query);
     }
 
-    equal(traspose, param, value, onlyOne=false) { // Возвращает массив с столбцами, где параметр равен определонному значению (Н-ер где name = 'Иван')
+    equal(traspose, param, value, onlyOne=false) { // Возвращает массив с столбцами, где параметр равен определонному значению
         let result = [];
         for (let item in traspose) {
             if (value == traspose[item][param]) {
@@ -240,7 +246,7 @@ class Table { // Класс для работы с Таблицей
         }
     }
 
-    translate(data=this.SELECT()) { // Возвращает данные таблицу в человеческом виде
+    translate(data=this.SELECT()) { // Возвращает данные таблицу в "человеческом виде"
         let result = [];
         for (let i = 0; i < data.id.users.length; i++) {
             result[i] = {};
@@ -249,6 +255,15 @@ class Table { // Класс для работы с Таблицей
             }
         }
         return result;
+    }
+
+    isSameID(otherItem) { // Проверяет наличие инвентарного номера в БД 
+        for (let item of this.SELECT().inventoryno.users) {
+            if (otherItem == item) {
+                return true;
+            }
+        }
+        return false;
     }
 
     getIndexFromID(ID) { // Возвращает индекс столбца, исходя из его id
@@ -261,13 +276,19 @@ class Table { // Класс для работы с Таблицей
         }
     }
 
-    isSameID(otherItem) { // Проверяет наличие инвентарного номера в БД 
-        for (let item of this.SELECT().inventoryno.users) {
-            if (otherItem == item) {
-                return true;
-            }
-        }
-        return false;
+    getDays(date) { // Преобразует дату в количество дней
+        if (date) {
+            date = date.split('.'); // Перевод из русской даты в английскую
+            [date[0], date[1]] = [date[1], date[0]];
+            date = date.join('.');
+
+            return ((Date.now() - new Date(date).getTime())/3600000/24)|0;
+        } 
+        return -1;
+    }
+
+    get length() {
+        return this.table.id.users.length;
     }
 
     get nextGroupID() { // Возвращает следующий свободный групповой ID
@@ -280,3 +301,5 @@ class Table { // Класс для работы с Таблицей
         return MaxGroupID+1;
     }
 }
+
+let fs = require("fs"); // Подключаем библиотеку для работы с файловой системой

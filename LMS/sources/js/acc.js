@@ -47,11 +47,12 @@ if (GET.choose != 'edit') { // Личный кабинет
 
     if (isBook) { // Если страница книжная
         accBlock.className = 'books';
+        console.log(_arr.fullname)
 
-        if (user.length) { // Если книга занята
+        if (user.length != 0) { // Если книга занята
             accBlock.innerHTML = `<tr>
                                     <th class="td_head">Ученик</th>
-                                    <th class="td_value">${_arr.fullname} 
+                                    <th class="td_value"><a href="acc.html?type=user&id=${user.id}">${_arr.fullname}</a> 
                                         <span class="class">${_arr.fullclass}</span>
                                     </th>
                                 </tr>
@@ -79,7 +80,9 @@ if (GET.choose != 'edit') { // Личный кабинет
         }
 
         for (let book of userBooks) { // Перебираем каждую книгу ученика и создаем под нее блок
-            accBlock.innerHTML += `<tr><td class="td_head">${book.name}</td><td class="td_value">${book.dateofissue}</td></tr>`;
+            accBlock.innerHTML += `<tr><td class="td_head"><a href="acc.html?type=book&id=${book.id}">${book.name}</a></td>
+                                       <td class="td_value">${book.dateofissue}</td>
+                                    </tr>`;
         }
     }
     information.append(accBlock); // Добавляем наш созданный блок в главный блок
@@ -251,7 +254,8 @@ if (GET.choose != 'edit') { // Личный кабинет
         }
     }
 
-    let msgDelete = new Message(["Удалить", "Отменить"], "Удаление", "Вы уверены, что хотите удалить профиль?", {activate: "#del", cancel: 1, type: "conf"});
+    words = ['профиль', 'группу', 'книгу']; // Массив с правильными словами
+    let msgDelete = new Message(["Удалить", "Отменить"], "Удаление", `Вы уверены, что хотите удалить ${words[isBook]}?`, {activate: "#del", cancel: 1, type: "conf"});
     msgDelete.create();
 
     msgDelete.linkButtons[0].onclick = function () {
