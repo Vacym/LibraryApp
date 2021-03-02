@@ -12,4 +12,12 @@ function navigation(but){ // Общий контроль кнопок
     }
 }
 
+function validWord(num, dec) { //Корректирует слова под нужные окончания
+    let i;
+    if (num%10 >= 5 || num%10 == 0 || num%100 > 10 && num%100 <= 20) i = 0;
+    else if (num%10 >= 2 && num%10 < 5)                              i = 1;
+    else                                                             i = 2;
+    return dec[i];
+}
+
 document.addEventListener("keydown", navigation);

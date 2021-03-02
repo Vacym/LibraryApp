@@ -164,37 +164,24 @@ function messageControl(){ // Инициализуем контроль над �
     function deleteMessage(){  // Запускается, когда пользователь нажимает на кнопку удалить или на клавишу <del>
         let count = document.querySelectorAll(".choice input[type='checkbox']:checked").length;
         if (count < 1) return;
-
-        function get_i(count) {
-            let i;
-            if (count%10 >= 5 || count%10 == 0 || count%100 > 10 && count%100 <= 20) i = 0;
-            else if (count%10 >= 2 && count%10 < 5)                                  i = 1;
-            else                                                                     i = 2;
-            return i;
-        }
     
         if (!isUsers) { // Если книга/группа
-            let count_group = document.querySelectorAll(".group .choice input[type='checkbox']:checked").length;
-            let count_books = count - count_group;
+            let countGroup = document.querySelectorAll(".group .choice input[type='checkbox']:checked").length;
+            let countBooks = count - countGroup;
 
-            let valid_1 = ['Будут удалены', 'Будет удалено', 'Будет удалена'];
-            let valid_2 = ['г', 'ги', 'га'];
-            let valid_3 = ['п', 'пы', 'па'];
+            let wordDelete = 'Будут удален' + validWord(countBooks, ['ы', 'о', 'а']);
+            let wordBook   = 'книг'  + validWord(countBooks, ['', 'и', 'а']);
+            let wordGroup  = 'групп' + validWord(countGroup, ['', 'ы', 'а']);
 
-            let a = get_i(count_books); // Индекс окончания для книги
-            let b = get_i(count_group); // Индекс окончания для группы
-
-            msgDelete.body = `${valid_1[a]} ${count_books} кни${valid_2[a]} и ${count_group} груп${valid_3[b]} книг<br>Продолжить?`;
+            msgDelete.body = `${wordDelete} ${countBooks} ${wordBook} и ${countGroup} ${wordGroup} книг<br>Продолжить?`;
             msgDelete.show();
             return;
         }
 
-        let valid_1 = ['Будут удалены', 'Будет удалено', 'Будет удален'];
-        let valid_2 = ['иков', 'ика', 'ик'];
+        let wordDelete = 'Будут удален' + validWord(count, ['ы', 'о', '']);
+        let wordReader = 'ученик' + validWord(count, ['ов', 'а', ''])
 
-        let i = get_i(count);
-
-        msgDelete.body = `${valid_1[i]} ${count} учен${valid_2[i]}<br>Продолжить?`;
+        msgDelete.body = `${wordDelete} ${count} ${wordReader}<br>Продолжить?`;
         msgDelete.show();
     }
 
@@ -299,12 +286,8 @@ function createBlock(data, resultArray) { // Создает блок с книг
                             </div>`;
 
         data.books.forEach((book) => {
-        	let date = book.dateofissue.split('.'); // Перевод из русской даты в английскую
-        	[date[0], date[1]] = [date[1], date[0]];
-        	date = date.join('.');
-
-        	let days = 31 - ((Date.now() - new Date(date).getTime())/3600000/24)|0;
-        	days += ' дней';
+        	let days = 31 - books.getDays(book.dateofissue);
+            days += ' ' + validWord(days, ['дней', 'дня', 'день']);
             
             innerHTML += `\
                 <div class="book">\
@@ -339,7 +322,8 @@ function createBlock(data, resultArray) { // Создает блок с книг
         a.className = data['class']; // Добавляем параметр класс
         if (data.href) a.href = data.href; // Добавляем параметр ссылки
 
-        let days = 31 - books.getDays(data.dateofissue) + ' дней';
+        let days = 31 - books.getDays(data.dateofissue);
+        days += ' ' + validWord(days, ['дней', 'дня', 'день'])
 
         div_class_date = data.dateofissue ? `<div class="date">${days}</div>` : ''; // Инициализируем дату
         span_username  = data.userid ? `<span>${data.owner}</span>` : 'Свободна'; // Инициализируем читателя, если есть
@@ -435,8 +419,6 @@ function parseURL() { // Парсер ссылки на страницу
         params[decodeURIComponent(value[0])] = decodeURIComponent(value[1]);
     }
 
-    // params['q']  = params['q'].match(regex);
-
     if (params.type == 'users') {
         params.order = (['firstname', 'lastname', 'class', 'letter'].includes(params.order)) ? params.order: 'surname';
     } else {
@@ -480,7 +462,6 @@ function changeDB(query) { // Меняем результаты поиска
     isEndOfTable = false;
     page = 0;
     send(); // Выводим результаты на экран
-    console.log(`Всего: ${db.length}`)
     document.querySelector("#find-count").innerHTML = `Найдено: <b>${db.length}</b>`; // Выводит количество найденных элементов
 }
 
