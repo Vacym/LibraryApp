@@ -68,18 +68,16 @@ function tooltipControl(e){ // Полный контроль подсказки
     }
 
     function changeCoords(mouse){ // Следование за мышкой
-        hint.style.top = `${mouse.pageY+10}px`;
-        hint.style.left = `${mouse.pageX+10}px`;
+        hint.style.top = `${mouse.clientY+10}px`;
+        hint.style.left = `${mouse.clientX+10}px`;
     }
 
     function getCoords(){}
 
-    function createHint(message){ // Создание подсказки
+    function createHint(message, clone = false){ // Создание подсказки
         hint = document.createElement('span');
         hint.classList.add("tooltip");
-
-        let lastHint = document.querySelector(".tooltip"); // Существующая подсказка
-        if(lastHint) hint = lastHint; // если подсказка уже есть, то работаем с ней
+        if(clone) hint = document.querySelector(".tooltip"); // если подсказка уже есть, то работаем с ней
 
         hint.innerHTML = message;
 
@@ -91,20 +89,25 @@ function tooltipControl(e){ // Полный контроль подсказки
     }
 
     function deleteHint(){ // Удаление подсказки
-        function delRevoke(element){
-            if(element.target.hasAttribute("data-tooltip")){ // Если навелись на другой элемент с подсказкой
+        function delRevoke(el){
+            if(el.target.hasAttribute("data-tooltip")){ // Если навелись на другой элемент с подсказкой
 
                 document.removeEventListener("mouseover", delRevoke); // Отменяем прослушку
+
                 clearTimeout(delTimeout); // Останавливаем процесс удаления
                 
                 animation.pause(); // Ставим анимацию исчезновения на паузу
                 setTimeout(() => animation.cancel()); // И удаляем анимацию
+
+                base = el.target; // Перезапуск
+                createHint(base.getAttribute("data-tooltip"), true);
+                base.addEventListener("mouseleave", deleteHint, {"once": true});
             }
         }
 
         changeOpacity(false);
         let delTimeout = setTimeout(() => {
-            base.removeEventListener("mousemove", changeCoords);
+            document.removeEventListener("mousemove", changeCoords);
             document.removeEventListener("mouseover", delRevoke);
 
             hint.remove();
@@ -114,7 +117,7 @@ function tooltipControl(e){ // Полный контроль подсказки
         
     }
 
-    
+    if (document.querySelector(".tooltip")) return; // Если подсказка уже есть, то отменяем всё
     let hint, animation;
     let base = e.target; // Элемент, для которого есть подсказка
 

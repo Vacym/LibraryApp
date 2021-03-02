@@ -14,8 +14,10 @@ main > h2 {
 #find-count {
     position: absolute;
     right: 3%;
+    min-width: 135px;
     font-weight: 300;
     font-size: 18px;
+    text-align: left;
 }
 
 .find_input {
