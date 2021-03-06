@@ -5,6 +5,7 @@
     display: block;
     flex: 45%;
     flex-grow: 1;
+    align-self: stretch;
     margin: 10px;
     border: 2px solid #fff;
     padding: 10px;

@@ -55,7 +55,6 @@ function tooltipControl(e){ // Полный контроль подсказки
             }, duration);
 
         };
-        
         let order = [hintOpacity(), 0]; // Ставим анимацию с текущй прозрачности до 0
         let duration = tooltipTime * hintOpacity(); // Вычисляем время анимации
         if (show){ // Если нужно показывать, а не скрывать
@@ -68,8 +67,19 @@ function tooltipControl(e){ // Полный контроль подсказки
     }
 
     function changeCoords(mouse){ // Следование за мышкой
-        hint.style.top = `${mouse.clientY+10}px`;
-        hint.style.left = `${mouse.clientX+10}px`;
+        let coords = hint.getBoundingClientRect();
+        if (mouse.clientX + 10 + coords.width > document.documentElement.clientWidth){
+            hint.style.left = `${mouse.clientX - 3 - coords.width}px`;
+        } else {
+            hint.style.left = `${mouse.clientX+10}px`;
+        }
+
+        if (mouse.clientY + 10 + coords.height > document.documentElement.clientHeight){
+            hint.style.top = `${mouse.clientY - 3 - coords.height}px`;
+        } else {
+            hint.style.top = `${mouse.clientY+10}px`;
+        }
+        
     }
 
     function getCoords(){}
@@ -96,9 +106,6 @@ function tooltipControl(e){ // Полный контроль подсказки
 
                 clearTimeout(delTimeout); // Останавливаем процесс удаления
                 
-                animation.pause(); // Ставим анимацию исчезновения на паузу
-                setTimeout(() => animation.cancel()); // И удаляем анимацию
-
                 base = el.target; // Перезапуск
                 createHint(base.getAttribute("data-tooltip"), true);
                 base.addEventListener("mouseleave", deleteHint, {"once": true});
@@ -111,7 +118,7 @@ function tooltipControl(e){ // Полный контроль подсказки
             document.removeEventListener("mouseover", delRevoke);
 
             hint.remove();
-        }, tooltipTime * hintOpacity() - 1);
+        }, tooltipTime * hintOpacity() - 10);
 
         document.addEventListener("mouseover", delRevoke); //Ждём, пока не наведуться на другую подсказку
         
