@@ -10,23 +10,23 @@ class Table { // Класс для работы с Таблицей
     CREATE() { // Создает таблицу
         let params = {
             'users': {
-                'id':           {'options': ['num',  -1], 'users': []}, 
-                'firstname':    {'options': ['text', 50], 'users': []}, 
-                'surname':      {'options': ['text', 50], 'users': []}, 
-                'lastname':     {'options': ['text', 50], 'users': []},
-                'class':        {'options': ['num', 50], 'users': []},
-                'letter':       {'options': ['text', 50], 'users': []},
+                'id':           {'option': 'num',  'users': []}, 
+                'firstname':    {'option': 'text', 'users': []}, 
+                'surname':      {'option': 'text', 'users': []}, 
+                'lastname':     {'option': 'text', 'users': []},
+                'class':        {'option': 'num',  'users': []},
+                'letter':       {'option': 'text', 'users': []},
             },
             'books': {
-                'id':           {'options': ['num',  -1], 'users': []}, 
-                'name':         {'options': ['text', 50], 'users': []}, 
-                'author':       {'options': ['text', 50], 'users': []}, 
-                'genre':        {'options': ['text', 50], 'users': []},
-                'comment':      {'options': ['text', 50], 'users': []},
-                'inventoryno':  {'options': ['num', 50], 'users': []},
-                'userid':       {'options': ['num', 50], 'users': []},
-                'dateofissue':  {'options': ['date', 50], 'users': []},
-                'groupid':      {'options': ['num', 50], 'users': []},
+                'id':           {'option': 'num',  'users': []}, 
+                'name':         {'option': 'text', 'users': []}, 
+                'author':       {'option': 'text', 'users': []}, 
+                'genre':        {'option': 'text', 'users': []},
+                'comment':      {'option': 'text', 'users': []},
+                'inventoryno':  {'option': 'num',  'users': []},
+                'userid':       {'option': 'num',  'users': []},
+                'dateofissue':  {'option': 'date', 'users': []},
+                'groupid':      {'option': 'num',  'users': []},
             }};
         try {
             fs.writeFileSync(this.src, JSON.stringify(params[this.name]));
@@ -56,7 +56,7 @@ class Table { // Класс для работы с Таблицей
     }
 
     ORDER_BY(data, param) { // Сортировка по определенному параметру столбца
-        let type = this.SELECT()[param].options[0];
+        let type = this.SELECT()[param].option;
 
         switch (type) {
             case 'num':  data.sort((a,b) => a[param] - b[param]); break;

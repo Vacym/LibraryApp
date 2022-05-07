@@ -3,9 +3,9 @@
 class ToolbarControl { // Класс для работы с тулбаром
     constructor() {
         this.inputs = []; // Массив с checkbox'ами
-        this.toolbar = document.querySelector(".toolbar"); //Определяем тулбар
-        this.dedicated = document.querySelector("#summ_checked>span"); //Определяем число с количеством выделенных элементов
-        this.boxElement = document.querySelector(".search_result"); //Определяем блок со всеми элементами
+        this.toolbar = document.querySelector(".toolbar"); // Определяем тулбар
+        this.dedicated = document.querySelector("#summ_checked>span"); // Определяем число с количеством выделенных элементов
+        this.boxElement = document.querySelector(".search_result"); // Определяем блок со всеми элементами
 
         let observer = new MutationObserver( (m) => this.appendListenerForNewChange(m) );
         observer.observe(this.boxElement, {childList: true}); // Прослушка на добавление блоков
@@ -13,12 +13,12 @@ class ToolbarControl { // Класс для работы с тулбаром
         document.querySelector("#remove").onclick = () => this.remove(); // Кнопка отключения всех галочек
     }
 
-    //Добавление прослушивания для новых элементов (которые создаются при прокрутке страницы)
+    // Добавление прослушивания для новых элементов (которые создаются при прокрутке страницы)
     appendListenerForNewChange(mutations) {
         for(let mutation of mutations){
             for (let node of mutation.addedNodes){ // Каждый элеиент из добавленных
                 if (node.classList.contains("notification")) continue; // Если это уведомление, пропускаем
-                this.inputs.push(node); //Добавляем в список и начинаем прослушивать
+                this.inputs.push(node); // Добавляем в список и начинаем прослушивать
                 node.querySelector(".choice input[type='checkbox']").addEventListener("change", () => this.moveControl());
                 node.addEventListener("click", checkChoiceClick);
             }
@@ -31,7 +31,7 @@ class ToolbarControl { // Класс для работы с тулбаром
         this.moveControl();
     }
 
-    //Движение тулбара
+    // Движение тулбара
     moveControl() {
         let counter = 0;
         let edit = this.toolbar.querySelector("#edit"); // Кнопка редактирования
@@ -59,7 +59,7 @@ class ToolbarControl { // Класс для работы с тулбаром
         this.toolbarShow(showTool);
     }
 
-    //Переключение видимости
+    // Переключение видимости
     toolbarShow(show) {
         if (show) {
             this.boxElement.classList.add("selecting");
@@ -70,7 +70,7 @@ class ToolbarControl { // Класс для работы с тулбаром
         }
     }
 
-    //Отмена выделения для всех элементов
+    // Отмена выделения для всех элементов
     remove() {
         for (let input of this.inputs) {
             input.querySelector(".choice input[type='checkbox']").checked = false;
@@ -100,7 +100,7 @@ function scrollControl() { // Инициализируем контроль на
         }
         // Можно настроить
         let fps = 60;
-        let needTime = 150; //в милисекундах
+        let needTime = 150; // в милисекундах
 
         let iterations = (window.pageYOffset / (needTime / 1000) / fps);
         scrolling();
@@ -169,17 +169,17 @@ function messageControl(){ // Инициализуем контроль над �
             let countGroup = document.querySelectorAll(".group .choice input[type='checkbox']:checked").length;
             let countBooks = count - countGroup;
 
-            let wordDelete = 'Будут удален' + validWord(countBooks, ['ы', 'о', 'а']);
-            let wordBook   = 'книг'  + validWord(countBooks, ['', 'и', 'а']);
-            let wordGroup  = 'групп' + validWord(countGroup, ['', 'ы', 'а']);
+            let wordDelete = 'Будет удален' + validWord(countBooks, 'аоо');
+            let wordBook   = 'книг'  + validWord(countBooks, 'аи');
+            let wordGroup  = 'групп' + validWord(countGroup, 'аы');
 
             msgDelete.body = `${wordDelete} ${countBooks} ${wordBook} и ${countGroup} ${wordGroup} книг<br>Продолжить?`;
             msgDelete.show();
             return;
         }
 
-        let wordDelete = 'Будут удален' + validWord(count, ['ы', 'о', '']);
-        let wordReader = 'ученик' + validWord(count, ['ов', 'а', ''])
+        let wordDelete = 'Будет удален' + validWord(count, ['', 'о', 'о']);
+        let wordReader = 'ученик' + validWord(count, ['', 'а', 'ов']);
 
         msgDelete.body = `${wordDelete} ${count} ${wordReader}<br>Продолжить?`;
         msgDelete.show();
@@ -286,8 +286,8 @@ function createBlock(data, resultArray) { // Создает блок с книг
                             </div>`;
 
         data.books.forEach((book) => {
-        	let days = 31 - books.getDays(book.dateofissue);
-            days += ' ' + validWord(days, ['дней', 'дня', 'день']);
+        	let days = books.getDays(book.dateofissue);
+            days += ' ' + validWord(days, ['день', 'дня', 'дней']);
             
             innerHTML += `\
                 <div class="book">\
@@ -322,8 +322,8 @@ function createBlock(data, resultArray) { // Создает блок с книг
         a.className = data['class']; // Добавляем параметр класс
         if (data.href) a.href = data.href; // Добавляем параметр ссылки
 
-        let days = 31 - books.getDays(data.dateofissue);
-        days += ' ' + validWord(days, ['дней', 'дня', 'день'])
+        let days = books.getDays(data.dateofissue);
+        days += ' ' + validWord(days, ['день', 'дня', 'дней']);
 
         div_class_date = data.dateofissue ? `<div class="date">${days}</div>` : ''; // Инициализируем дату
         span_username  = data.userid ? `<span>${data.owner}</span>` : 'Свободна'; // Инициализируем читателя, если есть

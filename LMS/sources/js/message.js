@@ -2,9 +2,9 @@
 
 class Message { // Класс для работы с плывающими окнами
     constructor(buttons, head, body, {activate = null, cancel = -1, focus = 0, type = "notice", esc = true, home = "esc"} ){
+        this._head    = head;     // Заголовок
+        this._body    = body;     // Описание
         this.buttons  = buttons;  // Список кнопок
-        this._head     = head;     // Заголовок
-        this._body     = body;     // Описание
         this.activate = activate; // Кнопка для активации
         this.cancel   = cancel;   // Индекс кнопки для закрытия уведомления
         this.focus    = focus;    // Индекс кнопки, которая должна находиться в фокусе
@@ -17,9 +17,9 @@ class Message { // Класс для работы с плывающими окн
     classCreate(){ // Создаём класс для уведомления в зависимости от типа
         let fullСlass = "mes-";
 
-        if (this.type == "conf")        {fullСlass += "confirmation";}
-        else if (this.type == "notice") {fullСlass += "notice";}
-        else                            {fullСlass += this.type;}
+        if (this.type == "conf")        fullСlass += "confirmation";
+        else if (this.type == "notice") fullСlass += "notice";
+        else                            fullСlass += this.type;
 
         return fullСlass;
     }
