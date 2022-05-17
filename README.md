@@ -11,7 +11,7 @@
 * Умный поиск
 
 ## Итог:
-Программа полноценно работает и ее можно скачать, перейдя по [ссылке](https://drive.google.com/file/d/1CiV6ptQxw0boxGnh8NW7Qg__H42Xrb3q/view?usp=sharing)
+Программа полноценно работает и ее можно скачать, перейдя по [ссылке](https://github.com/Vacym/LibraryApp/releases/tag/Release_1.0) (программа находится в файле Library.rar)
 
 Ознакомиться подробнее со всей информацией можно [здесь](https://vk.com/djacon)
 
