@@ -1,6 +1,6 @@
 // version 1.0 release
 
-function validation_text(element) {
+function validText(element) { // Проверяем валидность введенного текста в поле ввода
     if (element.currentTarget) {
         element = element.currentTarget;
     }
@@ -8,7 +8,7 @@ function validation_text(element) {
     let id = element.id;
     let param = id;
 
-    switch (id) {
+    switch (id) { // Устанавливаем параметр, для последущей проверки введенного текста
         case 'letter':    element.value = element.value.toUpperCase(); break;
         case 'id':        case 'quantity':                 param = 'num'; break;
         case 'author':    case 'genre':                    param = 'name'; break;
@@ -20,104 +20,93 @@ function validation_text(element) {
         element.setSelectionRange(0, 0);
     }
 
-    let is_valid = valid(param, element.value);
+    let isValid = valid(param, element.value); // Булевая переменная проверяет валидность
     let static = "bad";
 
     //если ничего не введено
-    if (element.value == "") { static = "empty"; } else if (is_valid) { static = "good"; }
+    if (element.value == "") { static = "empty"; } else if (isValid) { static = "good"; }
 
-    change_border(element, static);
+    changeBorder(element, static); // Изменяем цвет рамки в поле ввода
 }
 
-function change_border(element, type, check = true) {
-    let default_value = element.classList;
+function changeBorder(element, type, check = true) { // Меняет цвет рамки в поле ввода
+    let defaultValue = element.classList; // Список с текущими классами в инпуты
 
-    if (type == "bad") {
-        //если был хорошим
-        default_value.remove("good_input");
+    if (type == "bad") { // Если текст без ошибок
+        defaultValue.remove("good_input"); // Если был хорошим
 
-        //если не был плохим
-        if (!default_value.contains("bad_input")) {
-            default_value.add("bad_input");
+        if (!defaultValue.contains("bad_input")) { // Если до этого там была ошибка, удаляем ее значение
+            defaultValue.add("bad_input");
         }
-    } else if (type == "good") {
+    } else if (type == "good") { // Если текст содержит ошибку
+        defaultValue.remove("bad_input"); // Если была ошибка
 
-        //если был плохим
-        default_value.remove("bad_input");
-
-        //если не был хорошим
-        if (!default_value.contains("good_input")) {
-            default_value.add("good_input");
+        if (!defaultValue.contains("good_input")) { // Если не было ошибки
+            defaultValue.add("good_input");
         }
-    } else if (type == "empty") {
-        //удаляем доп стилизацию
-        default_value.remove("bad_input");
-        default_value.remove("good_input");
+    } else if (type == "empty") { // Если текст пустой, удаляем доп. стилизацию
+        defaultValue.remove("bad_input");
+        defaultValue.remove("good_input");
     }
 
-    // запускаем общую проверку на корректность данных
-    if (check) { button_control(); }
+    // Запускаем общую проверку на корректность данных
+    if (check) { buttonControl(); }
 }
 
-function button_control() {
-    let all_good = full_validation();
-    if (all_good) {
+function buttonControl() {
+    let allGood = fullValidation();
+    if (allGood) {
         document.querySelector("#submit").removeAttribute("disabled");
     } else {
         document.querySelector("#submit").setAttribute("disabled", "disabled");
     }
 }
 
-function full_check() {
-    text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-    for (let x = 0; x < text_inputs.length; x++) {
-        validation_text(text_inputs[x]);
+function fullCheck() {
+    let inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+    for (let x = 0; x < inputs.length; x++) {
+        validText(inputs[x]);
     }
-    full_validation();
+    fullValidation();
 }
 
-function full_validation() {
+function fullValidation() {
     let bads = document.querySelectorAll('input[type="text"].bad_input, input[type="number"].bad_input, textarea.bad_input');
-
     if (bads.length > 0) {
-        change_border(document.querySelector("#submit"), "bad", false);
+        changeBorder(document.querySelector("#submit"), "bad", false);
         return false;
     }
 
     let required = document.querySelectorAll('.necessary_input');
     for (let x = 0; x < required.length; x++) {
         if (!required[x].classList.contains("good_input")) {
-            change_border(document.querySelector("#submit"), "empty", false);
+            changeBorder(document.querySelector("#submit"), "empty", false);
             return false;
         }
     }
-    change_border(document.querySelector("#submit"), "good", false);
+    changeBorder(document.querySelector("#submit"), "good", false);
     return true;
 }
 
-function ready_add() {
-    function textarea_size(e) {
+function readyAdd() {
+    function textareaSize(e) { // Подстройка высоты textarea
         e.style.height = 'auto';
         e.style.height = e.scrollHeight + 2 + "px";
     }
 
-    let text_inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-    // Запуск прослушивания событий для текстовых полей
-    for (let input of text_inputs) {
-        input.addEventListener("input", validation_text);
-        validation_text(input);
+    let textInputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+    for (let input of textInputs) { // Запуск прослушивания событий для текстовых полей
+        input.addEventListener("input", validText);
+        validText(input);
     }
 
     let textarea = document.querySelector('textarea');
     if (textarea) {
-        textarea.addEventListener('input', (e) => { textarea_size(e.target); });
-        textarea_size(textarea);
+        textarea.addEventListener('input', (e) => { textareaSize(e.target); });
+        textareaSize(textarea);
     }
 }
 
-document.addEventListener("DOMContentLoaded", ready_add);
-
-// Код Djacon
 function valid(i, value) { // Проверяет на правильность введенных данных
     let re = {
         'username': /^[а-я-]+$/i,
@@ -137,10 +126,11 @@ function parseURL() { // Парсер ссылки на страницу
         let value = item.split('=');
         params[decodeURIComponent(value[0])] = decodeURIComponent(value[1]);
     }
-
     return params;
 }
 
 function setTitle(title) {
     document.title = title;
 }
+
+document.addEventListener("DOMContentLoaded", readyAdd);

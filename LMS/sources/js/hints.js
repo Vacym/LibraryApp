@@ -1,3 +1,5 @@
+// version 1.0 release
+
 function addTooltip(){ // Добавление data-tooltip для элементов по умолчанию
     let types = { // Подсказки по умолчанию (если нет в html)
         "#home": "Домой",
@@ -12,7 +14,7 @@ function addTooltip(){ // Добавление data-tooltip для элемен�
     for(let selector in types){ // Перебираем каждый селектор
         let elements = document.querySelectorAll(selector);
 
-        for(let element of elements){ // перебираем каждый элемент с селектором
+        for(let element of elements){ // Перебираем каждый элемент с селектором
             if(!element.hasAttribute("data-tooltip")){ element.setAttribute("data-tooltip", types[selector]); } // Если нет data-tooltip, то добавляем его
         }
     }
@@ -42,8 +44,6 @@ function addTooltipListener(){ // Определение элементов с t
     };
 }
 
-let updateTooltip = addTooltipListener();
-
 function tooltipControl(e){ // Полный контроль подсказки
     const hintOpacity = () => Number(window.getComputedStyle(hint).opacity);
 
@@ -55,7 +55,6 @@ function tooltipControl(e){ // Полный контроль подсказки
             }, duration);
 
         };
-        
         let order = [hintOpacity(), 0]; // Ставим анимацию с текущй прозрачности до 0
         let duration = tooltipTime * hintOpacity(); // Вычисляем время анимации
         if (show){ // Если нужно показывать, а не скрывать
@@ -68,18 +67,27 @@ function tooltipControl(e){ // Полный контроль подсказки
     }
 
     function changeCoords(mouse){ // Следование за мышкой
-        hint.style.top = `${mouse.pageY+10}px`;
-        hint.style.left = `${mouse.pageX+10}px`;
+        let coords = hint.getBoundingClientRect();
+        if (mouse.clientX + 10 + coords.width > document.documentElement.clientWidth){
+            hint.style.left = `${mouse.clientX - 3 - coords.width}px`;
+        } else {
+            hint.style.left = `${mouse.clientX+10}px`;
+        }
+
+        if (mouse.clientY + 10 + coords.height > document.documentElement.clientHeight){
+            hint.style.top = `${mouse.clientY - 3 - coords.height}px`;
+        } else {
+            hint.style.top = `${mouse.clientY+10}px`;
+        }
+        
     }
 
     function getCoords(){}
 
-    function createHint(message){ // Создание подсказки
+    function createHint(message, clone = false){ // Создание подсказки
         hint = document.createElement('span');
         hint.classList.add("tooltip");
-
-        let lastHint = document.querySelector(".tooltip"); // Существующая подсказка
-        if(lastHint) hint = lastHint; // если подсказка уже есть, то работаем с ней
+        if(clone) hint = document.querySelector(".tooltip"); // если подсказка уже есть, то работаем с ней
 
         hint.innerHTML = message;
 
@@ -91,30 +99,32 @@ function tooltipControl(e){ // Полный контроль подсказки
     }
 
     function deleteHint(){ // Удаление подсказки
-        function delRevoke(element){
-            if(element.target.hasAttribute("data-tooltip")){ // Если навелись на другой элемент с подсказкой
+        function delRevoke(el){
+            if(el.target.hasAttribute("data-tooltip")){ // Если навелись на другой элемент с подсказкой
 
                 document.removeEventListener("mouseover", delRevoke); // Отменяем прослушку
+
                 clearTimeout(delTimeout); // Останавливаем процесс удаления
                 
-                animation.pause(); // Ставим анимацию исчезновения на паузу
-                setTimeout(() => animation.cancel()); // И удаляем анимацию
+                base = el.target; // Перезапуск
+                createHint(base.getAttribute("data-tooltip"), true);
+                base.addEventListener("mouseleave", deleteHint, {"once": true});
             }
         }
 
         changeOpacity(false);
         let delTimeout = setTimeout(() => {
-            base.removeEventListener("mousemove", changeCoords);
+            document.removeEventListener("mousemove", changeCoords);
             document.removeEventListener("mouseover", delRevoke);
 
             hint.remove();
-        }, tooltipTime * hintOpacity() - 1);
+        }, tooltipTime * hintOpacity() - 10);
 
         document.addEventListener("mouseover", delRevoke); //Ждём, пока не наведуться на другую подсказку
         
     }
 
-    
+    if (document.querySelector(".tooltip")) return; // Если подсказка уже есть, то отменяем всё
     let hint, animation;
     let base = e.target; // Элемент, для которого есть подсказка
 
@@ -125,13 +135,12 @@ function tooltipControl(e){ // Полный контроль подсказки
     }
 }
 
-function ready_hints(){
+function readyHints(){
     updateTooltip();
 }
 
-document.addEventListener("DOMContentLoaded", ready_hints);
-
+const updateTooltip = addTooltipListener();
 const tooltipTime = 150; // Врема исчезания и появления подсказки
 
-
 //elem.getBoundingClientRect();
+document.addEventListener("DOMContentLoaded", readyHints);

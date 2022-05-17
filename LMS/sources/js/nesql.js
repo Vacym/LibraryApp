@@ -1,42 +1,42 @@
-var fs = require("fs"); // Подключаем библиотеку для работы с файловой системой
+// version 1.0 release
 
-class Table { // Класс для работы с библиотекой
-    constructor(name) {
-        this.name = name;
-        this.src = `C:/NeDB/${name}.json`;
-        this.table = this.SELECT();
+class Table { // Класс для работы с Таблицей
+    constructor(name) { // Инициализируем класс
+        this.name = name; // Название таблицы
+        this.src = `C:/NeDB/${name}.json`; // Путь к ней
+        this.table = this.SELECT(); // Сохранение таблицы в переменную
     }
 
     CREATE() { // Создает таблицу
         let params = {
             'users': {
-                'id':           {'options': ['num',  -1], 'users': []}, 
-                'firstname':    {'options': ['text', 50], 'users': []}, 
-                'surname':      {'options': ['text', 50], 'users': []}, 
-                'lastname':     {'options': ['text', 50], 'users': []},
-                'class':        {'options': ['num', 50], 'users': []},
-                'letter':       {'options': ['text', 50], 'users': []},
+                'id':           {'option': 'num',  'users': []}, 
+                'firstname':    {'option': 'text', 'users': []}, 
+                'surname':      {'option': 'text', 'users': []}, 
+                'lastname':     {'option': 'text', 'users': []},
+                'class':        {'option': 'num',  'users': []},
+                'letter':       {'option': 'text', 'users': []},
             },
             'books': {
-                'id':           {'options': ['num',  -1], 'users': []}, 
-                'name':         {'options': ['text', 50], 'users': []}, 
-                'author':       {'options': ['text', 50], 'users': []}, 
-                'genre':        {'options': ['text', 50], 'users': []},
-                'comment':      {'options': ['text', 50], 'users': []},
-                'inventoryno':  {'options': ['num', 50], 'users': []},
-                'userid':       {'options': ['num', 50], 'users': []},
-                'dateofissue':  {'options': ['date', 50], 'users': []},
-                'groupid':      {'options': ['num', 50], 'users': []},
-            }}
+                'id':           {'option': 'num',  'users': []}, 
+                'name':         {'option': 'text', 'users': []}, 
+                'author':       {'option': 'text', 'users': []}, 
+                'genre':        {'option': 'text', 'users': []},
+                'comment':      {'option': 'text', 'users': []},
+                'inventoryno':  {'option': 'num',  'users': []},
+                'userid':       {'option': 'num',  'users': []},
+                'dateofissue':  {'option': 'date', 'users': []},
+                'groupid':      {'option': 'num',  'users': []},
+            }};
         try {
             fs.writeFileSync(this.src, JSON.stringify(params[this.name]));
         } catch (err) {
             console.log('ОШИБКА СОЗДАНИЯ ТАБЛИЦЫ', err);
             if (err.code == 'ENOENT') {
-                console.log(`%cСоздаем Мини-СУБД`, "font-size:x-large")
+                console.log(`%cСоздаем Мини-СУБД`, "font-size:x-large");
                 fs.mkdirSync("C:/NeDB");
-                fs.writeFileSync('C:/NeDB/users.json', JSON.stringify(params['users']));
-                fs.writeFileSync('C:/NeDB/books.json', JSON.stringify(params['books']));
+                fs.writeFileSync('C:/NeDB/users.json', JSON.stringify(params.users));
+                fs.writeFileSync('C:/NeDB/books.json', JSON.stringify(params.books));
             }
         }
     }
@@ -46,7 +46,7 @@ class Table { // Класс для работы с библиотекой
             if (this.table) {
                 return this.table;
             } else {
-                console.log(`%cИнициализирована ${this.name}`, " font-size:x-large")
+                console.log(`%cИнициализирована ${this.name}`, " font-size:x-large");
                 return JSON.parse(fs.readFileSync(this.src, 'utf8'));
             }
         } catch (err) {
@@ -56,17 +56,18 @@ class Table { // Класс для работы с библиотекой
     }
 
     ORDER_BY(data, param) { // Сортировка по определенному параметру столбца
-        let choose = this.SELECT()[param]['options'][0];
+        let type = this.SELECT()[param].option;
 
-        switch (choose) {
+        switch (type) {
             case 'num':  data.sort((a,b) => a[param] - b[param]); break;
             case 'text': 
-                data.sort((a,b) => { return (a[param] < b[param]) ? -1: (a[param] > b[param]) ? 1: 0 } );
+                data.sort((a,b) => { return (a[param] < b[param]) ? -1: (a[param] > b[param]) ? 1: 0; } );
 
                 if (!isUsers) {
-                    data = this.ORDER_BY(data, 'userid') // Отсортировка по инвентарному номеру
+                    data = this.ORDER_BY(data, 'userid'); // Отсортировка по инвентарному номеру
                 }
                 break;
+            case 'date': data.sort((a,b) => this.getDays(b[param]) - this.getDays(a[param])); break;
         }
         return data;
     }
@@ -76,7 +77,7 @@ class Table { // Класс для работы с библиотекой
         let result = [];
 
         for (let item of data) {
-            if (value == 'class' && (item['class']+item['letter']).toLowerCase().includes(query)) {
+            if (value == 'class' && (item.class + item.letter).toLowerCase().includes(query)) {
                 result.push(item);
             } else if (String(item[value]).toLowerCase().includes(query)) {
                 result.push(item);
@@ -92,7 +93,7 @@ class Table { // Класс для работы с библиотекой
         if (id < 0) { // Если эта группа...
             let groups = [];
             for (let item in data) {
-                if (data[item]['groupid'] == -id) {
+                if (data[item].groupid == -id) {
                     groups.push(item);
                 }
             }
@@ -101,24 +102,28 @@ class Table { // Класс для работы с библиотекой
             let values = [];
 
             for (let item in params) {
-                values = params[item]['users'];
+                values = params[item].users;
                 for (let i in values) {
                     if (!groups.includes(i)) {
-                        arr.push(values[i])
+                        arr.push(values[i]);
                     }
                 }
-                params[item]['users'] = arr;
+                params[item].users = arr;
                 arr = [];
             }
         } else {
             for (let item in data) {
-                if (data[item]['id'] == id) {
-                    id = item;
+                if (data.hasOwnProperty(item)) {
+                    if (data[item].id == id) {
+                        id = item;
+                    }
                 }
             }
 
             for (let item in params) {
-                params[item]['users'].splice(id,1);
+                if (params.hasOwnProperty(item)) {
+                    params[item].users.splice(id,1);
+                }
             }
         }
         
@@ -127,8 +132,11 @@ class Table { // Класс для работы с библиотекой
 
     UPDATE(id, values) { // Обновляем значения столбца на значения из словаря values
         let data = this.SELECT();
+        
         for (let item in values) {
-            data[item]['users'][id] = values[item];
+            if (values.hasOwnProperty(item)) {
+                data[item].users[id] = values[item];
+            }
         }
 
         this.write(data); // Записываем изменения в таблицу
@@ -140,7 +148,7 @@ class Table { // Класс для работы с библиотекой
 
         for (let item of data) {
             if (item[param] == value) {
-                if (item['userid']) {
+                if (item.userid) {
                     busy++;
                 }
                 all++;
@@ -156,16 +164,16 @@ class Table { // Класс для работы с библиотекой
             if(values[i] === null) values[i] = null;
         }
 
-        let len = params['id']['users'].length;
+        let len = params.id.users.length;
         let i = -1;
 
-        let nextID = len ? params['id']['users'][len-1]+1 : 1;
+        let nextID = len ? params.id.users[len-1]+1 : 1;
 
         for (let item in params) {
             if (item == 'id') {
-                params[item]['users'][len] = nextID;
+                params[item].users[len] = nextID;
             } else {
-                params[item]['users'][len] = values[i];
+                params[item].users[len] = values[i];
             }
             i++;
         }
@@ -177,45 +185,53 @@ class Table { // Класс для работы с библиотекой
     get(query='') { // Возращает таблицу измененную под определенные настройки
         let result = [];
 
-        if (GET['im'] && GET['del']) { // Если это страница с откреплением книги от ученика
-            let data = this.ORDER_BY(this.translate(), GET['order']);
+        if (GET.im && GET.del) { // Если это страница с откреплением книги от ученика
+            let data = this.ORDER_BY(this.translate(), GET.order);
             
             for (let item of data) {
-                if (item['userid'] == GET['im']) {
+                if (item.userid == GET.im) {
                     result.push(item)
                 }
             }
-        } else if (GET['group']) { // Если это страница с развернутой группой книг
+        } else if (GET.group) { // Если это страница с развернутой группой книг
             let data = this.ORDER_BY(this.translate(), 'inventoryno');
 
             for (let item of data) {
-                if (item['groupid'] == GET['group']) {
+                if (item.groupid == GET.group) {
+                    result.push(item);
+                }
+            }
+        } else if (GET.order == 'dateofissue') {
+            let data = this.ORDER_BY(this.translate(), GET.order);
+
+            for (let item of data) {
+                if (item.userid) {
                     result.push(item);
                 }
             }
         } else { // Если это обычная страница
-            let data = this.ORDER_BY(this.translate(), GET['order']);
-            
+            let data = this.ORDER_BY(this.translate(), GET.order);
             let groups = [];
 
             for (let item of data) {
-                if (GET['order'] != 'inventoryno' && item['groupid'] > 0) {
-                    if (!groups.includes(item['groupid'])) {
+                if (GET.order != 'inventoryno' && item.groupid > 0) {
+                    if (!groups.includes(item.groupid)) {
                         result.push(item);
-                        groups.push(item['groupid']);
+                        groups.push(item.groupid);
                     }
                 } else {
-                    result.push(item)
+                    result.push(item);
                 }
             }
         }
-        return this.LIKE(result, GET['order'], query);
+        return this.LIKE(result, GET.order, query);
     }
 
-    equal(traspose, param, value) { // Возвращает массив с столбцами, где параметр равен определонному значению (Н-ер где name = Иван)
+    equal(traspose, param, value, onlyOne=false) { // Возвращает массив с столбцами, где параметр равен определонному значению
         let result = [];
         for (let item in traspose) {
             if (value == traspose[item][param]) {
+                if (onlyOne) return traspose[item];
                 result.push(traspose[item]);
             }
         }
@@ -230,19 +246,28 @@ class Table { // Класс для работы с библиотекой
         }
     }
 
-    translate(data=this.SELECT()) { // Возвращает данные таблицу в человеческом виде
+    translate(data=this.SELECT()) { // Возвращает данные таблицу в "человеческом виде"
         let result = [];
-        for (let i = 0; i < data['id']['users'].length; i++) {
+        for (let i = 0; i < data.id.users.length; i++) {
             result[i] = {};
             for (let item in data) {
-                result[i][item] = data[item]['users'][i];
+                result[i][item] = data[item].users[i];
             }
         }
         return result;
     }
 
+    isSameID(otherItem) { // Проверяет наличие инвентарного номера в БД 
+        for (let item of this.SELECT().inventoryno.users) {
+            if (otherItem == item) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     getIndexFromID(ID) { // Возвращает индекс столбца, исходя из его id
-        let data = this.SELECT()['id']['users']; // Сохраняем значения всех id, чтобы идентифицировать нашего ученика или книгу
+        let data = this.SELECT().id.users; // Сохраняем значения всех id, чтобы идентифицировать нашего ученика или книгу
 
         for (let index in data) {
             if (data[index] == ID) {
@@ -251,22 +276,30 @@ class Table { // Класс для работы с библиотекой
         }
     }
 
+    getDays(date) { // Преобразует дату в количество дней
+        if (date) {
+            date = date.split('.'); // Перевод из русской даты в английскую
+            [date[0], date[1]] = [date[1], date[0]];
+            date = date.join('.');
+
+            return ((Date.now() - new Date(date).getTime())/3600000/24)|0;
+        } 
+        return -1;
+    }
+
+    get length() {
+        return this.table.id.users.length;
+    }
+
     get nextGroupID() { // Возвращает следующий свободный групповой ID
         let MaxGroupID = 0;
-        for (let item of this.SELECT()['groupid']['users']) {
+        for (let item of this.SELECT().groupid.users) {
             if (item && item > MaxGroupID) {
                 MaxGroupID = item;
             }
         }
         return MaxGroupID+1;
     }
-
-    isSameID(otherItem) { // Проверяет наличие инвентарного номера в БД 
-        for (let item of this.SELECT()['inventoryno']['users']) {
-            if (otherItem == item) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
+
+let fs = require("fs"); // Подключаем библиотеку для работы с файловой системой
