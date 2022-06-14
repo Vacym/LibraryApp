@@ -5,11 +5,11 @@
         return filter_input(INPUT_GET, $name) && preg_match($regex[$choice], $_GET[$name]) ? $_GET[$name]: false;
     }
     
-    $q     = filter('q', 'search'); // Init query
-    $im    = filter('im', 'number'); // Init user_id
-    $del   = filter('del','number'); // Init is_delete_page?
+    $q     = filter('q', 'search');	// Init query
+    $im    = filter('im', 'number');	// Init user_id
+    $del   = filter('del','number');	// Init is_delete_page?
     $group = filter('group', 'number'); // Init is_group_page?
-    $page  = filter('page', 'number'); // Init which books you should send to AJAX
+    $page  = filter('page', 'number');	// Init which books you should send to AJAX
     $order = filter_input(INPUT_GET, 'order') && in_array($_GET['order'], ['author', 'genre', 'inventory_no', 'Date_of_issue']) ? $_GET['order'] : 'name'; // Init which order you ewant
 
     $mysql = mysqli_connect('localhost', 'root', '', 'Lib'); // Connect to mysql
